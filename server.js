@@ -18,7 +18,7 @@ var cookieParser = express.cookieParser('I wish you were an oatmeal cookie')
 // Settings
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // Middleware
 app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
