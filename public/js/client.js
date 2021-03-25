@@ -301,55 +301,6 @@ var Client = (function(window) {
     return piece+selection.file+selection.rank+'x'+dest.attr('id');
   };
 
-  /**
-   * Castle the selected king
-   */
-  var castle = function(destinationSquare) {
-    var moveString = '';
-
-    clearHighlights();
-
-    switch (destinationSquare.id) {
-
-      // White queenside castle
-      case 'c1':
-        $('e1').removeClass(gameClasses).addClass('empty');
-        $('c1').removeClass('empty').addClass(getPieceClasses('wK'));
-        $('a1').removeClass(gameClasses).addClass('empty');
-        $('d1').removeClass('empty').addClass(getPieceClasses('wR'));
-        moveString = 'wK0-0-0';
-        break;
-
-      // White kingside castle
-      case 'g1':
-        $('e1').removeClass(gameClasses).addClass('empty');
-        $('g1').removeClass('empty').addClass(getPieceClasses('wK'));
-        $('h1').removeClass(gameClasses).addClass('empty');
-        $('f1').removeClass('empty').addClass(getPieceClasses('wR'));
-        moveString = 'wK0-0';
-        break;
-
-      // Black queenside castle
-      case 'c8':
-        $('e8').removeClass(gameClasses).addClass('empty');
-        $('c8').removeClass('empty').addClass(getPieceClasses('bK'));
-        $('a8').removeClass(gameClasses).addClass('empty');
-        $('d8').removeClass('empty').addClass(getPieceClasses('bR'));
-        moveString = 'bK0-0-0';
-        break;
-
-      // Black kingside castle
-      case 'g8':
-        $('e8').removeClass(gameClasses).addClass('empty');
-        $('g8').removeClass('empty').addClass(getPieceClasses('bK'));
-        $('h8').removeClass(gameClasses).addClass('empty');
-        $('f8').removeClass('empty').addClass(getPieceClasses('bR'));
-        moveString = 'bK0-0';
-        break;
-    }
-
-    return moveString;
-  }
 
   /**
    * Update UI from game state
