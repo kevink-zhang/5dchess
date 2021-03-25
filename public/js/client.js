@@ -1,3 +1,39 @@
+const c = document.querySelector("#c");
+const ctx = c.getContext("2d");
+
+//defining constants so I dont need to quote
+const __ = -1;
+
+const wP = 0;
+const wR = 1;
+const wN = 2;
+const wB = 3;
+const wQ = 4;
+const wK = 5;
+const wP_ = 6;
+const wR_ = 7;
+const wK_ = 8;
+
+const bP = 10;
+const bR = 11;
+const bN = 12;
+const bB = 13;
+const bQ = 14;
+const bK = 15;
+const bP_ = 16;
+const bR_ = 17;
+const bK_ = 18;
+
+
+const initBoard =[[__],
+                  [],
+                  [],
+                  [],
+                  [],
+                  [],
+                  [],
+                  []];
+
 var Client = (function(window) {
 
   var socket      = null;
@@ -9,10 +45,7 @@ var Client = (function(window) {
 
   var container   = null;
   var messages    = null;
-  var board       = null;
-  var squares     = null;
-
-  var gameClasses = null;
+  var boards       = null;
 
   var selection   = null;
 
@@ -23,8 +56,7 @@ var Client = (function(window) {
 
   
   
-  const c = document.querySelector("#c");
-  const ctx = c.getContext("2d");
+  
   
   c.style.width = window.innerWidth;
   c.style.height = "800px";
@@ -49,8 +81,6 @@ var Client = (function(window) {
     pawnPromotionPrompt = $('#pawn-promotion');
     forfeitPrompt       = $('#forfeit-game');
 
-    gameClasses = "white black pawn rook knight bishop queen king not-moved empty selected " +
-                  "valid-move valid-capture valid-en-passant-capture valid-castle last-move";
 
     // Create socket connection
     socket = io.connect();
@@ -212,6 +242,9 @@ var Client = (function(window) {
   /**
    * Attach Socket.IO event handlers
    */
+  var newBoard = function() {
+    
+  }
   var attachSocketEventHandlers = function() {
 
     // Update UI with new game state
@@ -228,70 +261,7 @@ var Client = (function(window) {
     });
   };
 
-  /**
-   * Highlight valid moves for the selected piece
-   */
-  /*
-  var highlightValidMoves = function(piece, selectedSquare) {
-    var square = $(selectedSquare);
-    var move   = null;
-
-    // Set selection object
-    selection = {
-      color: piece[0],
-      piece: piece[1],
-      file:  square.attr('id')[0],
-      rank:  square.attr('id')[1]
-    };
-
-    // Highlight the selected square
-    squares.removeClass('selected');
-    square.addClass('selected');
-
-    // Highlight any valid moves
-    squares.removeClass('valid-move valid-capture valid-en-passant-capture valid-castle');
-    for (var i=0; i<gameState.validMoves.length; i++) {
-      move = gameState.validMoves[i];
-
-      if (move.type === 'move') {
-        if (move.pieceCode === piece && move.startSquare === square.attr('id')) {
-          $('#'+move.endSquare).addClass('valid-move');
-        }
-      }
-
-      if (move.type === 'capture') {
-        if (move.pieceCode === piece && move.startSquare === square.attr('id')) {
-          if (move.captureSquare === move.endSquare) {
-            $('#'+move.endSquare).addClass('valid-capture');
-          } else {
-            $('#'+move.endSquare).addClass('valid-en-passant-capture');
-          }
-        }
-      }
-
-      if (move.type === 'castle') {
-        if (move.pieceCode === piece) {
-          if (move.pieceCode[0] === 'w' && move.boardSide === 'queen') {
-            $('#c1').addClass('valid-castle');
-          }
-          if (move.pieceCode[0] === 'w' && move.boardSide === 'king') {
-            $('#g1').addClass('valid-castle');
-          }
-          if (move.pieceCode[0] === 'b' && move.boardSide === 'queen') {
-            $('#c8').addClass('valid-castle');
-          }
-          if (move.pieceCode[0] === 'b' && move.boardSide === 'king') {
-            $('#g8').addClass('valid-castle');
-          }
-        }
-      }
-    }
-  };*/
-
-  /**
-   * Clear valid move highlights
-   */
-
+  
   /**
    * Move selected piece to destination square
    */
