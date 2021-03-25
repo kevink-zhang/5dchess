@@ -29,10 +29,6 @@ var Client = (function(window) {
     playerColor = config.playerColor;
     playerName  = config.playerName;
 
-    container   = $('#game');
-    messages    = $('#messages');
-    board       = $('#board');
-    squares     = board.find('.square');
 
     gameOverMessage     = $('#game-over');
     pawnPromotionPrompt = $('#pawn-promotion');
@@ -44,11 +40,8 @@ var Client = (function(window) {
     // Create socket connection
     socket = io.connect();
 
-    // Define board based on player's perspective
-    assignSquares();
 
     // Attach event handlers
-    attachDOMEventHandlers();
     attachSocketEventHandlers();
 
     // Initialize modal popup windows
@@ -63,40 +56,8 @@ var Client = (function(window) {
   /**
    * Assign square IDs and labels based on player's perspective
    */
-  var assignSquares = function() {
-    var fileLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    var rankLabels = [8, 7, 6, 5, 4, 3, 2, 1];
-    var squareIDs  = [
-      'a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8',
-      'a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7',
-      'a6', 'b6', 'c6', 'd6', 'e6', 'f6', 'g6', 'h6',
-      'a5', 'b5', 'c5', 'd5', 'e5', 'f5', 'g5', 'h5',
-      'a4', 'b4', 'c4', 'd4', 'e4', 'f4', 'g4', 'h4',
-      'a3', 'b3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3',
-      'a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2',
-      'a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1'
-    ];
 
-    if (playerColor === 'black') {
-      fileLabels.reverse();
-      rankLabels.reverse();
-      squareIDs.reverse();
-    }
-
-    // Set file and rank labels
-    $('.top-edge').each(function(i) { $(this).text(fileLabels[i]); });
-    $('.right-edge').each(function(i) { $(this).text(rankLabels[i]); });
-    $('.bottom-edge').each(function(i) { $(this).text(fileLabels[i]); });
-    $('.left-edge').each(function(i) { $(this).text(rankLabels[i]); });
-
-    // Set square IDs
-    squares.each(function(i) { $(this).attr('id', squareIDs[i]); });
-  };
-
-  /**
-   * Attach DOM event handlers
-   */
-  var attachDOMEventHandlers = function() {
+/*  var attachDOMEventHandlers = function() {
 
     // Highlight valid moves for white pieces
     if (playerColor === 'white') {
