@@ -24,6 +24,11 @@ var Client = (function(window) {
   /**
    * Initialize the UI
    */
+  
+  const c = document.querySelector("#c");
+  const ctx = c.getContext("2d");
+  
+  
   var init = function(config) {
     gameID      = config.gameID;
     playerColor = config.playerColor;
@@ -301,8 +306,6 @@ var Client = (function(window) {
     var src   = $('#'+selection.file+selection.rank);
     var dest  = $(destinationSquare);
 
-    clearHighlights();
-
     // Move piece on board
     src.removeClass(getPieceClasses(piece)).addClass('empty');
     dest.removeClass(gameClasses).addClass(getPieceClasses(piece));
@@ -568,3 +571,6 @@ var Client = (function(window) {
   return init;
 
 }(window));
+
+
+
