@@ -21,14 +21,24 @@ var Client = (function(window) {
   var forfeitPrompt       = null;
 
 
-  /**
-   * Initialize the UI
-   */
+  
   
   const c = document.querySelector("#c");
   const ctx = c.getContext("2d");
   
+  c.style.width = window.innerWidth;
+  c.style.height = "800px";
   
+  function draw(){
+    
+  }
+  
+  window.requestAnimationFrame(draw);
+  
+  
+  /**
+   * Initialize the UI
+   */
   var init = function(config) {
     gameID      = config.gameID;
     playerColor = config.playerColor;
