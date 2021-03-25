@@ -45,7 +45,7 @@ var Client = (function(window) {
 
   var container   = null;
   var messages    = null;
-  var boards       = null;
+  var spacetime       = null;
 
   var selection   = null;
 
@@ -96,6 +96,9 @@ var Client = (function(window) {
 
     // Join game
     socket.emit('join', gameID);
+    
+    //Initialize boards
+    spacetime = {0:[newTimeline()]};
   };
 
   /**
@@ -242,9 +245,13 @@ var Client = (function(window) {
   /**
    * Attach Socket.IO event handlers
    */
+  var newTimeline = function() {
+    
+  }
   var newBoard = function() {
     
   }
+  
   var attachSocketEventHandlers = function() {
 
     // Update UI with new game state
