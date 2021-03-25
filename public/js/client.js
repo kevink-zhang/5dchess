@@ -216,6 +216,7 @@ var Client = (function(window) {
   /**
    * Highlight valid moves for the selected piece
    */
+  /*
   var highlightValidMoves = function(piece, selectedSquare) {
     var square = $(selectedSquare);
     var move   = null;
@@ -270,18 +271,11 @@ var Client = (function(window) {
         }
       }
     }
-  };
+  };*/
 
   /**
    * Clear valid move highlights
    */
-  var clearHighlights = function() {
-    squares.removeClass('selected');
-    squares.removeClass('valid-move');
-    squares.removeClass('valid-capture');
-    squares.removeClass('valid-en-passant-capture');
-    squares.removeClass('valid-castle');
-  };
 
   /**
    * Move selected piece to destination square
@@ -290,9 +284,7 @@ var Client = (function(window) {
     var piece = selection.color+selection.piece;
     var src   = $('#'+selection.file+selection.rank);
     var dest  = $(destinationSquare);
-
-    clearHighlights();
-
+    
     // Move piece on board
     src.removeClass(getPieceClasses(piece)).addClass('empty');
     dest.removeClass('empty').addClass(getPieceClasses(piece));
