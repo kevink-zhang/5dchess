@@ -45,7 +45,9 @@ var Client = (function(window) {
 
   var container   = null;
   var messages    = null;
+  
   var spacetime       = null;
+  var move = {}; 
 
   var selection   = null;
 
@@ -100,6 +102,15 @@ var Client = (function(window) {
     //Initialize boards
     spacetime = {0:[newTimeline()]};
   };
+  
+  //returns a blank board
+  var newTimeline = function(){
+    return initBoard;
+  }
+  
+  var broadCast = function(){
+    socket.emit('move',{gameID:gameID, move:move});
+  }
 
   /**
    * Assign square IDs and labels based on player's perspective
