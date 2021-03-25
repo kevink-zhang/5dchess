@@ -59,15 +59,18 @@ var Client = (function(window) {
   
   
   
-  
+  //canvas part
   c.style.width = window.innerWidth;
   c.style.height = "800px";
   
   function draw(){
     
   }
-  
   window.requestAnimationFrame(draw);
+  
+  //canvas input
+  
+  
   
   
   /**
