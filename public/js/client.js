@@ -25,14 +25,14 @@ const bR_ = 17;
 const bK_ = 18;
 
 
-const initBoard =[[__],
-                  [],
-                  [],
-                  [],
-                  [],
-                  [],
-                  [],
-                  []];
+const initBoard =[[wR_,  wP_,   __,   __,  __,  __,  bP_,  bR_],
+                  [wN ,  wP_,   __,   __,  __,  __,  bP_,  bN ],
+                  [wB ,  wP_,   __,   __,  __,  __,  bP_,  bB ],
+                  [wQ ,  wP_,   __,   __,  __,  __,  bP_,  bQ ],
+                  [wK_,  wP_,   __,   __,  __,  __,  bP_,  bK_],
+                  [wB ,  wP_,   __,   __,  __,  __,  bP_,  bB ],
+                  [wN ,  wP_,   __,   __,  __,  __,  bP_,  bN ],
+                  [wR_,  wP_,   __,   __,  __,  __,  bP_,  bR_]];
 
 var Client = (function(window) {
 
