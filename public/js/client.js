@@ -46,7 +46,8 @@ var Client = (function(window) {
   var container   = null;
   var messages    = null;
   
-  var spacetime       = null;
+  var spacetime   = null;
+  var timebound   = {'white':0,'black':0};
   var move = {}; 
 
   var selection   = null;
@@ -103,7 +104,7 @@ var Client = (function(window) {
     socket.emit('join', gameID);
     
     //Initialize boards
-    spacetime = {0:[newTimeline()]};
+    spacetime = {0:[newTimeline()]}; //-1: white, 1: black for draw order
   };
   
   //returns a blank board
