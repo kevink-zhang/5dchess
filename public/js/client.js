@@ -56,7 +56,10 @@ var Client = (function(window) {
   /**
    * Assign square IDs and labels based on player's perspective
    */
-
+  
+  //NOTE
+  //this has move socket events in here, refer to later
+  //everything else needs to be ported to canvas
 /*  var attachDOMEventHandlers = function() {
 
     // Highlight valid moves for white pieces
@@ -189,7 +192,7 @@ var Client = (function(window) {
         }
       });
     });
-  };
+  }; */
 
   /**
    * Attach Socket.IO event handlers
