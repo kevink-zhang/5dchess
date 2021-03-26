@@ -34,6 +34,12 @@ const initBoard =[[wR_,  wP_,   __,   __,  __,  __,  bP_,  bR_],
                   [wN ,  wP_,   __,   __,  __,  __,  bP_,  bN ],
                   [wR_,  wP_,   __,   __,  __,  __,  bP_,  bR_]];
 
+var Board = function(config){
+  
+  function doMove(){
+    
+  }
+}
 var Client = (function(window) {
 
   var socket      = null;
@@ -65,7 +71,10 @@ var Client = (function(window) {
   c.style.height = "800px";
   
   function draw(){
-    
+    //loops through each timeline
+    for(let i = timebound.white; i < timebound.black+1; i++){
+      
+    }
   }
   window.requestAnimationFrame(draw);
   
@@ -261,10 +270,13 @@ var Client = (function(window) {
    * Attach Socket.IO event handlers
    */
   var newTimeline = function() {
-    
-  }
-  var newBoard = function() {
-    
+    timebound = 
+    if(playerColor=='white'){
+      spacetime[]++;
+    }
+    else{
+      
+    }
   }
   
   var attachSocketEventHandlers = function() {
