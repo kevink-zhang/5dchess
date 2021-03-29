@@ -25,12 +25,6 @@ const bR_ = 17;
 const bK_ = 18;
 
 
-var Board = function(config){
-  
-  function doMove(){
-    
-  }
-}
 var Client = (function(window) {
 
   var socket      = null;
