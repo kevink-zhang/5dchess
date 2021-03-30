@@ -96,15 +96,16 @@ var Client = (function(window) {
   var bIMG = new Image; bIMG.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fbrown.svg?v=1617102060746";
   
   function draw(){
-    ctx.drawImage(bIMG,0,0,1000,1000);
-    console.log(gameState);
+    //console.log(gameState);
     if(gameState!=null){
       for(let tli in gameState.spacetime){
         //i = time index
-        for(let i = 0; i < gameState.spacetime[tli].boards.length){
+        for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
+          //b = current board
           let b = gameState.spacetime[tli].boards[i];
           if(b!=null){
-            ctx.drawImage(bIMG,400+80*i)
+            console.log(i,gameState.spacetime[tli].id);
+            ctx.drawImage(bIMG,0+80*i, 0+80*gameState.spacetime[tli].id,100,100);
           }
         }
       }
