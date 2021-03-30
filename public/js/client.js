@@ -77,27 +77,27 @@ var Client = (function(window) {
     pIMG[wP] = new Image; pIMG[wP].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwP.svg?v=1617102031643";
     pIMG[wR] = new Image; pIMG[wR].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwR.svg?v=1617102031925";
     pIMG[wN] = new Image; pIMG[wN].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwN.svg?v=1617102031915";
-    pIMG[wB] = new Image; pIMG[wP].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwB.svg?v=1617102037456";
-    pIMG[wQ] = new Image; pIMG[wP].src = "";
-    pIMG[wK] = new Image; pIMG[wP].src = "";
-    pIMG[wP_] = new Image; pIMG[wP].src = "";
-    pIMG[wR_] = new Image; pIMG[wP].src = "";
-    pIMG[wK_] = new Image; pIMG[wP].src = "";
-    pIMG[bP] = new Image; pIMG[wP].src = "";
-    pIMG[bR] = new Image; pIMG[wP].src = "";
-    pIMG[bN] = new Image; pIMG[wP].src = "";
-    pIMG[bB] = new Image; pIMG[wP].src = "";
-    pIMG[bQ] = new Image; pIMG[wP].src = "";
-    pIMG[bK] = new Image; pIMG[wP].src = "";
-    pIMG[bP_] = new Image; pIMG[wP].src = "";
-    pIMG[bR_] = new Image; pIMG[wP].src = "";
-    pIMG[bK_] = new Image; pIMG[wP].src = "";
+    pIMG[wB] = new Image; pIMG[wB].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwB.svg?v=1617102037456";
+    pIMG[wQ] = new Image; pIMG[wQ].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwQ.svg?v=1617102031643";
+    pIMG[wK] = new Image; pIMG[wK].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwK.svg?v=1617102031712";
+    pIMG[wP_] = pIMG[wP];
+    pIMG[wR_] = pIMG[wR];
+    pIMG[wK_] = pIMG[wK];
+    pIMG[bP] = new Image; pIMG[bP].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbP.svg?v=1617102118623";
+    pIMG[bR] = new Image; pIMG[bR].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbR.svg?v=1617102119358";
+    pIMG[bN] = new Image; pIMG[bN].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbN.svg?v=1617102119524";
+    pIMG[bB] = new Image; pIMG[bB].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbB.svg?v=1617102118548";
+    pIMG[bQ] = new Image; pIMG[bQ].src = "";
+    pIMG[bK] = new Image; pIMG[bK].src = "";
+    pIMG[bP_] = new Image; pIMG[bP].src = "";
+    pIMG[bR_] = new Image; pIMG[bR].src = "";
+    pIMG[bK_] = new Image; pIMG[bK].src = "";
   }
   var bIMG = new Image; bIMG.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fbrown.svg?v=1617102060746";
   
   function draw(){
     let img = new Image;
-    img.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbP.svg?v=1617102118623";
+    img.src = "";
     ctx.drawImage(img,0,0);
     console.log(gameState);
     if(gameState!=null){
