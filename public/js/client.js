@@ -72,6 +72,7 @@ var Client = (function(window) {
   c.style.height = "800px";
   
   function draw(){
+    console.log(gameState);
     if(gameState!=null){
       for(let tli of gameState.spacetime){
         for(let b of gameState.spacetime[tli].boards){
@@ -117,15 +118,7 @@ var Client = (function(window) {
 
     // Join game
     socket.emit('join', gameID);
-    
-    //Initialize boards
-    spacetime = {0:[newTimeline()]}; //-1: white, 1: black for draw order
   };
-  
-  //returns a blank board
-  var newTimeline = function(){
-    return initBoard;
-  }
   
   var broadCast = function(){
     socket.emit('move',{gameID:gameID, move:move});
