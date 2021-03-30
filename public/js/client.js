@@ -55,11 +55,14 @@ var Client = (function(window) {
   c.style.height = "800px";
   
   function draw(){
-    //loops through each timeline
-    for(let i = timebound.white; i < timebound.black+1; i++){
-      
+    for(let tli of gameState.spacetime){
+      for(let b of gameState.spacetime[tli].boards){
+        c.drawImage("bP.svg",0,0);
+      }
     }
   }
+  
+  draw();
   window.requestAnimationFrame(draw);
   
   //canvas input
