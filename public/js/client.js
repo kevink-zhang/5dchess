@@ -24,6 +24,23 @@ const bP_ = 16;
 const bR_ = 17;
 const bK_ = 18;
 
+const initBoard =[[wR_,  wP_,   __,   __,  __,  __,  bP_,  bR_],
+                  [wN ,  wP_,   __,   __,  __,  __,  bP_,  bN ],
+                  [wB ,  wP_,   __,   __,  __,  __,  bP_,  bB ],
+                  [wQ ,  wP_,   __,   __,  __,  __,  bP_,  bQ ],
+                  [wK_,  wP_,   __,   __,  __,  __,  bP_,  bK_],
+                  [wB ,  wP_,   __,   __,  __,  __,  bP_,  bB ],
+                  [wN ,  wP_,   __,   __,  __,  __,  bP_,  bN ],
+                  [wR_,  wP_,   __,   __,  __,  __,  bP_,  bR_]];
+
+//note: time <-> x, timeline <-> y
+const Npaths = [(1,2),(-1,2),(1,-2),(-1,-2),(2,1),(2,-1),(-2,1),(-2,-1)];
+const Bpaths = [(1,1),(1,-1),(-1,1),(-1,-1)];
+const Rpaths = [(1,0),(0,-1),(-1,0),(0,1)];
+const Ppaths = [(1,1),(-1,1)]; //note: y*= -1 for black //note2: this is for normal capture movement only
+const Qpaths = [[-1, -1, -1, -1], [0, -1, -1, -1], [1, -1, -1, -1], [-1, 0, -1, -1], [0, 0, -1, -1], [1, 0, -1, -1], [-1, 1, -1, -1], [0, 1, -1, -1], [1, 1, -1, -1], [-1, -1, 0, -1], [0, -1, 0, -1], [1, -1, 0, -1], [-1, 0, 0, -1], [0, 0, 0, -1], [1, 0, 0, -1], [-1, 1, 0, -1], [0, 1, 0, -1], [1, 1, 0, -1], [-1, -1, 1, -1], [0, -1, 1, -1], [1, -1, 1, -1], [-1, 0, 1, -1], [0, 0, 1, -1], [1, 0, 1, -1], [-1, 1, 1, -1], [0, 1, 1, -1], [1, 1, 1, -1], [-1, -1, -1, 0], [0, -1, -1, 0], [1, -1, -1, 0], [-1, 0, -1, 0], [0, 0, -1, 0], [1, 0, -1, 0], [-1, 1, -1, 0], [0, 1, -1, 0], [1, 1, -1, 0], [-1, -1, 0, 0], [0, -1, 0, 0], [1, -1, 0, 0], [-1, 0, 0, 0], [0, 0, 0, 0], [1, 0, 0, 0], [-1, 1, 0, 0], [0, 1, 0, 0], [1, 1, 0, 0], [-1, -1, 1, 0], [0, -1, 1, 0], [1, -1, 1, 0], [-1, 0, 1, 0], [0, 0, 1, 0], [1, 0, 1, 0], [-1, 1, 1, 0], [0, 1, 1, 0], [1, 1, 1, 0], [-1, -1, -1, 1], [0, -1, -1, 1], [1, -1, -1, 1], [-1, 0, -1, 1], [0, 0, -1, 1], [1, 0, -1, 1], [-1, 1, -1, 1], [0, 1, -1, 1], [1, 1, -1, 1], [-1, -1, 0, 1], [0, -1, 0, 1], [1, -1, 0, 1], [-1, 0, 0, 1], [0, 0, 0, 1], [1, 0, 0, 1], [-1, 1, 0, 1], [0, 1, 0, 1], [1, 1, 0, 1], [-1, -1, 1, 1], [0, -1, 1, 1], [1, -1, 1, 1], [-1, 0, 1, 1], [0, 0, 1, 1], [1, 0, 1, 1], [-1, 1, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]];
+//note: all 4 are for travel along any number of axes //note2: for all purposes, a king is a 1-range queen
+
 
 var Client = (function(window) {
 
@@ -55,9 +72,11 @@ var Client = (function(window) {
   c.style.height = "800px";
   
   function draw(){
-    for(let tli of gameState.spacetime){
-      for(let b of gameState.spacetime[tli].boards){
-        c.drawImage("bP.svg",0,0);
+    if(gameState!=null){
+      for(let tli of gameState.spacetime){
+        for(let b of gameState.spacetime[tli].boards){
+          c.drawImage("bP.svg",0,0);
+        }
       }
     }
   }
@@ -256,15 +275,7 @@ var Client = (function(window) {
   /**
    * Attach Socket.IO event handlers
    */
-  var newTimeline = function() {
-    timebound = 
-    if(playerColor=='white'){
-      spacetime[]++;
-    }
-    else{
-      
-    }
-  }
+
   
   var attachSocketEventHandlers = function() {
 
@@ -272,7 +283,7 @@ var Client = (function(window) {
     socket.on('update', function(data) {
       console.log(data);
       gameState = data;
-      update();
+      //update();
     });
 
     // Display an error
@@ -319,7 +330,7 @@ var Client = (function(window) {
   /**
    * Update UI from game state
    */
-  var update = function() {
+  /*var update = function() {
     var you, opponent = null;
 
     var container, name, status, captures = null;
@@ -412,7 +423,7 @@ var Client = (function(window) {
       if (opponent.forfeited) { showGameOverMessage('forfeit-win');  }
       if (you.forfeited)      { showGameOverMessage('forfeit-lose'); }
     }
-  };
+  };*/
 
   /**
    * Display an error message on the page
