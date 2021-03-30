@@ -37,8 +37,7 @@ var Client = (function(window) {
   var container   = null;
   var messages    = null;
   
-  var spacetime   = null;
-  var timebound   = {'white':0,'black':0};
+
   var move = {}; 
 
   var selection   = null;
