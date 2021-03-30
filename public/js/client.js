@@ -75,9 +75,9 @@ var Client = (function(window) {
   if(true){ //for collapsing
     pIMG[__] = new Image;
     pIMG[wP] = new Image; pIMG[wP].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwP.svg?v=1617102031643";
-    pIMG[wR] = new Image; pIMG[wP].src = "";
-    pIMG[wN] = new Image; pIMG[wP].src = "";
-    pIMG[wB] = new Image; pIMG[wP].src = "";
+    pIMG[wR] = new Image; pIMG[wR].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwR.svg?v=1617102031925";
+    pIMG[wN] = new Image; pIMG[wN].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwN.svg?v=1617102031915";
+    pIMG[wB] = new Image; pIMG[wP].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwB.svg?v=1617102037456";
     pIMG[wQ] = new Image; pIMG[wP].src = "";
     pIMG[wK] = new Image; pIMG[wP].src = "";
     pIMG[wP_] = new Image; pIMG[wP].src = "";
