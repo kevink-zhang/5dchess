@@ -71,6 +71,9 @@ var Client = (function(window) {
   c.style.width = window.innerWidth;
   c.style.height = "800px";
   
+  var pIMG = [];
+  var bIMG = new Image; bIMG.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fbrown.svg?v=1617102060746";
+  
   function draw(){
     let img = new Image;
     img.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbP.svg?v=1617102118623";
