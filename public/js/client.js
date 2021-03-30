@@ -74,7 +74,7 @@ var Client = (function(window) {
   function draw(){
     let img = new Image;
     img.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbP.svg?v=1617102118623";
-    ctx.drawImage(img,10,100);
+    ctx.drawImage(img,0,0);
     console.log(gameState);
     if(gameState!=null){
       for(let tli of gameState.spacetime){
