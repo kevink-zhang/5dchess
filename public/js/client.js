@@ -72,11 +72,12 @@ var Client = (function(window) {
   c.style.height = "800px";
   
   function draw(){
+    ctx.drawImage("assets/bP.svg",0,0);
     console.log(gameState);
     if(gameState!=null){
       for(let tli of gameState.spacetime){
         for(let b of gameState.spacetime[tli].boards){
-          c.drawImage("bP.svg",0,0);
+          ctx.drawImage("bP.svg",0,0);
         }
       }
     }
