@@ -68,8 +68,8 @@ var Client = (function(window) {
   
   
   //canvas part
-  c.style.width = window.innerWidth;
-  c.style.height = "800px";
+  //c.style.width = "800px";
+  //c.style.height = "800px";
   
   var pIMG = {};
   if(true){ //for collapsing
@@ -87,18 +87,16 @@ var Client = (function(window) {
     pIMG[bR] = new Image; pIMG[bR].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbR.svg?v=1617102119358";
     pIMG[bN] = new Image; pIMG[bN].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbN.svg?v=1617102119524";
     pIMG[bB] = new Image; pIMG[bB].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbB.svg?v=1617102118548";
-    pIMG[bQ] = new Image; pIMG[bQ].src = "";
-    pIMG[bK] = new Image; pIMG[bK].src = "";
-    pIMG[bP_] = new Image; pIMG[bP].src = "";
-    pIMG[bR_] = new Image; pIMG[bR].src = "";
-    pIMG[bK_] = new Image; pIMG[bK].src = "";
+    pIMG[bQ] = new Image; pIMG[bQ].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbQ.svg?v=1617102119676";
+    pIMG[bK] = new Image; pIMG[bK].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbK.svg?v=1617102118749";
+    pIMG[bP_] = pIMG[bP];
+    pIMG[bR_] = pIMG[bR];
+    pIMG[bK_] = pIMG[bK];
   }
   var bIMG = new Image; bIMG.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fbrown.svg?v=1617102060746";
   
   function draw(){
-    let img = new Image;
-    img.src = "";
-    ctx.drawImage(img,0,0);
+    ctx.drawImage(bIMG,0,0,1000,1000);
     console.log(gameState);
     if(gameState!=null){
       for(let tli of gameState.spacetime){
