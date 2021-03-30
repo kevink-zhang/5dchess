@@ -73,7 +73,25 @@ var Client = (function(window) {
   
   var pIMG = {};
   if(true){ //for collapsing
-    pIMG
+    pIMG[__] = new Image;
+    pIMG[wP] = new Image; pIMG[wP].src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwP.svg?v=1617102031643";
+    pIMG[wR] = new Image; pIMG[wP].src = "";
+    pIMG[wN] = new Image; pIMG[wP].src = "";
+    pIMG[wB] = new Image; pIMG[wP].src = "";
+    pIMG[wQ] = new Image; pIMG[wP].src = "";
+    pIMG[wK] = new Image; pIMG[wP].src = "";
+    pIMG[wP_] = new Image; pIMG[wP].src = "";
+    pIMG[wR_] = new Image; pIMG[wP].src = "";
+    pIMG[wK_] = new Image; pIMG[wP].src = "";
+    pIMG[bP] = new Image; pIMG[wP].src = "";
+    pIMG[bR] = new Image; pIMG[wP].src = "";
+    pIMG[bN] = new Image; pIMG[wP].src = "";
+    pIMG[bB] = new Image; pIMG[wP].src = "";
+    pIMG[bQ] = new Image; pIMG[wP].src = "";
+    pIMG[bK] = new Image; pIMG[wP].src = "";
+    pIMG[bP_] = new Image; pIMG[wP].src = "";
+    pIMG[bR_] = new Image; pIMG[wP].src = "";
+    pIMG[bK_] = new Image; pIMG[wP].src = "";
   }
   var bIMG = new Image; bIMG.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fbrown.svg?v=1617102060746";
   
