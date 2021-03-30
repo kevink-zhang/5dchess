@@ -83,10 +83,11 @@ var Client = (function(window) {
         }
       }
     }
+    window.requestAnimationFrame(draw);
   }
   
   draw();
-  window.requestAnimationFrame(draw);
+  
   
   //canvas input
   
