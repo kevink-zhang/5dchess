@@ -99,9 +99,13 @@ var Client = (function(window) {
     ctx.drawImage(bIMG,0,0,1000,1000);
     console.log(gameState);
     if(gameState!=null){
-      for(let tli of gameState.spacetime){
-        for(let b of gameState.spacetime[tli].boards){
-          ctx.drawImage("bP.svg",0,0);
+      for(let tli in gameState.spacetime){
+        //i = time index
+        for(let i = 0; i < gameState.spacetime[tli].boards.length){
+          let b = gameState.spacetime[tli].boards[i];
+          if(b!=null){
+            ctx.drawImage(bIMG,400+80*i)
+          }
         }
       }
     }
