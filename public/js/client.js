@@ -143,8 +143,10 @@ var Client = (function(window) {
     if(selected==null){
       
     }
-    else
-    selected = {};
+    else if(selected==addon) selected = null;
+    else{
+      socket.emit('move',{gameID:gameID, move:{src:selected,end:addon,type:"debug"}});
+    }
     
   });
   
