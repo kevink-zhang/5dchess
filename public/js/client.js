@@ -130,7 +130,13 @@ var Client = (function(window) {
     
     if(selected==null){
       //first find the board
-      for(let tli in gameState.spacetime)
+      for(let tli in gameState.spacetime){
+        if (y>tli*boardScale+20*tli && y>(tli+1)*boardScale+20*tli){
+          selected.timeline = tli;
+          break;
+        }
+      }
+      
       selected = {};
     }
   });
