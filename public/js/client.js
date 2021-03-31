@@ -136,7 +136,7 @@ var Client = (function(window) {
       }
     }
     for(let ti in gameState.spacetime[addon.timeline].boards){
-      if (x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
+      if (gameState.spacetime[addon.timeline].boards[ti]!=null && x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
         addon.time = ti;
       }
     }
@@ -516,8 +516,6 @@ var Client = (function(window) {
       msg = data.message;
     }
 
-    html = '<div class="alert alert-danger">'+msg+'</div>';
-    messages.append(html);
   };
 
   /**
