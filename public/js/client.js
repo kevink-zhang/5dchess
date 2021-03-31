@@ -122,7 +122,15 @@ var Client = (function(window) {
   
   draw();
   
+  selected
   c.addEventListener("mousedown",e=>{
+    let x = e.clientX - c.getBoundingClientRect().left;
+    let y = e.clientY - c.getBoundingClientRect().top;
+    console.log(x,y);
+    
+  });
+  
+  c.addEventListener("mouseup",e=>{
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
     console.log(x,y);
