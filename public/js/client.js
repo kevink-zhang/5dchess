@@ -107,6 +107,11 @@ var Client = (function(window) {
           if(b!=null){
             console.log(i,gameState.spacetime[tli].timeline);
             ctx.drawImage(bIMG,0+80*i, 0+80*gameState.spacetime[tli].timeline,100,100);
+            for(let j = 0; j < 8; j++){
+              for(let k = 0; k < 8; k++){
+                ctx.drawImage(pIMG[b[k][j]],0+80*i+, 0+80*gameState.spacetime[tli].timeline,10,10);
+              }
+            }
           }
         }
       }
