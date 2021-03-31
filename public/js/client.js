@@ -128,21 +128,24 @@ var Client = (function(window) {
     let y = e.clientY - c.getBoundingClientRect().top;
     console.log(x,y);
     
-    if(selected==null){
-      //first find the board
-      for(let tli in gameState.spacetime){
-        if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
-          selected.timeline = tli;
-          break;
-        }
+    let addon = {timeline:-1,time:-1,x:-1,y:-1};
+    for(let tli in gameState.spacetime){
+      if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
+        selected.timeline = tli;
+        break;
       }
-      for(let ti in gameState.spacetime[selected.timeline].boards){
-        if (x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
-          selected.time = ti;
-        }
-      }
-      selected = {};
     }
+    for(let ti in gameState.spacetime[selected.timeline].boards){
+      if (x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
+        selected.time = ti;
+      }
+    }
+    if(selected==null){
+      
+    }
+    else
+    selected = {};
+    
   });
   
   c.addEventListener("mouseup",e=>{
