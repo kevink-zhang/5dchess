@@ -122,6 +122,11 @@ var Client = (function(window) {
   
   draw();
   
+  c.addEventListener("mousedown",e=>{
+    let x = e.clientX - c.getBoundingClientRect().left;
+    let y = e.clientY - c.getBoundingClientRect().top;
+    console.log(x,y);
+  });
   
   //canvas input
   
