@@ -136,7 +136,9 @@ var Client = (function(window) {
           break;
         }
       }
-      
+      for(let ti in gameState.spacetime[selected.timeline].boards){
+        if (x>)
+      }
       selected = {};
     }
   });
