@@ -122,18 +122,29 @@ var Client = (function(window) {
   
   draw();
   
-  var selected = {};
+  var selected = null;
   c.addEventListener("mousedown",e=>{
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
     console.log(x,y);
     
+    if(selected==null){
+      //first find the board
+      for(let i = 0; i < n; i++){
+        for(let j = 0; j < n; j++){
+          
+        }
+      }
+      selected = {};
+    }
   });
   
   c.addEventListener("mouseup",e=>{
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
     console.log(x,y);
+    
+    //selected = null;
   });
   
   //canvas input
