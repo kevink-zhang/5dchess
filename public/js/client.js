@@ -131,21 +131,34 @@ var Client = (function(window) {
     let addon = {timeline:-1,time:-1,x:-1,y:-1};
     for(let tli in gameState.spacetime){
       if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
-        selected.timeline = tli;
+        addon.timeline = tli;
         break;
       }
     }
-    for(let ti in gameState.spacetime[selected.timeline].boards){
+    for(let ti in gameState.spacetime[addon.timeline].boards){
       if (x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
-        selected.time = ti;
+        addon.time = ti;
+      }
+    }
+    for(let i= 0; i < 8; i++){
+      if (x>addon.time*(boardScale+20)+boardScale/8*i && x<addon.time*(boardScale+20)+boardScale/8*(i+1)){
+        addon.x = i;
+        break;
+      }
+    }
+    for(let i= 0; i < 8; i++){
+      if (y>addon.timeline*(boardScale+20)+boardScale/8*i && y<addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
+        addon.y = i;
+        break;
       }
     }
     if(selected==null){
-      
+      selected= addon;
     }
     else if(selected==addon) selected = null;
     else{
-      socket.emit('move',{gameID:gameID, move:{src:selected,end:addon,type:"debug"}});
+      socket.emit('move',[{gameID:gameID, move:{src:selected,end:addon,type:"debug"}}]);
+      selected = null;
     }
     
   });
