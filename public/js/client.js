@@ -101,11 +101,12 @@ var Client = (function(window) {
       for(let tli in gameState.spacetime){
         //i = time index
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
+          console.log(gameState.spacetime[tli]);
           //b = current board
           let b = gameState.spacetime[tli].boards[i];
           if(b!=null){
-            console.log(i,gameState.spacetime[tli].id);
-            ctx.drawImage(bIMG,0+80*i, 0+80*gameState.spacetime[tli].id,100,100);
+            console.log(i,gameState.spacetime[tli].timeline);
+            ctx.drawImage(bIMG,0+80*i, 0+80*gameState.spacetime[tli].timeline,100,100);
           }
         }
       }
