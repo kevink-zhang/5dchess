@@ -2,6 +2,8 @@ const c = document.querySelector("#c");
 const ctx = c.getContext("2d");
 
 //defining constants so I dont need to quote
+const boardScale = 120;
+
 const __ = -1;
 
 const wP = 0;
@@ -106,10 +108,10 @@ var Client = (function(window) {
           let b = gameState.spacetime[tli].boards[i];
           if(b!=null){
             console.log(i,gameState.spacetime[tli].timeline);
-            ctx.drawImage(bIMG,0+80*i, 0+80*gameState.spacetime[tli].timeline,100,100);
+            ctx.drawImage(bIMG,0+(boardScale+20)*i, 0+(boardScale+20)*gameState.spacetime[tli].timeline,boardScale,boardScale);
             for(let j = 0; j < 8; j++){
               for(let k = 0; k < 8; k++){
-                ctx.drawImage(pIMG[b[k][j]],0+80*i+, 0+80*gameState.spacetime[tli].timeline,10,10);
+                ctx.drawImage(pIMG[b[k][j]],0+boardScale*i+k*boardScale/8, 0+boardScale*gameState.spacetime[tli].timeline+j*boardScale/8,boardScale/8,boardScale/8);
               }
             }
           }
