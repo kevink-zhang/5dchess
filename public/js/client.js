@@ -103,15 +103,14 @@ var Client = (function(window) {
       for(let tli in gameState.spacetime){
         //i = time index
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
-          console.log(gameState.spacetime[tli]);
           //b = current board
           let b = gameState.spacetime[tli].boards[i];
-          if(b!=null){
-            console.log(i,gameState.spacetime[tli].timeline);
+          
+          if(b!=null){ //draw pieces on the board
             ctx.drawImage(bIMG,0+(boardScale+20)*i, 0+(boardScale+20)*gameState.spacetime[tli].timeline,boardScale,boardScale);
             for(let j = 0; j < 8; j++){
               for(let k = 0; k < 8; k++){
-                ctx.drawImage(pIMG[b[k][j]],0+boardScale*i+k*boardScale/8, 0+boardScale*gameState.spacetime[tli].timeline+j*boardScale/8,boardScale/8,boardScale/8);
+                ctx.drawImage(pIMG[b[k][j]],0+boardScale*i+k*boardScale/8, 0+boardScale*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
               }
             }
           }
