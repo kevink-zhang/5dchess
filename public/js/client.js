@@ -146,13 +146,16 @@ var Client = (function(window) {
         break;
       }
     }
+    if(addon.x==-1) console.log("X UNDEF");
     for(let i= 0; i < 8; i++){
       if (y>addon.timeline*(boardScale+20)+boardScale/8*i && y<addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
         addon.y = 7-i;
+        console.log(gameState.spacetime[addon.timeline].boards[addon.time][addon.x]);
         addon.piece = gameState.spacetime[addon.timeline].boards[addon.time][addon.x][addon.y];
         break;
       }
     }
+    console.log(addon);
     if(selected==null){
       selected= addon;
     }
