@@ -131,13 +131,13 @@ var Client = (function(window) {
     let addon = {timeline:-1,time:-1,x:-1,y:-1,piece:null};
     for(let tli in gameState.spacetime){
       if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
-        addon.timeline = tli;
+        addon.timeline = Number(tli);
         break;
       }
     }
     for(let ti in gameState.spacetime[addon.timeline].boards){
       if (gameState.spacetime[addon.timeline].boards[ti]!=null && x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
-        addon.time = ti;
+        addon.time = Number(ti);
         break;
       }
     }
