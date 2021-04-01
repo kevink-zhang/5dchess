@@ -373,43 +373,12 @@ var Client = (function(window) {
   };
 
   
-  /**
-   * Move selected piece to destination square
-   */
-  var move = function(destinationSquare) {
-    var piece = selection.color+selection.piece;
-    var src   = $('#'+selection.file+selection.rank);
-    var dest  = $(destinationSquare);
-    
-    // Move piece on board
-    src.removeClass(getPieceClasses(piece)).addClass('empty');
-    dest.removeClass('empty').addClass(getPieceClasses(piece));
-
-    // Return move string
-    return piece+selection.file+selection.rank+'-'+dest.attr('id');
-  };
-
-  /**
-   * Move selected piece to destination square and capture an opponents piece
-   */
-  var capture = function(destinationSquare) {
-    var piece = selection.color+selection.piece;
-    var src   = $('#'+selection.file+selection.rank);
-    var dest  = $(destinationSquare);
-
-    // Move piece on board
-    src.removeClass(getPieceClasses(piece)).addClass('empty');
-    dest.removeClass(gameClasses).addClass(getPieceClasses(piece));
-
-    // Return move string
-    return piece+selection.file+selection.rank+'x'+dest.attr('id');
-  };
 
 
   /**
    * Update UI from game state
    */
-  /*var update = function() {
+  var update = function() {
     var you, opponent = null;
 
     var container, name, status, captures = null;
@@ -447,46 +416,9 @@ var Client = (function(window) {
       if (gameState.players[i].inCheck) {
         status.addClass('label label-danger').text('Check');
       }
-
-      // Captured Pieces
-      captures.empty();
-      for (var j=0; j<gameState.capturedPieces.length; j++) {
-        if (gameState.capturedPieces[j][0] !== gameState.players[i].color[0]) {
-          captures.append('<li class="'+getPieceClasses(gameState.capturedPieces[j])+'"></li>');
-        }
-      }
     }
 
-    // Update board
-    for (var sq in gameState.board) {
-      $('#'+sq).removeClass(gameClasses).addClass(getPieceClasses(gameState.board[sq]));
-    }
-
-    // Highlight last move
-    if (gameState.lastMove) {
-      if (gameState.lastMove.type === 'move' || gameState.lastMove.type === 'capture') {
-        $('#'+gameState.lastMove.startSquare).addClass('last-move');
-        $('#'+gameState.lastMove.endSquare).addClass('last-move');
-      }
-      else if (gameState.lastMove.type === 'castle') {
-        if (gameState.lastMove.pieceCode === 'wK' && gameState.lastMove.boardSide === 'queen') {
-          $('#e1').addClass('last-move');
-          $('#c1').addClass('last-move');
-        }
-        if (gameState.lastMove.pieceCode === 'wK' && gameState.lastMove.boardSide === 'king') {
-          $('#e1').addClass('last-move');
-          $('#g1').addClass('last-move');
-        }
-        if (gameState.lastMove.pieceCode === 'bK' && gameState.lastMove.boardSide === 'queen') {
-          $('#e8').addClass('last-move');
-          $('#c8').addClass('last-move');
-        }
-        if (gameState.lastMove.pieceCode === 'bK' && gameState.lastMove.boardSide === 'king') {
-          $('#e8').addClass('last-move');
-          $('#g8').addClass('last-move');
-        }
-      }
-    }
+    
 
     // Test for checkmate
     if (gameState.status === 'checkmate') {
@@ -502,7 +434,7 @@ var Client = (function(window) {
       if (opponent.forfeited) { showGameOverMessage('forfeit-win');  }
       if (you.forfeited)      { showGameOverMessage('forfeit-lose'); }
     }
-  };*/
+  };
 
   /**
    * Display an error message on the page
