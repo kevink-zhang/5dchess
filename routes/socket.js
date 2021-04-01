@@ -79,7 +79,10 @@ var move = function(data) {
 
   // Apply move to game
   console.log("Applying move");
+  
   var result = game.move(data.move);
+  //console.log(game.spacetime[0]);
+  
   if (!result) {
     console.log('ERROR: Failed to Apply Move', debugInfo);
     this.emit('error', {message: "Invalid move, please try again"});

@@ -126,7 +126,6 @@ var Client = (function(window) {
   c.addEventListener("mousedown",e=>{
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
-    console.log(x,y);
     
     let addon = {timeline:-1,time:-1,x:-1,y:-1,piece:null};
     for(let tli in gameState.spacetime){
