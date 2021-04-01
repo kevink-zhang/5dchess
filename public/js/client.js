@@ -159,6 +159,7 @@ var Client = (function(window) {
     }
     else if(selected==addon) selected = null;
     else{
+      console.log(gameState.spacetime);
       socket.emit('move',{gameID:gameID, move:[{src:selected,end:addon,type:"debug"}]});
       selected = null;
     }
