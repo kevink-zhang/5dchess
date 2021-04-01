@@ -110,7 +110,7 @@ var Client = (function(window) {
             ctx.drawImage(bIMG,0+(boardScale+20)*i, 0+(boardScale+20)*gameState.spacetime[tli].timeline,boardScale,boardScale);
             for(let j = 0; j < 8; j++){
               for(let k = 0; k < 8; k++){
-                ctx.drawImage(pIMG[b[k][j]],0+boardScale*i+k*boardScale/8, 0+boardScale*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
+                ctx.drawImage(pIMG[b[k][j]],0+(boardScale+20)*i+k*boardScale/8, 0+(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
               }
             }
           }
@@ -149,7 +149,7 @@ var Client = (function(window) {
     }
     for(let i= 0; i < 8; i++){
       if (y>addon.timeline*(boardScale+20)+boardScale/8*i && y<addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
-        addon.y = i;
+        addon.y = 7-i;
         addon.piece = gameState.spacetime[addon.timeline].boards[addon.time][addon.x][addon.y];
         break;
       }
