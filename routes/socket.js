@@ -78,6 +78,7 @@ var move = function(data) {
   }
 
   // Apply move to game
+  console.log("Applying move: ", data.move);
   var result = game.move(data.move);
   if (!result) {
     console.log('ERROR: Failed to Apply Move', debugInfo);
