@@ -128,7 +128,7 @@ var Client = (function(window) {
     let y = e.clientY - c.getBoundingClientRect().top;
     console.log(x,y);
     
-    let addon = {timeline:-1,time:-1,x:-1,y:-1};
+    let addon = {timeline:-1,time:-1,x:-1,y:-1,piece:null};
     for(let tli in gameState.spacetime){
       if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
         addon.timeline = tli;
@@ -138,6 +138,7 @@ var Client = (function(window) {
     for(let ti in gameState.spacetime[addon.timeline].boards){
       if (gameState.spacetime[addon.timeline].boards[ti]!=null && x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
         addon.time = ti;
+        break;
       }
     }
     for(let i= 0; i < 8; i++){
@@ -149,6 +150,7 @@ var Client = (function(window) {
     for(let i= 0; i < 8; i++){
       if (y>addon.timeline*(boardScale+20)+boardScale/8*i && y<addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
         addon.y = i;
+        addon.piece = gameState.spacetime[addon.timeline].boards[addon.time][addon.x][addon.y];
         break;
       }
     }
