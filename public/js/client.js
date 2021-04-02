@@ -177,6 +177,8 @@ var Client = (function(window) {
       return;
     }
     
+    addon.piece = gameState[addon.timeline].boards[addon.time][addon.x][addon.y];
+    
     console.log(addon);
     if(selected==null){
       selected= addon;
