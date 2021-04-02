@@ -176,9 +176,7 @@ var Client = (function(window) {
       console.log("no board y found",addon);
       return;
     }
-    
-    addon.piece = gameState[addon.timeline].boards[addon.time][addon.x][addon.y];
-    
+        
     console.log(addon);
     if(selected==null){
       selected= addon;
