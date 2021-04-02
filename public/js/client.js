@@ -121,7 +121,8 @@ var Client = (function(window) {
       }
       
       if(selected!=null){
-        for(let onemove in gameState.getMove(selected)){
+        let pselected = {x:selected.x,y:selected.y,timeline:selected.timeline,time:selected.time};
+        for(let onemove in gameState.validMoves[pselected]){
           let ooo = onemove.end;
           let ooox = (boardScale+20)*ooo.time+(boardScale/8)*ooo.x;
           let oooy = (boardScale+20)*ooo.timeline+(boardScale/8)*ooo.y;
