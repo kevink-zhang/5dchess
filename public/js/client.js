@@ -134,19 +134,25 @@ var Client = (function(window) {
         break;
       }
     }
+    if(addon.timeline==-1) return;
+    
     for(let ti in gameState.spacetime[addon.timeline].boards){
       if (gameState.spacetime[addon.timeline].boards[ti]!=null && x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
         addon.time = Number(ti);
         break;
       }
     }
+    if(addon.time==-1) return;
+    
     for(let i= 0; i < 8; i++){
       if (x>addon.time*(boardScale+20)+boardScale/8*i && x<addon.time*(boardScale+20)+boardScale/8*(i+1)){
         addon.x = i;
         break;
       }
     }
-    if(addon.x==-1) console.log("X UNDEF");
+    
+    if(addon.x==-1) return;
+    
     for(let i= 0; i < 8; i++){
       if (y>addon.timeline*(boardScale+20)+boardScale/8*i && y<addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
         addon.y = 7-i;
@@ -155,6 +161,8 @@ var Client = (function(window) {
         break;
       }
     }
+    if(addon.y==-1) return;
+    
     console.log(addon);
     if(selected==null){
       selected= addon;
