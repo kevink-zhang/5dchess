@@ -127,6 +127,7 @@ var Client = (function(window) {
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
     
+    console.log("click at: ",x,y);
     let addon = {timeline:-1,time:-1,x:-1,y:-1,piece:null};
     for(let tli in gameState.spacetime){
       if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
@@ -139,7 +140,7 @@ var Client = (function(window) {
       return;
     }
     
-    for(let ti in gameState.spacetime[addon.timeline].boards){
+    for(let ti =0; ti< gameState.spacetime[addon.timeline].boards.length; ti++){
       if (gameState.spacetime[addon.timeline].boards[ti]!=null && x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
         addon.time = Number(ti);
         break;
