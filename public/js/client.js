@@ -122,7 +122,7 @@ var Client = (function(window) {
   
   draw();
   
-  var selected = null;
+  let selected = null;
   c.addEventListener("mousedown",e=>{
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
@@ -134,7 +134,10 @@ var Client = (function(window) {
         break;
       }
     }
-    if(addon.timeline==-1) return;
+    if(addon.timeline==-1) {
+      console.log("no timeline found", addon);
+      return;
+    }
     
     for(let ti in gameState.spacetime[addon.timeline].boards){
       if (gameState.spacetime[addon.timeline].boards[ti]!=null && x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
@@ -142,16 +145,23 @@ var Client = (function(window) {
         break;
       }
     }
-    if(addon.time==-1) return;
+    if(addon.time==-1) {
+      console.log("no time found", addon);
+      return;
+    }
     
     for(let i= 0; i < 8; i++){
+      console.log(addon.time*(boardScale+20)+boardScale/8*i,x<addon.time*(boardScale+20)+boardScale/8*(i+1));
       if (x>addon.time*(boardScale+20)+boardScale/8*i && x<addon.time*(boardScale+20)+boardScale/8*(i+1)){
         addon.x = i;
         break;
       }
     }
     
-    if(addon.x==-1) return;
+    if(addon.x==-1) {
+      console.log("no board x found",addon);
+      return;
+    }
     
     for(let i= 0; i < 8; i++){
       if (y>addon.timeline*(boardScale+20)+boardScale/8*i && y<addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
@@ -161,7 +171,10 @@ var Client = (function(window) {
         break;
       }
     }
-    if(addon.y==-1) return;
+    if(addon.y==-1) {
+      console.log("no board y found",addon);
+      return;
+    }
     
     console.log(addon);
     if(selected==null){
