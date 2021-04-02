@@ -44,6 +44,7 @@ const Qpaths = [[-1, -1, -1, -1], [0, -1, -1, -1], [1, -1, -1, -1], [-1, 0, -1, 
 //note: all 4 are for travel along any number of axes //note2: for all purposes, a king is a 1-range queen
 
 
+
 var Client = (function(window) {
 
   var socket      = null;
@@ -97,6 +98,8 @@ var Client = (function(window) {
   }
   var bIMG = new Image; bIMG.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fbrown.svg?v=1617102060746";
   
+  var selected = null;
+  
   function draw(){
     //console.log(gameState);
     if(gameState!=null){
@@ -116,13 +119,23 @@ var Client = (function(window) {
           }
         }
       }
+      
+      if(selected!=null){
+        for(let onemove in gameState.getMove(selected)){
+          let ooo = onemove.end;
+          let ooox = (boardScale+20)*ooo.time+(boardScale/8)*ooo.x;
+          let oooy = (boardScale+20)*ooo.timeline+(boardScale/8)*ooo.y;
+          ctx.drawRect(ooox,oooy,boardScale/8,boardScale/8);
+          ctx.strokeStyle = "green";
+          ctx.stroke();
+        }
+      }
     }
     window.requestAnimationFrame(draw);
   }
   
   draw();
   
-  let selected = null;
   c.addEventListener("mousedown",e=>{
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
