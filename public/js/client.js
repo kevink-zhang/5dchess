@@ -195,7 +195,7 @@ var Client = (function(window) {
     if(selected==null){
       selected= addon;
     }
-    else if(selected==addon) selected = null;
+    else if(selected.x==addon.x&&selected.y==addon.y&&selected.time==addon.time&&selected.timeline==addon.timeline) selected = null;
     else{
       console.log(gameState.spacetime);
       socket.emit('move',{gameID:gameID, move:[{src:selected,end:addon,type:"debug"}]});
