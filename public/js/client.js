@@ -44,6 +44,32 @@ const Qpaths = [[-1, -1, -1, -1], [0, -1, -1, -1], [1, -1, -1, -1], [-1, 0, -1, 
 //note: all 4 are for travel along any number of axes //note2: for all purposes, a king is a 1-range queen
 
 
+function deepClone(obj, hash = new WeakMap()) {
+  // Do not try to clone primitives or functions
+  if (Object(obj) !== obj || obj instanceof Function) return obj;
+  if (hash.has(obj)) return hash.get(obj); // Cyclic reference
+  try {
+    // Try to run constructor (without arguments, as we don't know them)
+    var result = new obj.constructor();
+  } catch (e) {
+    // Constructor failed, create object without running the constructor
+    result = Object.create(Object.getPrototypeOf(obj));
+  }
+  // Optional: support for some standard constructors (extend as desired)
+  if (obj instanceof Map)
+    Array.from(obj, ([key, val]) =>
+      result.set(deepClone(key, hash), deepClone(val, hash))
+    );
+  else if (obj instanceof Set)
+    Array.from(obj, key => result.add(deepClone(key, hash)));
+  // Register in hash
+  hash.set(obj, result);
+  // Clone and assign enumerable own properties recursively
+  return Object.assign(
+    result,
+    ...Object.keys(obj).map(key => ({ [key]: deepClone(obj[key], hash) }))
+  );
+}
 
 var Client = (function(window) {
 
@@ -122,12 +148,11 @@ var Client = (function(window) {
       }
       
       if(selected!=null){
-        console.log("KEY: ",JSON.stringify(selected));
-        for(let onemove in gameState.validMoves[JSON.stringify(selected)]){
+        for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
           let ooo = onemove.end;
           let ooox = (boardScale+20)*ooo.time+(boardScale/8)*ooo.x;
           let oooy = (boardScale+20)*ooo.timeline+(boardScale/8)*ooo.y;
-          ctx.drawRect(ooox,oooy,boardScale/8,boardScale/8);
+          ctx.rect(ooox,oooy,boardScale/8,boardScale/8);
           ctx.strokeStyle = "green";
           ctx.stroke();
           console.log("drawn move");
@@ -196,6 +221,8 @@ var Client = (function(window) {
     console.log(addon);
     if(selected==null){
       selected= addon;
+      //not a valid move start position, back to null
+      if(!JSON.stringify(deepClone(selected)) in gameState.validMoves) selected = null;
     }
     else if(selected.x==addon.x&&selected.y==addon.y&&selected.time==addon.time&&selected.timeline==addon.timeline) selected = null;
     else{
