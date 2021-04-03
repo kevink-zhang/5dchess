@@ -49,6 +49,7 @@ var Client = (function(window) {
 
   var socket      = null;
   var gameState   = null;
+  //NOTE: gameState.validMoves keys should be stringified before referencing
 
   var gameID      = null;
   var playerColor = null;
@@ -121,16 +122,15 @@ var Client = (function(window) {
       }
       
       if(selected!=null){
-        let pselected = {x:selected.x,y:selected.y,timeline:selected.timeline,time:selected.time};
-        console.log("validMoves");
-        console.log(gameState.validMoves);
-        for(let onemove in gameState.validMoves.get(pselected)){
+        console.log("KEY: ",JSON.stringify(selected));
+        for(let onemove in gameState.validMoves[JSON.stringify(selected)]){
           let ooo = onemove.end;
           let ooox = (boardScale+20)*ooo.time+(boardScale/8)*ooo.x;
           let oooy = (boardScale+20)*ooo.timeline+(boardScale/8)*ooo.y;
           ctx.drawRect(ooox,oooy,boardScale/8,boardScale/8);
           ctx.strokeStyle = "green";
           ctx.stroke();
+          console.log("drawn move");
         }
       }
     }
@@ -405,9 +405,7 @@ var Client = (function(window) {
     socket.on('update', function(data) {
       console.log(data);
       gameState = data;
-      //unpack validMoves
-      gameState.validMoves = JSON.parse(gameState.validMoves);
-      console.log(gameState.validMoves);
+
       //update();
     });
 
