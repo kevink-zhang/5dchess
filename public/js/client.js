@@ -405,6 +405,9 @@ var Client = (function(window) {
     socket.on('update', function(data) {
       console.log(data);
       gameState = data;
+      //unpack validMoves
+      gameState.validMoves = JSON.parse(gameState.validMoves);
+      console.log(gameState.validMoves);
       //update();
     });
 

@@ -43,8 +43,6 @@ var join = function(gameID) {
 
   // Emit the update event to everyone in this room/game
   IO.sockets.in(gameID).emit('update', game);
-
-  console.log(sess.playerName+' joined '+gameID);
 };
 
 /**
