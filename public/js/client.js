@@ -226,6 +226,16 @@ var Client = (function(window) {
     }
     else if(selected.x==addon.x&&selected.y==addon.y&&selected.time==addon.time&&selected.timeline==addon.timeline) selected = null;
     else{
+      //not a valid end move pos, sed
+      let validEndMove = false;
+      for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
+        if(onemove.x==addon.x&&onemove.y==addon.y&&onemove.time==addon.time&&onemove.timeline==addon.timeline){
+          validEndMove = true;
+          break;
+        }
+      }
+      if(!validEndMove) return;
+      
       console.log(gameState.spacetime);
       socket.emit('move',{gameID:gameID, move:[{src:selected,end:addon,type:"debug"}]});
       selected = null;
