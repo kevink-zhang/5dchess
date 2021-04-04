@@ -147,7 +147,12 @@ var Client = (function(window) {
         }
       }
       
-      if(selected!=null){
+      if(selected!=null && JSON.stringify(deepClone(selected)) in gameState.validMoves){
+        ctx.beginPath();
+        ctx.rect((boardScale+20)*selected.time+(boardScale/8)*selected.x,(boardScale+20)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
+        ctx.strokeStyle = "blue";
+        ctx.stroke();
+        ctx.closePath();
         for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
           let ooo = onemove.end;
           let ooox = (boardScale+20)*ooo.time+(boardScale/8)*ooo.x;
@@ -157,7 +162,6 @@ var Client = (function(window) {
           ctx.strokeStyle = "green";
           ctx.stroke();
           ctx.closePath();
-          console.log("drawn move");
         }
       }
     }
@@ -179,7 +183,6 @@ var Client = (function(window) {
       }
     }
     if(addon.timeline==-1) {
-      console.log("no timeline found", addon);
       return;
     }
     
@@ -190,12 +193,10 @@ var Client = (function(window) {
       }
     }
     if(addon.time==-1) {
-      console.log("no time found", addon);
       return;
     }
     
     for(let i= 0; i < 8; i++){
-      console.log(addon.time*(boardScale+20)+boardScale/8*i,x<addon.time*(boardScale+20)+boardScale/8*(i+1));
       if (x>addon.time*(boardScale+20)+boardScale/8*i && x<addon.time*(boardScale+20)+boardScale/8*(i+1)){
         addon.x = i;
         break;
@@ -219,12 +220,11 @@ var Client = (function(window) {
       return;
     }
         
-    console.log(addon);
+    console.log("Board Pos: ", addon);
     if(selected==null){
       selected= addon;
       //not a valid move start position, back to null
       if(!JSON.stringify(deepClone(selected)) in gameState.validMoves) selected = null;
-      console.log("Selected: ",selected);
     }
     else if(selected.x==addon.x&&selected.y==addon.y&&selected.time==addon.time&&selected.timeline==addon.timeline) selected = null;
     else{
@@ -237,11 +237,8 @@ var Client = (function(window) {
           move.push(oonemove);
           break;
         }
-        console.log(onemove,addon);
       }
       if(!validEndMove) return;
-      
-      console.log(gameState.spacetime);
       socket.emit('move',{gameID:gameID, move:[{src:selected,end:addon,type:"debug"}]});
       
       selected = null;
@@ -252,7 +249,6 @@ var Client = (function(window) {
   c.addEventListener("mouseup",e=>{
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
-    console.log(x,y);
     
     //selected = null;
   });
@@ -448,7 +444,7 @@ var Client = (function(window) {
     socket.on('update', function(data) {
       console.log(data);
       gameState = data;
-      
+      move = [];
       //update();
     });
 
