@@ -151,10 +151,12 @@ var Client = (function(window) {
         for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
           let ooo = onemove.end;
           let ooox = (boardScale+20)*ooo.time+(boardScale/8)*ooo.x;
-          let oooy = (boardScale+20)*ooo.timeline+(boardScale/8)*ooo.y;
+          let oooy = (boardScale+20)*ooo.timeline+(boardScale/8)*(7-ooo.y);
+          ctx.beginPath();
           ctx.rect(ooox,oooy,boardScale/8,boardScale/8);
           ctx.strokeStyle = "green";
           ctx.stroke();
+          ctx.closePath();
           console.log("drawn move");
         }
       }
@@ -199,7 +201,6 @@ var Client = (function(window) {
         break;
       }
     }
-    
     if(addon.x==-1) {
       console.log("no board x found",addon);
       return;
@@ -223,21 +224,26 @@ var Client = (function(window) {
       selected= addon;
       //not a valid move start position, back to null
       if(!JSON.stringify(deepClone(selected)) in gameState.validMoves) selected = null;
+      console.log("Selected: ",selected);
     }
     else if(selected.x==addon.x&&selected.y==addon.y&&selected.time==addon.time&&selected.timeline==addon.timeline) selected = null;
     else{
       //not a valid end move pos, sed
       let validEndMove = false;
-      for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
+      for(let oonemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
+        let onemove = oonemove.end;
         if(onemove.x==addon.x&&onemove.y==addon.y&&onemove.time==addon.time&&onemove.timeline==addon.timeline){
           validEndMove = true;
+          move.push(oonemove);
           break;
         }
+        console.log(onemove,addon);
       }
       if(!validEndMove) return;
       
       console.log(gameState.spacetime);
       socket.emit('move',{gameID:gameID, move:[{src:selected,end:addon,type:"debug"}]});
+      
       selected = null;
     }
     
@@ -442,7 +448,7 @@ var Client = (function(window) {
     socket.on('update', function(data) {
       console.log(data);
       gameState = data;
-
+      
       //update();
     });
 
