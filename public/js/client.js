@@ -342,6 +342,29 @@ var Client = (function(window) {
       console.log("submitting");
       socket.emit('move',{gameID:gameID, move:move});
     });
+    container.on('click', '#undo', function(ev) {
+      let onemove = move.pop();
+      let 
+      if(onemove.type == "normal"){
+        gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+        gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+      }
+      else if(onemove.type == "castle"){
+
+      }
+      else if(onemove.type == "en passant"){
+
+      }
+      else if(onemove.type == "time travel"){
+
+      }
+      else if(onemove.type == "debug"){
+        gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+        gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+      }
+    });
   }
 
   /**
