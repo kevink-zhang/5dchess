@@ -127,10 +127,10 @@ var move = function(data) {
 */
 
 var recalc = function(data){
-  let temp = deepCopy(game.spacetime);
-  game.spacetime = data;
+  let temp = deepClone(game.spacetime);
+  game.spacetime = data.data;
   game.getMoves();
-  IO.sockets.in(data.gameID).emit('recalc', game);
+  IO.sockets.in(data.gameID).emit('recalc', {player:data.player,data:game.spacetime});
   game.spacetime = temp;
   game.getMoves();
 }

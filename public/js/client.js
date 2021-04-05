@@ -261,6 +261,8 @@ var Client = (function(window) {
             gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
           }
           move.push(onemove);
+          socket.emit('recalc',{player:playerColor, data:gameState.spacetime});
+          
           break;
         }
       }
@@ -320,6 +322,13 @@ var Client = (function(window) {
       gameState = data;
       move = [];
       //update();
+    });
+    //recieveing validMove computation updates
+    socket.on('recalc',function(data){
+      if(playerColor==data.player){
+        console.log("Calculation requested! Valid moves: ",data.data);
+        gameState.spacetime = data.data;
+      }
     });
 
     // Display an error
