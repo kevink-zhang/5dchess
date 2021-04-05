@@ -228,6 +228,7 @@ var Client = (function(window) {
         
     console.log("Board Pos: ", addon);
     if(selected==null){
+      if((addon.piece>-1&&addon.piece<10&&playerColor=="white") ||)
       selected= addon;
       //not a valid move start position, back to null
       if(!JSON.stringify(deepClone(selected)) in gameState.validMoves) selected = null;
@@ -261,7 +262,7 @@ var Client = (function(window) {
             gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
           }
           move.push(onemove);
-          socket.emit('recalc',{player:playerColor, data:gameState.spacetime});
+          socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
           
           break;
         }
@@ -327,7 +328,7 @@ var Client = (function(window) {
     socket.on('recalc',function(data){
       if(playerColor==data.player){
         console.log("Calculation requested! Valid moves: ",data.data);
-        gameState.spacetime = data.data;
+        gameState.validMoves = data.data;
       }
     });
 
