@@ -133,6 +133,7 @@ var Client = (function(window) {
   
   function draw(){
     //console.log(gameState);
+    ctx.clearRect(0,0,1000,1000);
     if(gameState!=null){
       for(let tli in gameState.spacetime){
         //i = time index
