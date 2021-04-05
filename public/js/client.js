@@ -175,6 +175,8 @@ var Client = (function(window) {
   draw();
   
   c.addEventListener("mousedown",e=>{
+    if(gameState.status!="ongoing") return;
+    
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
     
@@ -339,10 +341,13 @@ var Client = (function(window) {
       });
     });
     container.on('click', '#submit', function(ev) {
+      if(gameState.status!="ongoing") return;
       console.log("submitting");
       socket.emit('move',{gameID:gameID, move:move});
     });
     container.on('click', '#undo', function(ev) {
+      if(move.length==0) return;
+      
       let onemove = move.pop();
       let 
       if(onemove.type == "normal"){
