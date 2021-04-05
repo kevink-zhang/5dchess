@@ -124,7 +124,7 @@ var move = function(data) {
   Recalculates and emits valid moves from input data
 */
 
-var validcalc = function(data){
+var recalc = function(data){
   let temp = deepCopy(game.spacetime);
   game.spacetime = data;
   game.getMoves();

@@ -262,7 +262,8 @@ var Client = (function(window) {
     playerColor = config.playerColor;
     playerName  = config.playerName;
 
-
+    container           = $('#game');
+    messages            = $('#messages');
     gameOverMessage     = $('#game-over');
     pawnPromotionPrompt = $('#pawn-promotion');
     forfeitPrompt       = $('#forfeit-game');
@@ -314,7 +315,7 @@ var Client = (function(window) {
       });
     });
     container.on('click', '#submit', function(ev) {
-      socket.emit('move',move);
+      socket.emit('move',{gameID:gameID, move:move});
     });
   }
 
