@@ -239,7 +239,7 @@ var Client = (function(window) {
         }
       }
       if(!validEndMove) return;
-      socket.emit('move',{gameID:gameID, move:[{src:selected,end:addon,type:"debug"}]});
+      //socket.emit('move',{gameID:gameID, move:[{src:selected,end:addon,type:"debug"}]});
       
       selected = null;
     }
@@ -252,10 +252,6 @@ var Client = (function(window) {
     
     //selected = null;
   });
-  
-  //canvas input
-  
-  
   
   
   /**
@@ -278,6 +274,7 @@ var Client = (function(window) {
 
     // Attach event handlers
     attachSocketEventHandlers();
+    attachDOMEventHandlers();
 
     // Initialize modal popup windows
     gameOverMessage.modal({show: false, keyboard: false, backdrop: 'static'});
@@ -287,156 +284,6 @@ var Client = (function(window) {
     // Join game
     socket.emit('join', gameID);
   };
-  
-  var broadCast = function(){
-    socket.emit('move',{gameID:gameID, move:move});
-  }
-
-  /**
-   * Assign square IDs and labels based on player's perspective
-   */
-  
-  //NOTE
-  //this has move socket events in here, refer to later
-  //everything else needs to be ported to canvas
-/*  var attachDOMEventHandlers = function() {
-
-    // Highlight valid moves for white pieces
-    if (playerColor === 'white') {
-      container.on('click', '.white.pawn', function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('wP', ev.target);
-        }
-      });
-      container.on('click', '.white.rook', function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('wR', ev.target);
-        }
-      });
-      container.on('click', '.white.knight', function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('wN', ev.target);
-        }
-      });
-      container.on('click', '.white.bishop', function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('wB', ev.target);
-        }
-      });
-      container.on('click', '.white.queen', function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('wQ', ev.target);
-        }
-      });
-      container.on('click', '.white.king', function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('wK', ev.target);
-        }
-      });
-    }
-
-    // Highlight valid moves for black pieces
-    if (playerColor === 'black') {
-      container.on('click', '.black.pawn',   function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('bP', ev.target);
-        }
-      });
-      container.on('click', '.black.rook',   function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('bR', ev.target);
-        }
-      });
-      container.on('click', '.black.knight', function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('bN', ev.target);
-        }
-      });
-      container.on('click', '.black.bishop', function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('bB', ev.target);
-        }
-      });
-      container.on('click', '.black.queen',  function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('bQ', ev.target);
-        }
-      });
-      container.on('click', '.black.king',   function(ev) {
-        if (gameState.activePlayer && gameState.activePlayer.color === playerColor) {
-          highlightValidMoves('bK', ev.target);
-        }
-      });
-    }
-
-    // Clear all move highlights
-    container.on('click', '.empty', function(ev) {
-      clearHighlights();
-    });
-
-    // Perform a regular move
-    container.on('click', '.valid-move', function(ev) {
-      var m = move(ev.target);
-
-      // Test for pawn promotion
-      if (/wP....8/.test(m) || /bP....1/.test(m)) {
-        showPawnPromotionPrompt(function(p) {
-          // replace piece
-          messages.empty();
-          socket.emit('move', {gameID: gameID, move: m+p});
-        });
-      } else {
-        messages.empty();
-        socket.emit('move', {gameID: gameID, move: m});
-      }
-    });
-
-    // Perform a regular capture
-    container.on('click', '.valid-capture', function(ev) {
-      var m = capture(ev.target);
-
-      // Test for pawn promotion
-      if (/wP....8/.test(m) || /bP....1/.test(m)) {
-        showPawnPromotionPrompt(function(p) {
-          // replace piece
-          messages.empty();
-          socket.emit('move', {gameID: gameID, move: m+p});
-        });
-      } else {
-        messages.empty();
-        socket.emit('move', {gameID: gameID, move: m});
-      }
-    });
-
-    // Perform an en passant capture
-    container.on('click', '.valid-en-passant-capture', function(ev) {
-      var m = capture(ev.target);
-      messages.empty();
-      socket.emit('move', {gameID: gameID, move: m+'ep'});
-    });
-
-    // Perform a castle
-    container.on('click', '.valid-castle', function(ev) {
-      var m = castle(ev.target);
-      messages.empty();
-      socket.emit('move', {gameID: gameID, move: m});
-    });
-
-    // Forfeit game
-    container.on('click', '#forfeit', function(ev) {
-      showForfeitPrompt(function(confirmed) {
-        if (confirmed) {
-          messages.empty();
-          socket.emit('forfeit', gameID);
-        }
-      });
-    });
-  }; */
-
-  /**
-   * Attach Socket.IO event handlers
-   */
-
   
   var attachSocketEventHandlers = function() {
 
@@ -456,7 +303,20 @@ var Client = (function(window) {
   };
 
   
-
+  //attaches DOM event handlers
+  var attachDOMEventHandlers = function() {
+    container.on('click', '#forfeit', function(ev) {
+      showForfeitPrompt(function(confirmed) {
+        if (confirmed) {
+          messages.empty();
+          socket.emit('forfeit', gameID);
+        }
+      });
+    });
+    container.on('click', '#submit', function(ev) {
+      socket.emit('move',move);
+    });
+  }
 
   /**
    * Update UI from game state

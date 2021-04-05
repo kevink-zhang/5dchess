@@ -120,13 +120,17 @@ var move = function(data) {
   console.log(data.gameID+' '+sess.playerName+': '+data.move);
 };
 
+/**
+  Recalculates and emits valid moves from input data
+*/
+
 var validcalc = function(data){
-  const temp = deepCopygame.spacetime;
-  
-  
+  let temp = deepCopy(game.spacetime);
+  game.spacetime = data;
   game.getMoves();
   IO.sockets.in(data.gameID).emit('recalc', game);
   game.spacetime = temp;
+  game.getMoves();
 }
 
 /**
@@ -217,6 +221,7 @@ exports.attach = function(io, db) {
     socket.on('move', move);
     socket.on('forfeit', forfeit);
     socket.on('disconnect', disconnect);
+    socket.on('recalc', recalc);
 
     console.log('Socket '+socket.id+' connected');
   });
