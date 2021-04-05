@@ -69,6 +69,7 @@ var join = function(gameID) {
   this.join(gameID);
 
   // Emit the update event to everyone in this room/game
+  if(game.status=="ongoing") game.getMoves();
   IO.sockets.in(gameID).emit('update', game);
 };
 
@@ -115,6 +116,7 @@ var move = function(data) {
   }
 
   // Emit the update event to everyone in this room/game
+  game.getMoves();
   IO.sockets.in(data.gameID).emit('update', game);
 
   console.log(data.gameID+' '+sess.playerName+': '+data.move);
