@@ -228,10 +228,10 @@ var Client = (function(window) {
         
     console.log("Board Pos: ", addon);
     if(selected==null){
-      if((addon.piece>-1&&addon.piece<10&&playerColor=="white") ||)
+      if(!((addon.piece>-1&&addon.piece<10&&playerColor=="white") || (addon.piece>9&&addon.piece<20&&playerColor=="black"))) return;
       selected= addon;
       //not a valid move start position, back to null
-      if(!JSON.stringify(deepClone(selected)) in gameState.validMoves) selected = null;
+      if(!(JSON.stringify(deepClone(selected)) in gameState.validMoves)) selected = null;
     }
     else if(selected.x==addon.x&&selected.y==addon.y&&selected.time==addon.time&&selected.timeline==addon.timeline) selected = null;
     else{
@@ -351,7 +351,7 @@ var Client = (function(window) {
       });
     });
     container.on('click', '#submit', function(ev) {
-      if(gameState.status!="ongoing") return;
+      if(gameState.status!="ongoing" || gameState.activePlayer.color!=playerColor) return;
       console.log("submitting");
       socket.emit('move',{gameID:gameID, move:move});
     });
