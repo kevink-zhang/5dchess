@@ -71,6 +71,10 @@ function deepClone(obj, hash = new WeakMap()) {
   );
 }
 
+Array.prototype.last = function() {
+    return deepClone(this[this.length - 1]);
+}
+
 var Client = (function(window) {
 
   var socket      = null;
@@ -230,11 +234,31 @@ var Client = (function(window) {
     else{
       //not a valid end move pos, sed
       let validEndMove = false;
-      for(let oonemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
-        let onemove = oonemove.end;
-        if(onemove.x==addon.x&&onemove.y==addon.y&&onemove.time==addon.time&&onemove.timeline==addon.timeline){
+      for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
+        let ed = onemove.end;
+        if(ed.x==addon.x&&ed.y==addon.y&&ed.time==addon.time&&ed.timeline==addon.timeline){
           validEndMove = true;
-          move.push(oonemove);
+          
+          if(onemove.type == "normal"){
+            gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+            gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+            gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+          }
+          else if(onemove.type == "castle"){
+
+          }
+          else if(onemove.type == "en passant"){
+
+          }
+          else if(onemove.type == "time travel"){
+
+          }
+          else if(onemove.type == "debug"){
+            gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+            gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+            gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+          }
+          move.push(onemove);
           break;
         }
       }
@@ -315,6 +339,7 @@ var Client = (function(window) {
       });
     });
     container.on('click', '#submit', function(ev) {
+      console.log("submitting");
       socket.emit('move',{gameID:gameID, move:move});
     });
   }
