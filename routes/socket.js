@@ -78,7 +78,6 @@ var join = function(gameID) {
  * Emits an "update" event on success or an "error" event on failure
  */
 var move = function(data) {
-
   var sess      = this.handshake.session;
   var debugInfo = {
     socketID : this.id,
@@ -114,7 +113,6 @@ var move = function(data) {
     this.emit('error', {message: "Invalid move, please try again"});
     return;
   }
-
   // Emit the update event to everyone in this room/game
   game.getMoves();
   IO.sockets.in(data.gameID).emit('update', game);
