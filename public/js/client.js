@@ -135,9 +135,13 @@ var Client = (function(window) {
   var cameraDownPos = null;
   
   function draw(){
+    //resizes canvas, if necessary
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    
     //console.log(gameState);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0,0,1000,1000);
+    ctx.clearRect(0,0,c.width,c.height);
     ctx.translate(CAMERA.x, CAMERA.y);
     if(gameState!=null){
       for(let tli in gameState.spacetime){

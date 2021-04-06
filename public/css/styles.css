@@ -5,7 +5,7 @@ table { border-collapse: collapse; }
 
 #startForm, #joinForm { padding: 15px; }
 
-#game { width: 500px; margin: 0 auto 0 50; }
+#game { width: 500px; margin: 0 0 0 0; }
 
 /*
  * Title Bar
