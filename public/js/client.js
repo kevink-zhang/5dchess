@@ -92,6 +92,7 @@ var Client = (function(window) {
   var move = {}; 
 
   var selection   = null;
+  var CAMERA      = {x:0,y:0};
 
   var gameOverMessage     = null;
   var pawnPromotionPrompt = null;
@@ -130,6 +131,8 @@ var Client = (function(window) {
   var bIMG = new Image; bIMG.src = "https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fbrown.svg?v=1617102060746";
   
   var selected = null;
+  var mouseDownPos = null;
+  var cameraDownPos = null;
   
   function draw(){
     //console.log(gameState);
@@ -178,8 +181,11 @@ var Client = (function(window) {
   c.addEventListener("mousedown",e=>{
     if(gameState.status!="ongoing") return;
     
-    let x = e.clientX - c.getBoundingClientRect().left;
-    let y = e.clientY - c.getBoundingClientRect().top;
+    let xx = e.clientX - c.getBoundingClientRect().left;
+    let yy = e.clientY - c.getBoundingClientRect().top;
+    
+    let x = xx+CAMERA.x;
+    let y = yy+CAMERA.y;
     
     console.log("click at: ",x,y);
     let addon = {timeline:-1,time:-1,x:-1,y:-1,piece:null};
@@ -190,6 +196,8 @@ var Client = (function(window) {
       }
     }
     if(addon.timeline==-1) {
+      mouseDownPos = [xx,yy];
+      cameraDownPos = deepClone(CAMERA);
       return;
     }
     
@@ -200,6 +208,8 @@ var Client = (function(window) {
       }
     }
     if(addon.time==-1) {
+      mouseDownPos = [xx,yy];
+      cameraDownPos = deepClone(CAMERA);
       return;
     }
     
@@ -210,7 +220,8 @@ var Client = (function(window) {
       }
     }
     if(addon.x==-1) {
-      console.log("no board x found",addon);
+      mouseDownPos = [xx,yy];
+      cameraDownPos = deepClone(CAMERA);
       return;
     }
     
@@ -223,7 +234,8 @@ var Client = (function(window) {
       }
     }
     if(addon.y==-1) {
-      console.log("no board y found",addon);
+      mouseDownPos = [xx,yy];
+      cameraDownPos = deepClone(CAMERA);
       return;
     }
         
@@ -275,12 +287,21 @@ var Client = (function(window) {
     }
     
   });
-  
+  c.addEventListener("mousemove", e => {
+    //drags camera
+    if(mouseDownPos!=null){
+      let x = e.clientX - c.getBoundingClientRect().left;
+      let y = e.clientY - c.getBoundingClientRect().top;
+      CAMERA.x = cameraDownPos.x+ x-mouseDownPos[0];
+      CAMERA.y = cameraDownPos.y + y-mouseDownPos[1];
+    }
+  });
   c.addEventListener("mouseup",e=>{
     let x = e.clientX - c.getBoundingClientRect().left;
     let y = e.clientY - c.getBoundingClientRect().top;
     
-    //selected = null;
+    mouseDownPos = null;
+    cameraDownPos = null;
   });
   
   
