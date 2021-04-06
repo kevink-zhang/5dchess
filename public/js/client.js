@@ -136,7 +136,9 @@ var Client = (function(window) {
   
   function draw(){
     //console.log(gameState);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0,0,1000,1000);
+    ctx.translate(CAMERA.x, CAMERA.y);
     if(gameState!=null){
       for(let tli in gameState.spacetime){
         //i = time index
@@ -179,13 +181,17 @@ var Client = (function(window) {
   draw();
   
   c.addEventListener("mousedown",e=>{
-    if(gameState.status!="ongoing") return;
-    
     let xx = e.clientX - c.getBoundingClientRect().left;
     let yy = e.clientY - c.getBoundingClientRect().top;
     
-    let x = xx+CAMERA.x;
-    let y = yy+CAMERA.y;
+    let x = xx-CAMERA.x;
+    let y = yy-CAMERA.y;
+    
+    if(gameState.status!="ongoing") {
+      mouseDownPos = [xx,yy];
+      cameraDownPos = deepClone(CAMERA);
+      return;
+    }
     
     console.log("click at: ",x,y);
     let addon = {timeline:-1,time:-1,x:-1,y:-1,piece:null};
