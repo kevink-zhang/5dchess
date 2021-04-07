@@ -148,8 +148,8 @@ var Client = (function(window) {
         //draws the timeline branching lines
         ctx.beginPath();
         if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline
-          ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+20)+boardScale, gameState.spacetime[tli].branch.timeline* (boardScale+20) - (boardScale/2+20));
-          ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+20)+boardScale+20, gameState.spacetime[tli].timeline* (boardScale+20) - (boardScale/2+20));
+          ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+20)+boardScale, gameState.spacetime[tli].branch.timeline* (boardScale+20) + (boardScale/2));
+          ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+20)+boardScale+20, gameState.spacetime[tli].timeline* (boardScale+20) + (boardScale/2));
         }
         ctx.strokeStyle = "purple";
         ctx.stroke();
