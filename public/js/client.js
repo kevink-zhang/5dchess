@@ -287,11 +287,11 @@ var Client = (function(window) {
               gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
               bnew[onemove.end.x][onemove.end.y] = onemove.src.piece;
 
-              if(gameState.getTeam(onemove.src.piece)=="white"){
-                gameState.spacetime[bmax+1] = new Timeline({src:{time:onemove.src.time,timeline:onemove.src.timeline},init:bnew,id:bmax+1});
+              if(playerColor=="white"){
+                gameState.spacetime[bmax+1] = new Timeline({src:{time:onemove.src.time+1,timeline:onemove.src.timeline},init:bnew,id:bmax+1});
               }
               else{
-                gameState.spacetime[bmin-1] = new Timeline({src:{time:onemove.src.time,timeline:onemove.src.timeline},init:bnew,id:bmin-1});
+                gameState.spacetime[bmin-1] = new Timeline({src:{time:onemove.src.time+1,timeline:onemove.src.timeline},init:bnew,id:bmin-1});
               }
             }
             //travelling onto another board, no new timelines created
@@ -413,7 +413,7 @@ var Client = (function(window) {
       if(move.length==0) return;
       
       let onemove = move.pop();
-      let 
+       
       if(onemove.type == "normal"){
         gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
         gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
@@ -605,5 +605,27 @@ var Client = (function(window) {
 
 }(window));
 
+//timeline object
+class Timeline{
+  
+  //source timeline
+  //console.log(params);
+  constructor(params){
+    this.branch = {timeline: params.src.timeline, time:params.src.time};
 
+    //self info
+    this.timeline = params.id;
+
+    //list of pairs of coordinates to draw time travel arrows
+    this.travelaway = [];
+
+    //stores the list of boards in the timeline
+    this.boards = [];
+    for(var i = 0; i < params.src.time;i++){
+      this.boards.push(null);
+    }
+    this.boards.push(params.init);
+  }
+  
+}
 
