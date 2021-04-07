@@ -405,7 +405,7 @@ var Client = (function(window) {
       });
     });
     container.on('click', '#submit', function(ev) {
-      if(gameState.status!="ongoing" || gameState.activePlayer.color!=playerColor) return;
+      if(gameState.status!="ongoing" || ) return;
       console.log("submitting");
       socket.emit('move',{gameID:gameID, move:move});
     });
