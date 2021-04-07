@@ -288,10 +288,10 @@ var Client = (function(window) {
               bnew[onemove.end.x][onemove.end.y] = onemove.src.piece;
 
               if(playerColor=="white"){
-                gameState.spacetime[bmax+1] = new Timeline({src:{time:onemove.src.time+1,timeline:onemove.src.timeline},init:bnew,id:bmax+1});
+                gameState.spacetime[bmax+1] = new Timeline({src:{time:onemove.end.time,timeline:onemove.end.timeline},init:bnew,id:bmax+1});
               }
               else{
-                gameState.spacetime[bmin-1] = new Timeline({src:{time:onemove.src.time+1,timeline:onemove.src.timeline},init:bnew,id:bmin-1});
+                gameState.spacetime[bmin-1] = new Timeline({src:{time:onemove.end.time,timeline:onemove.end.timeline},init:bnew,id:bmin-1});
               }
             }
             //travelling onto another board, no new timelines created
