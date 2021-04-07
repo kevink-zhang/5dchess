@@ -277,7 +277,29 @@ var Client = (function(window) {
 
           }
           else if(onemove.type == "time travel"){
+            //travelling back in time
+            if(gameState.spacetime[onemove.src.timeline].boards.length-1>onemove.end.time){
+              let bmax = Math.max( ...Object.keys(gameState.spacetime));
+              let bmin = Math.min( ...Object.keys(gameState.spacetime));
+              let bnew = deepClone(gameState.spacetime[onemove.end.timeline].boards[onemove.end.time]);
 
+              gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+              bnew[onemove.end.x][onemove.end.y] = onemove.src.piece;
+
+              if(gameState.getTeam(onemove.src.piece)=="white"){
+                gameState.spacetime[bmax+1] = new Timeline({src:{time:onemove.src.time,timeline:onemove.src.timeline},init:bnew,id:bmax+1});
+              }
+              else{
+                gameState.spacetime[bmin-1] = new Timeline({src:{time:onemove.src.time,timeline:onemove.src.timeline},init:bnew,id:bmin-1});
+              }
+            }
+            //travelling onto another board, no new timelines created
+            else{
+              gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+            }
           }
           else if(onemove.type == "debug"){
             gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
