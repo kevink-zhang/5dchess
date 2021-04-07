@@ -145,7 +145,13 @@ var Client = (function(window) {
     ctx.translate(CAMERA.x, CAMERA.y);
     if(gameState!=null){
       for(let tli in gameState.spacetime){
-        //i = time index
+        //draws the timeline branching lines
+        ctx.beginPath();
+        if(gameState.spacetime[tli].branch.time>-1) //filters out start timeline
+          ctx.drawLine(gameState.spacetime[tli].branch.time, gameState.spacetime[tli].branch.timeline, );
+        ctx.strokeStyle = "purple";
+        ctx.stroke();
+        ctx.closePath();
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
           //b = current board
           let b = gameState.spacetime[tli].boards[i];
@@ -198,14 +204,14 @@ var Client = (function(window) {
     }
     
     console.log("click at: ",x,y);
-    let addon = {timeline:-1,time:-1,x:-1,y:-1,piece:null};
+    let addon = {timeline:null,time:null,x:null,y:null,piece:null};
     for(let tli in gameState.spacetime){
       if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
         addon.timeline = Number(tli);
         break;
       }
     }
-    if(addon.timeline==-1) {
+    if(addon.timeline==null) {
       mouseDownPos = [xx,yy];
       cameraDownPos = deepClone(CAMERA);
       return;
@@ -217,7 +223,7 @@ var Client = (function(window) {
         break;
       }
     }
-    if(addon.time==-1) {
+    if(addon.time==null) {
       mouseDownPos = [xx,yy];
       cameraDownPos = deepClone(CAMERA);
       return;
@@ -229,7 +235,7 @@ var Client = (function(window) {
         break;
       }
     }
-    if(addon.x==-1) {
+    if(addon.x==null) {
       mouseDownPos = [xx,yy];
       cameraDownPos = deepClone(CAMERA);
       return;
@@ -243,7 +249,7 @@ var Client = (function(window) {
         break;
       }
     }
-    if(addon.y==-1) {
+    if(addon.y==null) {
       mouseDownPos = [xx,yy];
       cameraDownPos = deepClone(CAMERA);
       return;
