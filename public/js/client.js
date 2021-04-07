@@ -621,7 +621,7 @@ class Timeline{
 
     //stores the list of boards in the timeline
     this.boards = [];
-    for(var i = 0; i < params.src.time;i++){
+    for(var i = 0; i < params.src.time+1;i++){
       this.boards.push(null);
     }
     this.boards.push(params.init);
