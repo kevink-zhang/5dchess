@@ -167,14 +167,14 @@ var Client = (function(window) {
             if(playerColor=="white"){
               for(let j = 0; j < 8; j++){
                 for(let k = 0; k < 8; k++){
-                  ctx.drawImage(pIMG[b[k][j]],-ymod*(boardScale+20)*i+k*boardScale/8, 0+(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
+                  ctx.drawImage(pIMG[b[k][j]],(boardScale+20)*i+k*boardScale/8, -ymod*(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
                 }
               }
             }
             else if(playerColor=="black"){
               for(let j = 0; j < 8; j++){
                 for(let k = 0; k < 8; k++){
-                  ctx.drawImage(pIMG[b[7-k][7-j]],-ymod*(boardScale+20)*i+k*boardScale/8, 0+(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
+                  ctx.drawImage(pIMG[b[7-k][7-j]],(boardScale+20)*i+k*boardScale/8, -ymod*(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
                 }
               }
             }
