@@ -228,7 +228,10 @@ var Client = (function(window) {
         }  
       }
       else{
-        
+        if (y<-tli*boardScale+20*tli && y>-(tli+1)*boardScale+20*tli){
+          addon.timeline = Number(tli);
+          break;
+        }  
       }
     }
     if(addon.timeline==null) {
@@ -251,7 +254,7 @@ var Client = (function(window) {
     
     for(let i= 0; i < 8; i++){
       if (x>addon.time*(boardScale+20)+boardScale/8*i && x<addon.time*(boardScale+20)+boardScale/8*(i+1)){
-        addon.x = i;
+        addon.x = playerColor=="white"?i:7-i;
         break;
       }
     }
@@ -263,8 +266,7 @@ var Client = (function(window) {
     
     for(let i= 0; i < 8; i++){
       if (y>addon.timeline*(boardScale+20)+boardScale/8*i && y<addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
-        addon.y = 7-i;
-        console.log(gameState.spacetime[addon.timeline].boards[addon.time][addon.x]);
+        addon.y = playerColor=="white"?7-i:i;
         addon.piece = gameState.spacetime[addon.timeline].boards[addon.time][addon.x][addon.y];
         break;
       }
