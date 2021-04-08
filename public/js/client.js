@@ -237,6 +237,7 @@ var Client = (function(window) {
       }
     }
     if(addon.timeline==null) {
+      console.log("No timeline found");
       mouseDownPos = [xx,yy];
       cameraDownPos = deepClone(CAMERA);
       return;
@@ -249,6 +250,7 @@ var Client = (function(window) {
       }
     }
     if(addon.time==null) {
+      console.log("No time found");
       mouseDownPos = [xx,yy];
       cameraDownPos = deepClone(CAMERA);
       return;
@@ -308,7 +310,7 @@ var Client = (function(window) {
           }
           else if(onemove.type == "time travel"){
             //travelling back in time
-            if(gameState.spacetime[onemove.src.timeline].boards.length-1>onemove.end.time){
+            if(gameState.spacetime[onemove.end.timeline].boards.length-1>onemove.end.time){
               let bmax = Math.max( ...Object.keys(gameState.spacetime));
               let bmin = Math.min( ...Object.keys(gameState.spacetime));
               let bnew = deepClone(gameState.spacetime[onemove.end.timeline].boards[onemove.end.time]);
@@ -327,6 +329,7 @@ var Client = (function(window) {
             //travelling onto another board, no new timelines created
             else{
               gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+              gameState.spacetime[onemove.end.timeline].boards.push(gameState.spacetime[onemove.end.timeline].boards.last());
               gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
               gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
             }
