@@ -192,7 +192,7 @@ var Client = (function(window) {
         for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
           let ooo = onemove.end;
           let ooox = playerColor=="white"?(boardScale+20)*ooo.time+(boardScale/8)*ooo.x:(boardScale+20)*ooo.time+(boardScale/8)*(7-ooo.x);
-          let oooy = playerColor=="white"?(boardScale+20)*ooo.timeline+(boardScale/8)*(7-ooo.y):(boardScale+20)*ooo.timeline+(boardScale/8)*ooo.y;
+          let oooy = playerColor=="white"?-(boardScale+20)*ooo.timeline+(boardScale/8)*(7-ooo.y):(boardScale+20)*ooo.timeline+(boardScale/8)*ooo.y;
           ctx.beginPath();
           ctx.rect(ooox,oooy,boardScale/8,boardScale/8);
           ctx.strokeStyle = "green";
@@ -221,6 +221,7 @@ var Client = (function(window) {
         
     console.log("click at: ",x,y);
     let addon = {timeline:null,time:null,x:null,y:null,piece:null};
+    let ymod = playerColor=="white"?1:-1;
     for(let tli in gameState.spacetime){
       if(true){
         if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
@@ -266,7 +267,7 @@ var Client = (function(window) {
     }
     
     for(let i= 0; i < 8; i++){
-      if (y>addon.timeline*(boardScale+20)+boardScale/8*i && y<addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
+      if (y>-ymod*addon.timeline*(boardScale+20)+boardScale/8*i && y<-ymod*addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
         addon.y = playerColor=="white"?7-i:i;
         addon.piece = gameState.spacetime[addon.timeline].boards[addon.time][addon.x][addon.y];
         break;
