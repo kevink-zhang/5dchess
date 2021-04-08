@@ -184,14 +184,15 @@ var Client = (function(window) {
       
       if(selected!=null && JSON.stringify(deepClone(selected)) in gameState.validMoves){
         ctx.beginPath();
-        ctx.rect((boardScale+20)*selected.time+(boardScale/8)*selected.x,(boardScale+20)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
+        if(playerColor=="white") ctx.rect((boardScale+20)*selected.time+(boardScale/8)*selected.x,(boardScale+20)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
+        else ctx.rect((boardScale+20)*selected.time+(boardScale/8)*(7-selected.x),(boardScale+20)*selected.timeline+(boardScale/8)*(selected.y),boardScale/8,boardScale/8);
         ctx.strokeStyle = "blue";
         ctx.stroke();
         ctx.closePath();
         for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
           let ooo = onemove.end;
-          let ooox = (boardScale+20)*ooo.time+(boardScale/8)*ooo.x;
-          let oooy = (boardScale+20)*ooo.timeline+(boardScale/8)*(7-ooo.y);
+          let ooox = playerColor=="white"?(boardScale+20)*ooo.time+(boardScale/8)*ooo.x:(boardScale+20)*ooo.time+(boardScale/8)*(7-ooo.x);
+          let oooy = playerColor=="white"?(boardScale+20)*ooo.timeline+(boardScale/8)*(7-ooo.y):(boardScale+20)*ooo.timeline+(boardScale/8)*ooo.y;
           ctx.beginPath();
           ctx.rect(ooox,oooy,boardScale/8,boardScale/8);
           ctx.strokeStyle = "green";
@@ -221,14 +222,14 @@ var Client = (function(window) {
     console.log("click at: ",x,y);
     let addon = {timeline:null,time:null,x:null,y:null,piece:null};
     for(let tli in gameState.spacetime){
-      if(playerColor=="white"){
+      if(true){
         if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
           addon.timeline = Number(tli);
           break;
         }  
       }
       else{
-        if (y<-tli*boardScale+20*tli && y>-(tli+1)*boardScale+20*tli){
+        if (y<-tli*boardScale-20*tli && y>-(tli+1)*boardScale-20*tli){
           addon.timeline = Number(tli);
           break;
         }  
