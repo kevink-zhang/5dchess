@@ -92,7 +92,7 @@ var Client = (function(window) {
   var move = {}; 
 
   var selection   = null;
-  var CAMERA      = {x:0,y:0};
+  var CAMERA      = {x:0,y:window.innerHeight/2};
 
   var gameOverMessage     = null;
   var pawnPromotionPrompt = null;
@@ -143,13 +143,17 @@ var Client = (function(window) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0,0,c.width,c.height);
     ctx.translate(CAMERA.x, CAMERA.y);
+    
+    //reversals for black client vs white client
+    let ymod = playerColor=="white"?1:-1;
+    
     if(gameState!=null){
       for(let tli in gameState.spacetime){
         //draws the timeline branching lines
         ctx.beginPath();
         if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline
-          ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+20)+boardScale, gameState.spacetime[tli].branch.timeline* (boardScale+20) + (boardScale/2));
-          ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+20)+boardScale+20, gameState.spacetime[tli].timeline* (boardScale+20) + (boardScale/2));
+          ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+20)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+20) + (boardScale/2)));
+          ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+20)+boardScale+20, -ymod*(gameState.spacetime[tli].timeline* (boardScale+20) + (boardScale/2)));
         }
         ctx.strokeStyle = "purple";
         ctx.stroke();
@@ -159,10 +163,19 @@ var Client = (function(window) {
           let b = gameState.spacetime[tli].boards[i];
           
           if(b!=null){ //draw pieces on the board
-            ctx.drawImage(bIMG,0+(boardScale+20)*i, 0+(boardScale+20)*gameState.spacetime[tli].timeline,boardScale,boardScale);
-            for(let j = 0; j < 8; j++){
-              for(let k = 0; k < 8; k++){
-                ctx.drawImage(pIMG[b[k][j]],0+(boardScale+20)*i+k*boardScale/8, 0+(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
+            ctx.drawImage(bIMG,0+(boardScale+20)*i, -ymod*(boardScale+20)*gameState.spacetime[tli].timeline,boardScale,boardScale);
+            if(playerColor=="white"){
+              for(let j = 0; j < 8; j++){
+                for(let k = 0; k < 8; k++){
+                  ctx.drawImage(pIMG[b[k][j]],-ymod*(boardScale+20)*i+k*boardScale/8, 0+(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
+                }
+              }
+            }
+            else if(playerColor=="black"){
+              for(let j = 0; j < 8; j++){
+                for(let k = 0; k < 8; k++){
+                  ctx.drawImage(pIMG[b[7-k][7-j]],-ymod*(boardScale+20)*i+k*boardScale/8, 0+(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
+                }
               }
             }
           }
@@ -204,6 +217,8 @@ var Client = (function(window) {
       cameraDownPos = deepClone(CAMERA);
       return;
     }
+    
+    let ymod = playerColor=="white"?1:-1;
     
     console.log("click at: ",x,y);
     let addon = {timeline:null,time:null,x:null,y:null,piece:null};
