@@ -184,7 +184,7 @@ var Client = (function(window) {
       
       if(selected!=null && JSON.stringify(deepClone(selected)) in gameState.validMoves){
         ctx.beginPath();
-        if(playerColor=="white") ctx.rect((boardScale+20)*selected.time+(boardScale/8)*selected.x,(boardScale+20)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
+        if(playerColor=="white") ctx.rect((boardScale+20)*selected.time+(boardScale/8)*selected.x,-(boardScale+20)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
         else ctx.rect((boardScale+20)*selected.time+(boardScale/8)*(7-selected.x),(boardScale+20)*selected.timeline+(boardScale/8)*(selected.y),boardScale/8,boardScale/8);
         ctx.strokeStyle = "blue";
         ctx.stroke();
@@ -223,14 +223,14 @@ var Client = (function(window) {
     let addon = {timeline:null,time:null,x:null,y:null,piece:null};
     let ymod = playerColor=="white"?1:-1;
     for(let tli in gameState.spacetime){
-      if(true){
+      if(playerColor=="black"){
         if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
           addon.timeline = Number(tli);
           break;
         }  
       }
       else{
-        if (y<-tli*boardScale-20*tli && y>-(tli+1)*boardScale-20*tli){
+        if (y>-tli*boardScale-20*tli && y<-(tli-1)*boardScale-20*tli){
           addon.timeline = Number(tli);
           break;
         }  
