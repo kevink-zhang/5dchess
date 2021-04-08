@@ -263,12 +263,14 @@ var Client = (function(window) {
       }
     }
     if(addon.x==null) {
+      console.log("No boardx found");
       mouseDownPos = [xx,yy];
       cameraDownPos = deepClone(CAMERA);
       return;
     }
     
     for(let i= 0; i < 8; i++){
+      
       if (y>-ymod*addon.timeline*(boardScale+20)+boardScale/8*i && y<-ymod*addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
         addon.y = playerColor=="white"?7-i:i;
         addon.piece = gameState.spacetime[addon.timeline].boards[addon.time][addon.x][addon.y];
@@ -276,6 +278,7 @@ var Client = (function(window) {
       }
     }
     if(addon.y==null) {
+      console.log("No boardy found");
       mouseDownPos = [xx,yy];
       cameraDownPos = deepClone(CAMERA);
       return;
