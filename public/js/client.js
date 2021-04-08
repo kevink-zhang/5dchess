@@ -152,8 +152,8 @@ var Client = (function(window) {
         //draws the timeline branching lines
         ctx.beginPath();
         if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline
-          ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+20)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+20) + (boardScale/2)));
-          ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+20)+boardScale+20, -ymod*(gameState.spacetime[tli].timeline* (boardScale+20) + (boardScale/2)));
+          ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+20)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+20) )+ (boardScale/2));
+          ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+20)+boardScale+20, -ymod*(gameState.spacetime[tli].timeline* (boardScale+20) )+ (boardScale/2));
         }
         ctx.strokeStyle = "purple";
         ctx.stroke();
@@ -217,12 +217,11 @@ var Client = (function(window) {
       cameraDownPos = deepClone(CAMERA);
       return;
     }
-    
-    let ymod = playerColor=="white"?1:-1;
-    
+        
     console.log("click at: ",x,y);
     let addon = {timeline:null,time:null,x:null,y:null,piece:null};
     for(let tli in gameState.spacetime){
+      if(playerColor=="white")
       if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
         addon.timeline = Number(tli);
         break;
