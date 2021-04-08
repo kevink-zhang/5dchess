@@ -221,10 +221,14 @@ var Client = (function(window) {
     console.log("click at: ",x,y);
     let addon = {timeline:null,time:null,x:null,y:null,piece:null};
     for(let tli in gameState.spacetime){
-      if(playerColor=="white")
-      if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
-        addon.timeline = Number(tli);
-        break;
+      if(playerColor=="white"){
+        if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
+          addon.timeline = Number(tli);
+          break;
+        }  
+      }
+      else{
+        
       }
     }
     if(addon.timeline==null) {
