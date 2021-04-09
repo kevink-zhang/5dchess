@@ -223,6 +223,7 @@ var Client = (function(window) {
     let addon = {timeline:null,time:null,x:null,y:null,piece:null};
     let ymod = playerColor=="white"?1:-1;
     for(let tli in gameState.spacetime){
+      tli = Number(tli);
       if(playerColor=="black"){
         if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
           addon.timeline = Number(tli);
