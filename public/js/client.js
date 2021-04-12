@@ -307,10 +307,28 @@ var Client = (function(window) {
             gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
           }
           else if(onemove.type == "castle"){
-
+            gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+            gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+            gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+            if(onemove.src.x>onemove.end.x){ //queenside 
+              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][3][onemove.end.y] = deepClone(gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][0][onemove.src.y]);
+              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][0][onemove.src.y] = __;
+            }
+            else{ //kindside
+              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][5][onemove.end.y] = deepClone(gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][7][onemove.src.y]);
+              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][7][onemove.src.y] = __;
+            }
           }
           else if(onemove.type == "en passant"){
-
+            if(onmove.src.timeline==onemove.end.timeline){
+              gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+              let ymod = playerColor=="white"?1:-1;
+              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y-ymod] = __;
+              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+            }
+            else{ //time travel en passant, be sad
+              //disabling this for now cause multi-timeline en passant is just confusing
+            }
           }
           else if(onemove.type == "time travel"){
             //travelling back in time
