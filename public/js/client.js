@@ -320,7 +320,7 @@ var Client = (function(window) {
             }
           }
           else if(onemove.type == "en passant"){
-            if(onmove.src.timeline==onemove.end.timeline){
+            if(onemove.src.timeline==onemove.end.timeline){
               gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
               let ymod = playerColor=="white"?1:-1;
               gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y-ymod] = __;
@@ -362,6 +362,7 @@ var Client = (function(window) {
             gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
           }
           move.push(onemove);
+          CAMERA.x-=boardScale+20;
           socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
           
           break;
