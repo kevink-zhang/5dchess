@@ -37,7 +37,18 @@ table { border-collapse: collapse; }
 }
 #status-bar {
   position: fixed;
-  
+  margin: auto 0 0 0;
+  font-size: 12px;
+  line-height: 30px;
+  background-color: #ffffff;
+  padding:  3px 3px 3px 3x;
+  border: 1px solid #ccc;
+  border-radius: 0px;
+  z-index:99;
+  width:75px;
+  right:0;
+  bottom:0;
+  opacity:0.8;
 }
 
 /*
