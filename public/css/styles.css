@@ -38,10 +38,10 @@ table { border-collapse: collapse; }
 #status-bar {
   position: fixed;
   margin: auto 0 0 0;
-  font-size: 12px;
-  line-height: 30px;
+  font-size: 14px;
+  line-height: 25px;
   background-color: #ffffff;
-  padding:  3px 3px 3px 3x;
+  padding:  3px 3px 6px 3x;
   border: 1px solid #ccc;
   border-radius: 0px;
   z-index:99;
@@ -49,6 +49,7 @@ table { border-collapse: collapse; }
   right:0;
   bottom:0;
   opacity:0.8;
+  text-align: right;
 }
 
 /*

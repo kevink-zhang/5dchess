@@ -94,6 +94,8 @@ var Client = (function(window) {
 
   var selection   = null;
   var CAMERA      = {x:200,y:200};
+  
+  var statustick        = 0;
 
   var gameOverMessage     = null;
   var pawnPromotionPrompt = null;
@@ -201,6 +203,12 @@ var Client = (function(window) {
           ctx.closePath();
         }
       }
+    }
+    
+    statustick++;
+    if(statustick%100==0){
+      socket.emit("status",true);
+      statustick = 0;
     }
     window.requestAnimationFrame(draw);
   }
