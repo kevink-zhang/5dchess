@@ -14,22 +14,12 @@ block content
 
       #title-bar
         button#submit.btn.btn-sm.btn-default.pull-right Submit Moves
-        button#forfeit.btn.btn-sm.btn-default.pull-right Forfeit
+        button#forfeit.btn.btn-sm.btn-default.pull-right ⚐
         span Game:&nbsp;
         strong #{gameID}
 
-      #opponent.player-info
-        strong ...
-        span.status.pull-right
-        ul.captured-pieces.list-inline
-
-      canvas(id='c')
-
-      #you.player-info
-        strong ...
-        span.status.pull-right
-        ul.captured-pieces.list-inline
-
+      #game
+        canvas(id='c')
 
 
     #game-over.modal.fade(role="dialog")
