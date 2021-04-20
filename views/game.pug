@@ -15,8 +15,13 @@ block content
       #title-bar
         button#submit.btn.btn-sm.btn-default.pull-right Submit Moves
         button#forfeit.btn.btn-sm.btn-default.pull-right ⚐
+        button#undo.btn.btn-sm.btn-default.pull-right ↻
         span Game:&nbsp;
         strong #{gameID}
+      
+      #status-bar
+        span Status: 
+        span#status ●
 
       #game
         canvas(id='c')

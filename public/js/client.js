@@ -2,7 +2,7 @@ const c = document.querySelector("#c");
 const ctx = c.getContext("2d");
 
 //defining constants so I dont need to quote
-const boardScale = 200;
+const boardScale = 150;
 const boardBuffer = 40;
 
 const __ = -1;
