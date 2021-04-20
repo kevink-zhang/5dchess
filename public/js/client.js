@@ -3,6 +3,7 @@ const ctx = c.getContext("2d");
 
 //defining constants so I dont need to quote
 const boardScale = 200;
+const boardBuffer = 40;
 
 const __ = -1;
 
@@ -152,8 +153,8 @@ var Client = (function(window) {
         //draws the timeline branching lines
         ctx.beginPath();
         if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline
-          ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+20)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+20) )+ (boardScale/2));
-          ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+20)+boardScale+20, -ymod*(gameState.spacetime[tli].timeline* (boardScale+20) )+ (boardScale/2));
+          ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+boardBuffer)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+boardBuffer) )+ (boardScale/2));
+          ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+boardBuffer)+boardScale+boardBuffer, -ymod*(gameState.spacetime[tli].timeline* (boardScale+boardBuffer) )+ (boardScale/2));
         }
         ctx.strokeStyle = "purple";
         ctx.stroke();
@@ -163,18 +164,18 @@ var Client = (function(window) {
           let b = gameState.spacetime[tli].boards[i];
           
           if(b!=null){ //draw pieces on the board
-            ctx.drawImage(bIMG,0+(boardScale+20)*i, -ymod*(boardScale+20)*gameState.spacetime[tli].timeline,boardScale,boardScale);
+            ctx.drawImage(bIMG,0+(boardScale+boardBuffer)*i, -ymod*(boardScale+boardBuffer)*gameState.spacetime[tli].timeline,boardScale,boardScale);
             if(playerColor=="white"){
               for(let j = 0; j < 8; j++){
                 for(let k = 0; k < 8; k++){
-                  ctx.drawImage(pIMG[b[k][j]],(boardScale+20)*i+k*boardScale/8, -ymod*(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
+                  ctx.drawImage(pIMG[b[k][j]],(boardScale+boardBuffer)*i+k*boardScale/8, -ymod*(boardScale+boardBuffer)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
                 }
               }
             }
             else if(playerColor=="black"){
               for(let j = 0; j < 8; j++){
                 for(let k = 0; k < 8; k++){
-                  ctx.drawImage(pIMG[b[7-k][7-j]],(boardScale+20)*i+k*boardScale/8, -ymod*(boardScale+20)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
+                  ctx.drawImage(pIMG[b[7-k][7-j]],(boardScale+boardBuffer)*i+k*boardScale/8, -ymod*(boardScale+boardBuffer)*gameState.spacetime[tli].timeline+(7-j)*boardScale/8,boardScale/8,boardScale/8);
                 }
               }
             }
@@ -184,15 +185,15 @@ var Client = (function(window) {
       
       if(selected!=null && JSON.stringify(deepClone(selected)) in gameState.validMoves){
         ctx.beginPath();
-        if(playerColor=="white") ctx.rect((boardScale+20)*selected.time+(boardScale/8)*selected.x,-(boardScale+20)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
-        else ctx.rect((boardScale+20)*selected.time+(boardScale/8)*(7-selected.x),(boardScale+20)*selected.timeline+(boardScale/8)*(selected.y),boardScale/8,boardScale/8);
+        if(playerColor=="white") ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*selected.x,-(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
+        else ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*(7-selected.x),(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(selected.y),boardScale/8,boardScale/8);
         ctx.strokeStyle = "blue";
         ctx.stroke();
         ctx.closePath();
         for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
           let ooo = onemove.end;
-          let ooox = playerColor=="white"?(boardScale+20)*ooo.time+(boardScale/8)*ooo.x:(boardScale+20)*ooo.time+(boardScale/8)*(7-ooo.x);
-          let oooy = playerColor=="white"?-(boardScale+20)*ooo.timeline+(boardScale/8)*(7-ooo.y):(boardScale+20)*ooo.timeline+(boardScale/8)*ooo.y;
+          let ooox = playerColor=="white"?(boardScale+boardBuffer)*ooo.time+(boardScale/8)*ooo.x:(boardScale+boardBuffer)*ooo.time+(boardScale/8)*(7-ooo.x);
+          let oooy = playerColor=="white"?-(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*(7-ooo.y):(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*ooo.y;
           ctx.beginPath();
           ctx.rect(ooox,oooy,boardScale/8,boardScale/8);
           ctx.strokeStyle = "green";
@@ -225,13 +226,13 @@ var Client = (function(window) {
     for(let tli in gameState.spacetime){
       tli = Number(tli);
       if(playerColor=="black"){
-        if (y>tli*boardScale+20*tli && y<(tli+1)*boardScale+20*tli){
+        if (y>tli*boardScale+boardBuffer*tli && y<(tli+1)*boardScale+boardBuffer*tli){
           addon.timeline = Number(tli);
           break;
         }  
       }
       else{
-        if (y>-tli*boardScale-20*tli && y<-(tli-1)*boardScale-20*tli){
+        if (y>-tli*boardScale-boardBuffer*tli && y<-(tli-1)*boardScale-boardBuffer*tli){
           addon.timeline = Number(tli);
           break;
         }  
@@ -245,7 +246,7 @@ var Client = (function(window) {
     }
     
     for(let ti =0; ti< gameState.spacetime[addon.timeline].boards.length; ti++){
-      if (gameState.spacetime[addon.timeline].boards[ti]!=null && x>ti*boardScale+20*ti && x<(ti+1)*boardScale+20*ti){
+      if (gameState.spacetime[addon.timeline].boards[ti]!=null && x>ti*boardScale+boardBuffer*ti && x<(ti+1)*boardScale+boardBuffer*ti){
         addon.time = Number(ti);
         break;
       }
@@ -258,7 +259,7 @@ var Client = (function(window) {
     }
     
     for(let i= 0; i < 8; i++){
-      if (x>addon.time*(boardScale+20)+boardScale/8*i && x<addon.time*(boardScale+20)+boardScale/8*(i+1)){
+      if (x>addon.time*(boardScale+boardBuffer)+boardScale/8*i && x<addon.time*(boardScale+boardBuffer)+boardScale/8*(i+1)){
         addon.x = playerColor=="white"?i:7-i;
         break;
       }
@@ -272,7 +273,7 @@ var Client = (function(window) {
     
     for(let i= 0; i < 8; i++){
       
-      if (y>-ymod*addon.timeline*(boardScale+20)+boardScale/8*i && y<-ymod*addon.timeline*(boardScale+20)+boardScale/8*(i+1)){
+      if (y>-ymod*addon.timeline*(boardScale+boardBuffer)+boardScale/8*i && y<-ymod*addon.timeline*(boardScale+boardBuffer)+boardScale/8*(i+1)){
         addon.y = playerColor=="white"?7-i:i;
         addon.piece = gameState.spacetime[addon.timeline].boards[addon.time][addon.x][addon.y];
         break;
