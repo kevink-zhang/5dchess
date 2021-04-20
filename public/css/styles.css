@@ -1,7 +1,9 @@
 body  { background-color: #f8f8f8; }
 table { border-collapse: collapse; }
 
-#banner { background-color: #222222; color: #ffffff; margin: 0 0 0 0;
+#banner { background-color: #222222; color: #ffffff; }
+.navbar{
+  margin-bottom: 0;
 }
 
 #startForm, #joinForm { padding: 15px; }
@@ -23,6 +25,7 @@ table { border-collapse: collapse; }
   margin: 0 0 0 0;
   z-index:99;
   width:500px;
+  top:10px;
 }
 #game {
   background-color: #f0f0f0;
