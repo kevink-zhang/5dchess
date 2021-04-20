@@ -25,19 +25,22 @@ table { border-collapse: collapse; }
   margin: 0 0 0 0;
   z-index:99;
   width:500px;
-  top:10px;
+  top:60px;
+  left:20px;
+  opacity:0.8;
 }
 #game {
-  background-color: #f0f0f0;
+  background-color: #e0e0e0;
   z-index:1;
   margin: 0 0 0 0; 
+  left: 0px;
 }
 
 /*
  * Popup Windows
  */
 
-.modal-content { background-color: #f8f8f8; }
+.modal-content { background-color: #f8f8f8;}
 .modal-footer  { margin-top: 0; }
 
 #pawn-promotion h3    { margin-bottom: 20px;                }

@@ -92,7 +92,7 @@ var Client = (function(window) {
   var move = {}; 
 
   var selection   = null;
-  var CAMERA      = {x:0,y:window.innerHeight/2};
+  var CAMERA      = {x:200,y:200};
 
   var gameOverMessage     = null;
   var pawnPromotionPrompt = null;
