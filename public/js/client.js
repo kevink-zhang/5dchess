@@ -206,12 +206,16 @@ var Client = (function(window) {
       }
     }
     
-    statustick++;
-    if(statustick%100==0){
-      socket.emit("status",true);
-      statusblip.style.color = "red";
-      statustick = 0;
+    
+    if(statustick==100 && statusblip!=null){
+      socket.emit("status",true);  
     }
+    if(statustick%5000==0&& statustick>4000){
+      statusblip.css('color','red');  
+      socket.emit("status",true); 
+    }
+    statustick++;
+    
     window.requestAnimationFrame(draw);
   }
   
@@ -461,8 +465,8 @@ var Client = (function(window) {
     
     socket.on('status',function(data) {
       if(statusblip==null) return;
-      console.log(statusblip);
-      statusblip.style.color = data;
+      statusblip.css('color',data);
+      statustick = -1000;
     });
   };
 

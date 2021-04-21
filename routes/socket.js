@@ -223,7 +223,7 @@ var status = function() {
   else if(game.status == "ongoing")
     IO.sockets.in(sess.gameID).emit('status', "green");
   else
-    IO.sockets.in(sess.gameID).emit('status', "yellow");
+    IO.sockets.in(sess.gameID).emit('status', "#cec327");
 }
 
 /**
