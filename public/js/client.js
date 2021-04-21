@@ -88,6 +88,7 @@ var Client = (function(window) {
 
   var container   = null;
   var messages    = null;
+  var statusblip  = null;
   
 
   var move = {}; 
@@ -208,6 +209,7 @@ var Client = (function(window) {
     statustick++;
     if(statustick%100==0){
       socket.emit("status",true);
+      statusblip.style.color = "red";
       statustick = 0;
     }
     window.requestAnimationFrame(draw);
@@ -415,7 +417,7 @@ var Client = (function(window) {
     gameOverMessage     = $('#game-over');
     pawnPromotionPrompt = $('#pawn-promotion');
     forfeitPrompt       = $('#forfeit-game');
-
+    statusblip          = $('#status');
 
     // Create socket connection
     socket = io.connect();
@@ -455,6 +457,12 @@ var Client = (function(window) {
     socket.on('error', function(data) {
       console.log(data);
       showErrorMessage(data);
+    });
+    
+    socket.on('status',function(data) {
+      if(statusblip==null) return;
+      console.log(statusblip);
+      statusblip.style.color = data;
     });
   };
 
