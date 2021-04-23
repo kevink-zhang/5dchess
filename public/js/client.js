@@ -162,6 +162,9 @@ var Client = (function(window) {
         ctx.strokeStyle = "purple";
         ctx.stroke();
         ctx.closePath();
+      }
+      
+      for(let tli in gameState.spacetime){
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
           //b = current board
           let b = gameState.spacetime[tli].boards[i];
