@@ -181,10 +181,12 @@ var Client = (function(window) {
             ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
           }
           else if(onemove.type=="castle"){
-            
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
           }
           else if(onemove.type=="en passant"){
-            
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
           }
           else if(onemove.type=="time travel"){
             ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
