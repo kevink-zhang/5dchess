@@ -164,6 +164,9 @@ var Client = (function(window) {
         ctx.closePath();
       }
       
+      for(let onemove in gameState.lastMove){
+        
+      }
       for(let tli in gameState.spacetime){
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
           //b = current board
