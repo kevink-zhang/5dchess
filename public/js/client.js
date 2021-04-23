@@ -185,6 +185,25 @@ var Client = (function(window) {
         ctx.fill();
         ctx.closePath();
       }
+      //highlights selected move squares
+      if(selected!=null && JSON.stringify(deepClone(selected)) in gameState.validMoves){
+        ctx.beginPath();
+        if(playerColor=="white") ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*selected.x,-(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
+        else ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*(7-selected.x),(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(selected.y),boardScale/8,boardScale/8);
+        ctx.fillSyle = "rgba(0, 255, 255, 0.3)";
+        ctx.fill();
+        ctx.closePath();
+        for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
+          let ooo = onemove.end;
+          let ooox = playerColor=="white"?(boardScale+boardBuffer)*ooo.time+(boardScale/8)*ooo.x:(boardScale+boardBuffer)*ooo.time+(boardScale/8)*(7-ooo.x);
+          let oooy = playerColor=="white"?-(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*(7-ooo.y):(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*ooo.y;
+          ctx.beginPath();
+          ctx.rect(ooox,oooy,boardScale/8,boardScale/8);
+          ctx.fillStyle = "rgba(0, 255, 42, 0.3)";
+          ctx.fill();
+          ctx.closePath();
+        }
+      }
       //draws pieces
       for(let tli in gameState.spacetime){
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
@@ -209,25 +228,7 @@ var Client = (function(window) {
           }
         }
       }
-      //i have no idea wtf this is
-      if(selected!=null && JSON.stringify(deepClone(selected)) in gameState.validMoves){
-        ctx.beginPath();
-        if(playerColor=="white") ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*selected.x,-(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
-        else ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*(7-selected.x),(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(selected.y),boardScale/8,boardScale/8);
-        ctx.strokeStyle = "blue";
-        ctx.stroke();
-        ctx.closePath();
-        for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
-          let ooo = onemove.end;
-          let ooox = playerColor=="white"?(boardScale+boardBuffer)*ooo.time+(boardScale/8)*ooo.x:(boardScale+boardBuffer)*ooo.time+(boardScale/8)*(7-ooo.x);
-          let oooy = playerColor=="white"?-(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*(7-ooo.y):(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*ooo.y;
-          ctx.beginPath();
-          ctx.rect(ooox,oooy,boardScale/8,boardScale/8);
-          ctx.strokeStyle = "green";
-          ctx.stroke();
-          ctx.closePath();
-        }
-      }
+      
     }
     
     
