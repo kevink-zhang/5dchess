@@ -176,12 +176,26 @@ var Client = (function(window) {
       for(let onemove of gameState.lastMove){
         ctx.beginPath();
         if(playerColor=="white"){
-          ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+          if(onemove.type=="normal"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
+          }
+          else if(onemove.type=="castle"){
+            
+          }
+          else if(onemove.type=="en passant"){
+            
+          }
+          else if(onemove.type=="time travel"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*onemove.end.time+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
+          }
+          
         }
         else{
           
         }
-        ctx.fillStyle = "rgba(20, 85, 0, 0.3)";
+        ctx.fillStyle = "rgba(255, 255, 0, 0.3)";
         ctx.fill();
         ctx.closePath();
       }
@@ -190,7 +204,7 @@ var Client = (function(window) {
         ctx.beginPath();
         if(playerColor=="white") ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*selected.x,-(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
         else ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*(7-selected.x),(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(selected.y),boardScale/8,boardScale/8);
-        ctx.fillSyle = "rgba(0, 255, 255, 0.3)";
+        ctx.fillStyle = "rgba(0, 153, 25, 0.3)";
         ctx.fill();
         ctx.closePath();
         for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
@@ -199,7 +213,6 @@ var Client = (function(window) {
           let oooy = playerColor=="white"?-(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*(7-ooo.y):(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*ooo.y;
           ctx.beginPath();
           ctx.rect(ooox,oooy,boardScale/8,boardScale/8);
-          ctx.fillStyle = "rgba(0, 255, 42, 0.3)";
           ctx.fill();
           ctx.closePath();
         }
