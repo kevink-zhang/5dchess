@@ -152,8 +152,8 @@ var Client = (function(window) {
     let ymod = playerColor=="white"?1:-1;
     
     if(gameState!=null){
+      //draws the board connectors
       for(let tli in gameState.spacetime){
-        //draws the timeline branching lines
         ctx.beginPath();
         if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline
           ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+boardBuffer)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+boardBuffer) )+ (boardScale/2));
@@ -163,26 +163,35 @@ var Client = (function(window) {
         ctx.stroke();
         ctx.closePath();
       }
-      
+      //draws the boards
+      for(let tli in gameState.spacetime){
+        for(let i=0; i < gameState.spacetime[tli].boards.length;i++){
+          let b = gameState.spacetime[tli].boards[i];
+          if(b!=null){ //draw board
+            ctx.drawImage(bIMG,0+(boardScale+boardBuffer)*i, -ymod*(boardScale+boardBuffer)*gameState.spacetime[tli].timeline,boardScale,boardScale);
+          }
+        }
+      }
+      //draws highlighted last moves
       for(let onemove of gameState.lastMove){
         ctx.beginPath();
         if(playerColor=="white"){
-          ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+          ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
         }
         else{
           
         }
-        ctx.fillStyle = "green";
+        ctx.fillStyle = "rgba(20, 85, 0, 0.3)";
         ctx.fill();
         ctx.closePath();
       }
+      //draws pieces
       for(let tli in gameState.spacetime){
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
           //b = current board
           let b = gameState.spacetime[tli].boards[i];
           
           if(b!=null){ //draw pieces on the board
-            ctx.drawImage(bIMG,0+(boardScale+boardBuffer)*i, -ymod*(boardScale+boardBuffer)*gameState.spacetime[tli].timeline,boardScale,boardScale);
             if(playerColor=="white"){
               for(let j = 0; j < 8; j++){
                 for(let k = 0; k < 8; k++){
@@ -200,7 +209,7 @@ var Client = (function(window) {
           }
         }
       }
-      
+      //i have no idea wtf this is
       if(selected!=null && JSON.stringify(deepClone(selected)) in gameState.validMoves){
         ctx.beginPath();
         if(playerColor=="white") ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*selected.x,-(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
