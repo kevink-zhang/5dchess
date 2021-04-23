@@ -164,8 +164,17 @@ var Client = (function(window) {
         ctx.closePath();
       }
       
-      for(let onemove in gameState.lastMove){
-        
+      for(let onemove of gameState.lastMove){
+        ctx.beginPath();
+        if(playerColor=="white"){
+          ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+        }
+        else{
+          
+        }
+        ctx.fillStyle = "green";
+        ctx.fill();
+        ctx.closePath();
       }
       for(let tli in gameState.spacetime){
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
