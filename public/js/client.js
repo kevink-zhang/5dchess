@@ -164,9 +164,15 @@ var Client = (function(window) {
         ctx.strokeStyle = "purple";
         ctx.stroke();
         ctx.closePath();
-        for(let i in gameState.spacetime[tli]){
+        for(let i =0; i < gameState.spacetime[tli].boards.length; i++){
           if(gameState.spacetime[tli].boards[i]!=null&&i+1<gameState.spacetime[tli].boards.length){
-            ctx.beginPath()
+            ctx.beginPath();
+            ctx.moveTo(i*(boardScale+boardBuffer)+boardScale,-ymod*(tli* (boardScale+boardBuffer) )+ (boardScale/2));
+            ctx.lineTo((i+1)*(boardScale+boardBuffer),-ymod*(tli* (boardScale+boardBuffer) )+ (boardScale/2));
+            ctx.lineWidth = boardScale/8;
+            ctx.strokeStyle = "purple";
+            ctx.stroke();
+            ctx.closePath();
           }
         }
       }
