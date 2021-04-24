@@ -277,7 +277,8 @@ var Client = (function(window) {
   for(let i in pIMG){
     pIMG[i].onload = function() {
       pIMG[i].crossOrigin = "Anonymous";
-      //pIMG[i] = downScaleImage(pIMG[i],boardScale/8/pIMG[i].naturalWidth);
+      console.log(pIMG[i],pIMG[i].width);
+      pIMG[i] = downScaleImage(pIMG[i],boardScale/8/pIMG[i].naturalWidth);
     }
   }
   
