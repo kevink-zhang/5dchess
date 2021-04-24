@@ -156,7 +156,7 @@ var Client = (function(window) {
       //draws the board connectors
       for(let tli in gameState.spacetime){
         ctx.beginPath();
-        if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline
+        if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline parent
           ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+boardBuffer)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+boardBuffer) )+ (boardScale/2));
           ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+boardBuffer)+boardScale+boardBuffer, -ymod*(gameState.spacetime[tli].timeline* (boardScale+boardBuffer) )+ (boardScale/2));
         }
@@ -164,6 +164,11 @@ var Client = (function(window) {
         ctx.strokeStyle = "purple";
         ctx.stroke();
         ctx.closePath();
+        for(let i in gameState.spacetime[tli]){
+          if(gameState.spacetime[tli].boards[i]!=null&&i+1<gameState.spacetime[tli].boards.length){
+            ctx.beginPath()
+          }
+        }
       }
       //draws the boards
       for(let tli in gameState.spacetime){
@@ -201,10 +206,24 @@ var Client = (function(window) {
             ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
             ctx.rect((boardScale+boardBuffer)*onemove.end.time+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
           }
-          
         }
         else{
-          
+          if(onemove.type=="normal"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
+          else if(onemove.type=="castle"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
+          else if(onemove.type=="en passant"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
+          else if(onemove.type=="time travel"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*onemove.end.time+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
         }
         ctx.fillStyle = "rgba(255, 255, 0, 0.3)";
         ctx.fill();
@@ -343,7 +362,7 @@ var Client = (function(window) {
         
     console.log("Board Pos: ", addon);
     if(selected==null){
-      if(!((addon.piece>-1&&addon.piece<10&&playerColor=="white") || (addon.piece>9&&addon.piece<20&&playerColor=="black"))) return;
+      if(!((addon.piece>-1&&addon.piece<10&&playerColor=="white"&&addon.time%2==0) || (addon.piece>9&&addon.piece<20&&playerColor=="black"&&addon.time%2==1))) return;
       selected= addon;
       //not a valid move start position, back to null
       if(!(JSON.stringify(deepClone(selected)) in gameState.validMoves)) selected = null;
