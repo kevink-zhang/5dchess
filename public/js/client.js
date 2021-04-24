@@ -137,9 +137,7 @@ var Client = (function(window) {
   var cameraDownPos = null;
   
   
-  ctx.webkitImageSmoothingEnabled = false;
-  ctx.mozImageSmoothingEnabled = false;
-  ctx.imageSmoothingEnabled = false;
+  ctx.imageSmoothingEnabled = 'false';
   function draw(){
     //resizes canvas, if necessary
     c.width = window.innerWidth;
