@@ -241,11 +241,11 @@ var Client = (function(window) {
           }
         }
       }
-      
+       
     }
     
     
-    
+    if(!socket==null && !socket.connected) statusblip.css('color','red');
     window.requestAnimationFrame(draw);
   }
   
@@ -492,10 +492,6 @@ var Client = (function(window) {
     socket.on('error', function(data) {
       console.log(data);
       showErrorMessage(data);
-    });
-    
-    socket.on('disconnect', function(){
-        statusblip.css('color','red');
     });
   };
 
