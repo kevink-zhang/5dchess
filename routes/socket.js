@@ -207,24 +207,6 @@ var disconnect = function() {
   console.log('Socket '+this.id+' disconnected');
 };
 
-//status function
-var status = function() {
-  var sess      = this.handshake.session;
-  var debugInfo = {
-    socketID : this.id,
-    event    : 'status',
-    session  : sess
-  };
-
-  // Lookup game in database
-  var game = DB.find(sess.gameID);
-  if(!game)
-    IO.sockets.in(sess.gameID).emit('status', "red");
-  else if(game.status == "ongoing")
-    IO.sockets.in(sess.gameID).emit('status', "green");
-  else
-    IO.sockets.in(sess.gameID).emit('status', "#cec327");
-}
 
 /**
  * Attach route/event handlers for socket.io
@@ -242,7 +224,6 @@ exports.attach = function(io, db) {
     socket.on('forfeit', forfeit);
     socket.on('disconnect', disconnect);
     socket.on('recalc', recalc);
-    socket.on('status', status);
 
     console.log('Socket '+socket.id+' connected');
   });

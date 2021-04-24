@@ -96,8 +96,6 @@ var Client = (function(window) {
   var selection   = null;
   var CAMERA      = {x:200,y:200};
   
-  var statustick        = 0;
-
   var gameOverMessage     = null;
   var pawnPromotionPrompt = null;
   var forfeitPrompt       = null;
@@ -247,14 +245,6 @@ var Client = (function(window) {
     }
     
     
-    if(statustick==100 && statusblip!=null){
-      socket.emit("status",true);  
-    }
-    if(statustick%5000==0&& statustick>4000){
-      statusblip.css('color','red');  
-      socket.emit("status",true); 
-    }
-    statustick++;
     
     window.requestAnimationFrame(draw);
   }
@@ -487,7 +477,8 @@ var Client = (function(window) {
       console.log(data);
       gameState = data;
       move = [];
-      //update();
+      if(gameState.status=="ongoing") statusblip.css('color','green');
+      else statusblip.css('color','yellow');
     });
     //recieveing validMove computation updates
     socket.on('recalc',function(data){
@@ -503,10 +494,8 @@ var Client = (function(window) {
       showErrorMessage(data);
     });
     
-    socket.on('status',function(data) {
-      if(statusblip==null) return;
-      statusblip.css('color',data);
-      statustick = -1000;
+    socket.on('disconnect', function(){
+        statusblip.css('color','red');
     });
   };
 
