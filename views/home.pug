@@ -46,8 +46,11 @@ block content
             input#playerName.form-control(type="text", name="player-name", placeholder="Player 2")
           button.btn.btn-primary(type="submit") Join Game
 
-  audio#backmusic(src="https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fytmp3free.cc_mittsies-vitality-youtubemp3free.org.mp3?v=1619244746188" loop="true" autoplay)
-  script(src="/js/jquery.audio.js")
+  audio#music(src="https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fytmp3free.cc_mittsies-vitality-youtubemp3free.org.mp3?v=1619244746188" loop="true" autoplay)
+  script.
+    const audio = document.get('#music');
+    console.log(audio.volume);
+    audio.volume = 0.2;
 
   script(src="/js/jquery.min.js")
   script(src="/js/bootstrap.min.js")
