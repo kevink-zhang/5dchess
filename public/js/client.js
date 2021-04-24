@@ -2,8 +2,8 @@ const c = document.querySelector("#c");
 const ctx = c.getContext("2d");
 
 //defining constants so I dont need to write it out later
-const boardScale = 45*8;
-const boardBuffer = 40;
+const boardScale = 30*8;
+const boardBuffer = 60;
 
 const __ = -1;
 
@@ -104,16 +104,6 @@ var Client = (function(window) {
   var gameOverMessage     = null;
   var pawnPromotionPrompt = null;
   var forfeitPrompt       = null;
-
-
-  
-  
-  
-  //canvas part
-  //resizes canvas, if necessary
-  console.log(c);
-  c.width = getComputedStyle(c).width;//window.innerWidth;
-  c.height = getComputedStyle(c).height; //window.innerHeight;
   
   var pIMG = {};
   if(true){ //for collapsing
@@ -147,7 +137,12 @@ var Client = (function(window) {
   
   ctx.imageSmoothingEnabled = 'false';
   function draw(){
-    
+    //canvas part
+    //resizes canvas, if necessary
+    if(window.innerWidth!=c.width||window.innerHeight!=c.height){
+      c.width = c.style.width = window.innerWidth;
+      c.height = c.style.height = window.innerHeight;
+    }
     
     //console.log(gameState);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -165,6 +160,7 @@ var Client = (function(window) {
           ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+boardBuffer)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+boardBuffer) )+ (boardScale/2));
           ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+boardBuffer)+boardScale+boardBuffer, -ymod*(gameState.spacetime[tli].timeline* (boardScale+boardBuffer) )+ (boardScale/2));
         }
+        ctx.lineWidth = boardScale/8;
         ctx.strokeStyle = "purple";
         ctx.stroke();
         ctx.closePath();
@@ -172,8 +168,15 @@ var Client = (function(window) {
       //draws the boards
       for(let tli in gameState.spacetime){
         for(let i=0; i < gameState.spacetime[tli].boards.length;i++){
-          let b = gameState.spacetime[tli].boards[i];
-          if(b!=null){ //draw board
+          if(gameState.spacetime[tli].boards[i]!=null){ //draws board if it exists
+            //draws color border
+            ctx.beginPath();
+            ctx.rect(0+(boardScale+boardBuffer)*i, -ymod*(boardScale+boardBuffer)*gameState.spacetime[tli].timeline,boardScale,boardScale);
+            ctx.strokeStyle = i%2==0?"white":"black";
+            ctx.lineWidth = boardScale/16;
+            ctx.stroke();
+            ctx.closePath();
+            //draws board png
             ctx.drawImage(bIMG,0+(boardScale+boardBuffer)*i, -ymod*(boardScale+boardBuffer)*gameState.spacetime[tli].timeline,boardScale,boardScale);
           }
         }
