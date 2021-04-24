@@ -2,7 +2,7 @@ const c = document.querySelector("#c");
 const ctx = c.getContext("2d");
 
 //defining constants so I dont need to write it out later
-const boardScale = 150;
+const boardScale = 45*8;
 const boardBuffer = 40;
 
 const __ = -1;
@@ -111,8 +111,9 @@ var Client = (function(window) {
   
   //canvas part
   //resizes canvas, if necessary
-  c.width = window.innerWidth;
-  c.height = window.innerHeight;
+  console.log(c);
+  c.width = getComputedStyle(c).width;//window.innerWidth;
+  c.height = getComputedStyle(c).height; //window.innerHeight;
   
   var pIMG = {};
   if(true){ //for collapsing
