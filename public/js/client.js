@@ -210,7 +210,7 @@ var Client = (function(window) {
       for(let onemove of gameState.checks[playerColor]){
         ctx.beginPath();
         ctx.rect(0+(boardScale+boardBuffer)*onemove.end.time, -ymod*(boardScale+boardBuffer)*onemove.end.timeline,boardScale,boardScale);
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = "crimson";
         ctx.lineWidth = boardScale/16;
         ctx.stroke();
         ctx.closePath();
