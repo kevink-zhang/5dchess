@@ -228,11 +228,11 @@ var Client = (function(window) {
       for(let onemove of gameState.lastMove){
         ctx.beginPath();
         if(playerColor=="white"){
-          if(onemove.type=="normal"){
+          if(onemove.type== "normal"){
             ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
             ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
           }
-          else if(onemove.type=="castle"){
+          else if(onemove.type== "castle"){
             ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
             ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
           }
@@ -244,23 +244,31 @@ var Client = (function(window) {
             ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
             ctx.rect((boardScale+boardBuffer)*onemove.end.time+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
           }
+          else if(onemove.type== "promotion"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
+          }
         }
         else{
-          if(onemove.type=="normal"){
+          if(onemove.type == "normal"){
             ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
             ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
           }
-          else if(onemove.type=="castle"){
+          else if(onemove.type == "castle"){
             ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
             ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
           }
-          else if(onemove.type=="en passant"){
+          else if(onemove.type == "en passant"){
             ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
             ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
           }
-          else if(onemove.type=="time travel"){
+          else if(onemove.type == "time travel"){
             ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
             ctx.rect((boardScale+boardBuffer)*onemove.end.time+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
+          else if(onemove.type == "promotion"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
           }
         }
         ctx.fillStyle = "rgba(255, 255, 0, 0.3)";
@@ -471,11 +479,13 @@ var Client = (function(window) {
               gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
             }
           }
-          else if(onemove.type=="promotion"){
+          else if(onemove.type== "promotion"){
             showPawnPromotionPrompt(function(p) {
-              // replace piece
+              gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = playerColor=="white"?p:p+10;
+              onemove.end.piece = playerColor=="white"?p:p+10;
               messages.empty();
-              //p is the output from the radio selecter
             });
           }
           else if(onemove.type == "debug"){
@@ -628,6 +638,9 @@ var Client = (function(window) {
       }
       else if(onemove.type == "time travel"){
 
+      }
+      else if(onemove.type == "promotion"){
+        
       }
       else if(onemove.type == "debug"){
         gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
