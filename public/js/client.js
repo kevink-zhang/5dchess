@@ -85,7 +85,7 @@ Array.prototype.last = function() {
 function zoom(event) {
   event.preventDefault();
 
-  scale += event.deltaY * -0.01;
+  scale += event.deltaY * -0.005;
 
   // Restrict scale
   scale = Math.min(Math.max(.125, scale), 2);
@@ -303,12 +303,15 @@ var Client = (function(window) {
   
   draw();
   
+  function trueMousePos(mPos){
+    return {x: mPos.x-CAMERA.x*scale-c.width*0.5,y: mPos.y-CAMERA.y*scale-c.height*0.5};
+  }
   c.addEventListener("mousedown",e=>{
     let xx = e.clientX - c.getBoundingClientRect().left;
     let yy = e.clientY - c.getBoundingClientRect().top;
     
-    let x = xx-CAMERA.x;
-    let y = yy-CAMERA.y;
+    let x = trueMousePos({x:xx,y:yy}).x;
+    let y = trueMousePos({x:xx,y:yy}).y;
     
     if(gameState.status!="ongoing") {
       mouseDownPos = [xx,yy];
@@ -459,7 +462,7 @@ var Client = (function(window) {
             gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
           }
           move.push(onemove);
-          CAMERA.x-=boardScale+20;
+          CAMERA.x-=(boardScale+boardBuffer)/scale;
           socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
           
           break;
