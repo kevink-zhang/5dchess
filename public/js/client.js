@@ -161,9 +161,9 @@ var Client = (function(window) {
     }
     
     //console.log(gameState);
-    ctx.setTransform(1, 0, 0, 1, c.width*0.5, c.height*0.5);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0,0,c.width,c.height);
-    ctx.translate(CAMERA.x, CAMERA.y);
+    ctx.translate(CAMERA.x*scale+c.width*0.5, CAMERA.y*scale+c.height*0.5);
     
     //reversals for black client vs white client
     let ymod = playerColor=="white"?1:-1;
@@ -477,8 +477,8 @@ var Client = (function(window) {
     if(mouseDownPos!=null){
       let x = e.clientX - c.getBoundingClientRect().left;
       let y = e.clientY - c.getBoundingClientRect().top;
-      CAMERA.x = cameraDownPos.x+ x-mouseDownPos[0];
-      CAMERA.y = cameraDownPos.y + y-mouseDownPos[1];
+      CAMERA.x = cameraDownPos.x+ (x-mouseDownPos[0])/scale;
+      CAMERA.y = cameraDownPos.y + (y-mouseDownPos[1])/scale;
     }
   });
   c.addEventListener("mouseup",e=>{
