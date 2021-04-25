@@ -721,13 +721,10 @@ var Client = (function(window) {
   var showPawnPromotionPrompt = function(callback) {
 
     // Set the radio button images
-    const N = document.getElementById("N");
-    const B = document.getElementById("B");
-    const R = document.getElementById("R");
-    const Q = document.getElementById("Q");
     
     if(playerColor=="white"){
-      N.csscss({backgroundImage:"url(http://www.lowestrates.ca/newcontent/img/creditcards/Gold_Rewards_Card_chip_467x293.png)"});
+      console.log($("N"));
+      $("N").backgroundImage = 'url(https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwN.svg?v=1617102031915)';
     }
     else{
       
