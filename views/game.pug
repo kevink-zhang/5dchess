@@ -44,16 +44,21 @@ block content
               h3 Promote Pawn
               .btn-group(data-toggle="buttons")
                 label.btn.btn-default
-                  input(type="radio", name="promotion", value=2, id="N")
+                  input(type="radio", name="promotion", value=2)
+                  img#N
 
                 label.btn.btn-default
-                  input(type="radio", name="promotion", value=3, id="B")
+                  input(type="radio", name="promotion", value=3)
+                  img#B
 
                 label.btn.btn-default
-                  input(type="radio", name="promotion", value=1, id="R")
+                  input(type="radio", name="promotion", value=1)
+                  img#R
 
                 label.btn.btn-default.active
-                  input(type="radio", name="promotion", value=4, id="Q", checked="checked")
+                  input(type="radio", name="promotion", value=4, checked="checked")
+                  img#Q
+                  
           .modal-footer
             button.btn.btn-primary Promote
 

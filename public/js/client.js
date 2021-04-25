@@ -534,6 +534,15 @@ var Client = (function(window) {
     pawnPromotionPrompt = $('#pawn-promotion');
     forfeitPrompt       = $('#forfeit-game');
     statusblip          = $('#status');
+    
+    // Set the radio button images
+    
+    if(playerColor=="white"){
+      document.getElementById("N").src = 'https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwN.svg?v=1617102031915';
+    }
+    else{
+      
+    }
 
     // Create socket connection
     socket = io.connect();
@@ -719,17 +728,6 @@ var Client = (function(window) {
    * Display the "Pawn Promotion" prompt
    */
   var showPawnPromotionPrompt = function(callback) {
-
-    // Set the radio button images
-    
-    if(playerColor=="white"){
-      console.log($("N"));
-      $("N").backgroundImage = 'url(https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwN.svg?v=1617102031915)';
-    }
-    else{
-      
-    }
-
     // Temporarily attach click handler for the Promote button, note the use of .one()
     pawnPromotionPrompt.one('click', 'button', function(ev) {
       var selection = pawnPromotionPrompt.find("input[type='radio'][name='promotion']:checked").val();
