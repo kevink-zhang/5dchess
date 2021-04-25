@@ -506,6 +506,12 @@ var Client = (function(window) {
     
     mouseDownPos = null;
     cameraDownPos = null;
+    
+    showPawnPromotionPrompt(function(p) {
+      // replace piece
+      messages.empty();
+      //socket.emit('move', {gameID: gameID, move: m+p});
+    });
   });
   c.addEventListener("onwheel",e=>{
     console.log(e);
