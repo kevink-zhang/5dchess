@@ -189,6 +189,7 @@ var Client = (function(window) {
             ctx.closePath();
             //draws board png
             ctx.drawImage(bIMG,0+(boardScale+boardBuffer)*i, -ymod*(boardScale+boardBuffer)*gameState.spacetime[tli].timeline,boardScale,boardScale);
+            
           }
         }
       }
@@ -471,6 +472,9 @@ var Client = (function(window) {
     
     mouseDownPos = null;
     cameraDownPos = null;
+  });
+  c.addEventListener("onwheel",e=>{
+    e.deltaX
   });
   
   
