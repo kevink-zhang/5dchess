@@ -410,7 +410,6 @@ var Client = (function(window) {
     }
     else if(selected.x==addon.x&&selected.y==addon.y&&selected.time==addon.time&&selected.timeline==addon.timeline) selected = null;
     else{
-      //not a valid end move pos, sed
       let validEndMove = false;
       for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
         let ed = onemove.end;
@@ -472,6 +471,13 @@ var Client = (function(window) {
               gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
             }
           }
+          else if(onemove.type=="promotion"){
+            showPawnPromotionPrompt(function(p) {
+              // replace piece
+              messages.empty();
+              //p is the output from the radio selecter
+            });
+          }
           else if(onemove.type == "debug"){
             gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
             gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
@@ -506,12 +512,6 @@ var Client = (function(window) {
     
     mouseDownPos = null;
     cameraDownPos = null;
-    
-    showPawnPromotionPrompt(function(p) {
-      // replace piece
-      messages.empty();
-      //p is the output from the radio selecter
-    });
   });
   c.addEventListener("onwheel",e=>{
     console.log(e);
@@ -539,8 +539,15 @@ var Client = (function(window) {
     
     if(playerColor=="white"){
       document.getElementById("N").src = 'https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwN.svg?v=1617102031915';
+      document.getElementById("B").src = 'https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwB.svg?v=1617102037456';
+      document.getElementById("R").src = 'https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwR.svg?v=1617102031925';
+      document.getElementById("Q").src = 'https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FwQ.svg?v=1617102031643';
     }
     else{
+      document.getElementById("N").src = 'https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbN.svg?v=1617102119524';
+      document.getElementById("B").src = 'https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbB.svg?v=1619264125655';
+      document.getElementById("R").src = 'https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbR.svg?v=1617102119358';
+      document.getElementById("Q").src = 'https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2FbQ.svg?v=1617102119676';
       
     }
 
