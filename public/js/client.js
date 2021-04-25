@@ -510,7 +510,7 @@ var Client = (function(window) {
     showPawnPromotionPrompt(function(p) {
       // replace piece
       messages.empty();
-      //socket.emit('move', {gameID: gameID, move: m+p});
+      //p is the output from the radio selecter
     });
   });
   c.addEventListener("onwheel",e=>{
@@ -720,13 +720,13 @@ var Client = (function(window) {
    */
   var showPawnPromotionPrompt = function(callback) {
 
-    // Set the pieces' color to match the player's color
-    pawnPromotionPrompt.find('label').removeClass('black white').addClass(playerColor);
+    // Set the radio button images
+    
 
     // Temporarily attach click handler for the Promote button, note the use of .one()
     pawnPromotionPrompt.one('click', 'button', function(ev) {
       var selection = pawnPromotionPrompt.find("input[type='radio'][name='promotion']:checked").val();
-      callback('p'+selection);
+      callback(selection);
       pawnPromotionPrompt.modal('hide');
     });
 
