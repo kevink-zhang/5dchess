@@ -192,7 +192,7 @@ var Client = (function(window) {
           }
         }
       }
-      //draws the boards
+      //draws color board borders
       for(let tli in gameState.spacetime){
         for(let i=0; i < gameState.spacetime[tli].boards.length;i++){
           if(gameState.spacetime[tli].boards[i]!=null){ //draws board if it exists
@@ -203,9 +203,24 @@ var Client = (function(window) {
             ctx.lineWidth = boardScale/16;
             ctx.stroke();
             ctx.closePath();
-            //draws board png
+          }
+        }
+      }
+      //draws check board borders
+      for(let onemove of gameState.checks[playerColor]){
+        ctx.beginPath();
+        ctx.rect(0+(boardScale+boardBuffer)*onemove.end.time, -ymod*(boardScale+boardBuffer)*onemove.end.timeline,boardScale,boardScale);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = boardScale/16;
+        ctx.stroke();
+        ctx.closePath();
+      }
+      //draws the boards
+      for(let tli in gameState.spacetime){
+        for(let i=0; i < gameState.spacetime[tli].boards.length;i++){
+          if(gameState.spacetime[tli].boards[i]!=null){ //draws board if it exists
+            //draws board img
             ctx.drawImage(bIMG,0+(boardScale+boardBuffer)*i, -ymod*(boardScale+boardBuffer)*gameState.spacetime[tli].timeline,boardScale,boardScale);
-            
           }
         }
       }
