@@ -126,12 +126,13 @@ var move = function(data) {
 
 var recalc = function(data){
   var game = DB.find(data.gameID);
-  let temp = deepClone(game.spacetime);
+  let temp = deepClone(game);
+  //temporarily borrows current game to compute new moves and checks
   game.spacetime = data.data;
   game.getMoves();
-  IO.sockets.in(data.gameID).emit('recalc', {player:data.player,data:game.validMoves});
-  game.spacetime = temp;
-  game.getMoves();
+  game.getChecks();
+  IO.sockets.in(data.gameID).emit('recalc', {player:data.player,data:{validMoves:game.validMoves,checks:game.checks}});
+  game = temp;
 }
 
 /**

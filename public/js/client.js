@@ -544,8 +544,9 @@ var Client = (function(window) {
     //recieveing validMove computation updates
     socket.on('recalc',function(data){
       if(playerColor==data.player){
-        console.log("Calculation requested! Valid moves: ",data.data);
-        gameState.validMoves = data.data;
+        console.log("Calculation requested! Data received: ",data.data);
+        gameState.validMoves = data.data.validMoves;
+        gameState.checks = data.data.checks;
       }
     });
 
