@@ -2,8 +2,9 @@ const c = document.querySelector("#c");
 const ctx = c.getContext("2d");
 
 //defining constants so I dont need to write it out later
-const boardScale = 30*8;
-const boardBuffer = 60;
+var boardScale = 30*8; const oboardScale = 30*8;
+var boardBuffer = 60; const oboardBuffer = 60;
+var scale = 1;
 
 const __ = -1;
 
@@ -77,6 +78,21 @@ function deepClone(obj, hash = new WeakMap()) {
 Array.prototype.last = function() {
     return deepClone(this[this.length - 1]);
 }
+
+//ZOOM FUNCTION
+//
+//
+function zoom(event) {
+  event.preventDefault();
+
+  scale += event.deltaY * -0.01;
+
+  // Restrict scale
+  scale = Math.min(Math.max(.125, scale), 2);
+  boardScale = scale*oboardScale;
+  boardBuffer = scale*oboardBuffer;
+}
+c.onwheel = zoom;
 
 //CLIENT
 //
@@ -474,7 +490,9 @@ var Client = (function(window) {
     cameraDownPos = null;
   });
   c.addEventListener("onwheel",e=>{
-    e.deltaX
+    console.log(e);
+    boardScale+=e.deltaY;
+    boardBuffer+=e.deltaY;
   });
   
   
