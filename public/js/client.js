@@ -115,7 +115,7 @@ var Client = (function(window) {
   var move = {}; 
 
   var selection   = null;
-  var CAMERA      = {x:200,y:200};
+  var CAMERA      = {x:0,y:0};
   
   var gameOverMessage     = null;
   var pawnPromotionPrompt = null;
@@ -161,7 +161,7 @@ var Client = (function(window) {
     }
     
     //console.log(gameState);
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, c.width*0.5, c.height*0.5);
     ctx.clearRect(0,0,c.width,c.height);
     ctx.translate(CAMERA.x, CAMERA.y);
     
@@ -296,7 +296,6 @@ var Client = (function(window) {
       }
        
     }
-    
     
     if(!socket==null && !socket.connected) statusblip.css('color','red');
     window.requestAnimationFrame(draw);
