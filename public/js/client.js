@@ -266,6 +266,7 @@ var Client = (function(window) {
           let oooy = playerColor=="white"?-(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*(7-ooo.y):(boardScale+boardBuffer)*ooo.timeline+(boardScale/8)*ooo.y;
           ctx.beginPath();
           ctx.rect(ooox,oooy,boardScale/8,boardScale/8);
+          ctx.fillStyle = "rgba(0, 153, 25, 0.3)";
           ctx.fill();
           ctx.closePath();
         }
