@@ -154,6 +154,13 @@ var Client = (function(window) {
   
   
   ctx.imageSmoothingEnabled = 'false';
+  function drawArrow(src, end){
+    let ymod = playerColor=="white"?1:-1;
+    let srcpt = playerColor=="white"?[src.time*(boardScale+boardBuffer)+src.x*boardScale/8,-ymod*(boardScale+boardBuffer)*src.timeline+(7-src.y)*boardScale/8]:[src.time*(boardScale+boardBuffer)+(7-src.x)*boardScale/8,-ymod*(boardScale+boardBuffer)*src.timeline+(src.y)*boardScale/8];
+    let endpt = playerColor=="white"?[end.time*(boardScale+boardBuffer)+end.x*boardScale/8,-ymod*(boardScale+boardBuffer)*end.timeline+(7-end.y)*boardScale/8]:[end.time*(boardScale+boardBuffer)+(7-end.x)*boardScale/8,-ymod*(boardScale+boardBuffer)*end.timeline+(end.y)*boardScale/8];
+    
+
+  }
   function draw(){
     //canvas part
     //resizes canvas, if necessary
