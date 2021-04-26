@@ -154,7 +154,7 @@ var Client = (function(window) {
   
   
   ctx.imageSmoothingEnabled = 'false';
-  //draws a small curved 
+  //draws a small curved arrow
   function drawArrow(src, end, color){
     ctx.beginPath();
     let ymod = playerColor=="white"?1:-1;
