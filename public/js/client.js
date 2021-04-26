@@ -570,9 +570,9 @@ var Client = (function(window) {
               }
               //checks that no checks are present
               let danger = false;
-              gameState.checks.forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
-              if(unlocksub && !danger && gameState.checks[playerColor].length==0){
-                $("#submit")[0].disabled = true;
+              gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
+              if(unlocksub && !danger){
+                $("#submit")[0].disabled = false;
               }
               
               messages.empty();
@@ -598,9 +598,9 @@ var Client = (function(window) {
             }
             //checks that no checks are present
             let danger = false;
-            gameState.checks.forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
-            if(unlocksub && !danger && gameState.checks[playerColor].length==0){
-              $("#submit")[0].disabled = true;
+            gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
+            if(unlocksub && !danger){
+              $("#submit")[0].disabled = false;
             }
             break;
           }
@@ -781,7 +781,7 @@ var Client = (function(window) {
       let danger = false;
       gameState.checks.forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
       if(!unlocksub || danger){
-        $("#submit")[0].disabled = false;
+        $("#submit")[0].disabled = true;
       }
     });
   }
