@@ -174,15 +174,15 @@ var Client = (function(window) {
         ctx.beginPath();
         if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline parent
           
-          let startpt = (gameState.spacetime[tli].branch.time * (boardScale+boardBuffer)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+boardBuffer) )+ (boardScale/2));
-          let endpt = (gameState.spacetime[tli].branch.time* (boardScale+boardBuffer)+boardScale+boardBuffer, -ymod*(gameState.spacetime[tli].timeline* (boardScale+boardBuffer) )+ (boardScale/2));
-          let delta = [endpt[0]-startpt[0],endpt[1]-startpt[1]];
+          let startpt = [gameState.spacetime[tli].branch.time * (boardScale+boardBuffer)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+boardBuffer) )+ (boardScale/2)];
+          let endpt = [gameState.spacetime[tli].branch.time* (boardScale+boardBuffer)+boardScale+boardBuffer, -ymod*(gameState.spacetime[tli].timeline* (boardScale+boardBuffer) )+ (boardScale/2)];
+          let deltapt = [endpt[0]-startpt[0],endpt[1]-startpt[1]];
           ctx.moveTo(startpt[0],startpt[1]);
-          ctx.quadraticCurveTo(startpt[0]+delta[0]*0.5, startpt[1], startpt[0]+delta[0]*0.5,startpt[1]+delta[1]*0.5);
-          //ctx.quadraticCurveTo(startpt[0]+delta[0]*0.5, endpt[1],endpt[0],endpt[1]);
+          ctx.quadraticCurveTo(startpt[0]+deltapt[0]*0.5, startpt[1], startpt[0]+deltapt[0]*0.5,startpt[1]+deltapt[1]*0.5);
+          ctx.quadraticCurveTo(startpt[0]+deltapt[0]*0.5, endpt[1],endpt[0],endpt[1]);
         }
-        ctx.lineWidth = boardScale/8;
-        ctx.strokeStyle = "purple";
+        ctx.lineWidth = boardScale*0.35;
+        ctx.strokeStyle = "rgba(100, 0, 155, 0.75)";
         ctx.stroke();
         ctx.closePath();
         for(let i =0; i < gameState.spacetime[tli].boards.length; i++){
@@ -190,8 +190,8 @@ var Client = (function(window) {
             ctx.beginPath();
             ctx.moveTo(i*(boardScale+boardBuffer)+boardScale,-ymod*(tli* (boardScale+boardBuffer) )+ (boardScale/2));
             ctx.lineTo((i+1)*(boardScale+boardBuffer),-ymod*(tli* (boardScale+boardBuffer) )+ (boardScale/2));
-            ctx.lineWidth = boardScale/8;
-            ctx.strokeStyle = "purple";
+            ctx.lineWidth = boardScale*0.35;
+            ctx.strokeStyle = "rgba(100, 0, 155, 0.75)";
             ctx.stroke();
             ctx.closePath();
           }
