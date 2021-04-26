@@ -419,6 +419,118 @@ var Client = (function(window) {
   function trueMousePos(mPos){
     return {x: mPos.x-CAMERA.x*scale-c.width*0.5*dpiinv,y: mPos.y-CAMERA.y*scale-c.height*0.5*dpiinv};
   }
+  function doMove(onemove) {
+    if(onemove.type == "normal"){
+      gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+      gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+      gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+    }
+    else if(onemove.type == "castle"){
+      gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+      gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+      gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+      if(onemove.src.x>onemove.end.x){ //queenside 
+        gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][3][onemove.end.y] = deepClone(gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][0][onemove.src.y]);
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][0][onemove.src.y] = __;
+      }
+      else{ //kindside
+        gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][5][onemove.end.y] = deepClone(gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][7][onemove.src.y]);
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][7][onemove.src.y] = __;
+      }
+    }
+    else if(onemove.type == "en passant"){
+      if(onemove.src.timeline==onemove.end.timeline){
+        gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+        let ymod = playerColor=="white"?1:-1;
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y-ymod] = __;
+        gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+      }
+      else{ //time travel en passant, be sad
+        //disabling this for now cause multi-timeline en passant is just confusing
+      }
+    }
+    else if(onemove.type == "time travel"){
+      //travelling back in time
+      if(gameState.spacetime[onemove.end.timeline].boards.length-1>onemove.end.time){
+        let bmax = Math.max( ...Object.keys(gameState.spacetime));
+        let bmin = Math.min( ...Object.keys(gameState.spacetime));
+        let bnew = deepClone(gameState.spacetime[onemove.end.timeline].boards[onemove.end.time]);
+
+        gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+        bnew[onemove.end.x][onemove.end.y] = onemove.src.piece;
+
+        if(playerColor=="white"){
+          gameState.spacetime[bmax+1] = new Timeline({src:{time:onemove.end.time,timeline:onemove.end.timeline},init:bnew,id:bmax+1});
+        }
+        else{
+          gameState.spacetime[bmin-1] = new Timeline({src:{time:onemove.end.time,timeline:onemove.end.timeline},init:bnew,id:bmin-1});
+        }
+      }
+      //travelling onto another board, no new timelines created
+      else{
+        gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+        gameState.spacetime[onemove.end.timeline].boards.push(gameState.spacetime[onemove.end.timeline].boards.last());
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+        gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+      }
+    }
+    else if(onemove.type== "promotion"){
+      showPawnPromotionPrompt(function(p) {
+        gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+        gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = playerColor=="white"?p:p+10;
+        onemove.src.piece = playerColor=="white"?p:p+10;
+
+        move.push(onemove);
+        CAMERA.x-=(boardScale+boardBuffer)/scale;
+        socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
+
+        //checks that no present timelines are unplayed in by length
+        let unlocksub = true;
+        for(let tli in gameState.spacetime){
+          if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
+            unlocksub = false;
+            break;
+          }
+        }
+        //checks that no checks are present
+        let danger = false;
+        gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
+        if(unlocksub && !danger){
+          $("#submit")[0].disabled = false;
+        }
+
+        messages.empty();
+      });
+    }
+    else if(onemove.type == "debug"){
+      gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
+      gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
+      gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+    }
+    //except promotion type b/c promotion has pop-up that needs input first
+    if(onemove.type!="promotion"){
+      move.push(onemove);
+      CAMERA.x-=(boardScale+boardBuffer)/scale;
+      socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
+      //checks that no present timelines are unplayed in by length
+      let unlocksub = true;
+      for(let tli in gameState.spacetime){
+        if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
+          unlocksub = false;
+          break;
+        }
+      }
+      //checks that no checks are present
+      let danger = false;
+      gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
+      if(unlocksub && !danger){
+        $("#submit")[0].disabled = false;
+      }
+      break;
+    }
+  }
   c.addEventListener("mousedown",e=>{
     let xx = e.clientX - c.getBoundingClientRect().left;
     let yy = e.clientY - c.getBoundingClientRect().top;
@@ -512,122 +624,11 @@ var Client = (function(window) {
         let ed = onemove.end;
         if(ed.x==addon.x&&ed.y==addon.y&&ed.time==addon.time&&ed.timeline==addon.timeline){
           validEndMove = true;
-          
-          if(onemove.type == "normal"){
-            gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
-            gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
-            gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
-          }
-          else if(onemove.type == "castle"){
-            gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
-            gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
-            gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
-            if(onemove.src.x>onemove.end.x){ //queenside 
-              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][3][onemove.end.y] = deepClone(gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][0][onemove.src.y]);
-              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][0][onemove.src.y] = __;
-            }
-            else{ //kindside
-              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][5][onemove.end.y] = deepClone(gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][7][onemove.src.y]);
-              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][7][onemove.src.y] = __;
-            }
-          }
-          else if(onemove.type == "en passant"){
-            if(onemove.src.timeline==onemove.end.timeline){
-              gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
-              let ymod = playerColor=="white"?1:-1;
-              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y-ymod] = __;
-              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
-            }
-            else{ //time travel en passant, be sad
-              //disabling this for now cause multi-timeline en passant is just confusing
-            }
-          }
-          else if(onemove.type == "time travel"){
-            //travelling back in time
-            if(gameState.spacetime[onemove.end.timeline].boards.length-1>onemove.end.time){
-              let bmax = Math.max( ...Object.keys(gameState.spacetime));
-              let bmin = Math.min( ...Object.keys(gameState.spacetime));
-              let bnew = deepClone(gameState.spacetime[onemove.end.timeline].boards[onemove.end.time]);
-
-              gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
-              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
-              bnew[onemove.end.x][onemove.end.y] = onemove.src.piece;
-
-              if(playerColor=="white"){
-                gameState.spacetime[bmax+1] = new Timeline({src:{time:onemove.end.time,timeline:onemove.end.timeline},init:bnew,id:bmax+1});
-              }
-              else{
-                gameState.spacetime[bmin-1] = new Timeline({src:{time:onemove.end.time,timeline:onemove.end.timeline},init:bnew,id:bmin-1});
-              }
-            }
-            //travelling onto another board, no new timelines created
-            else{
-              gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
-              gameState.spacetime[onemove.end.timeline].boards.push(gameState.spacetime[onemove.end.timeline].boards.last());
-              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
-              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
-            }
-          }
-          else if(onemove.type== "promotion"){
-            showPawnPromotionPrompt(function(p) {
-              gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
-              gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
-              gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = playerColor=="white"?p:p+10;
-              onemove.src.piece = playerColor=="white"?p:p+10;
-              
-              move.push(onemove);
-              CAMERA.x-=(boardScale+boardBuffer)/scale;
-              socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
-              
-              //checks that no present timelines are unplayed in by length
-              let unlocksub = true;
-              for(let tli in gameState.spacetime){
-                if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
-                  unlocksub = false;
-                  break;
-                }
-              }
-              //checks that no checks are present
-              let danger = false;
-              gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
-              if(unlocksub && !danger){
-                $("#submit")[0].disabled = false;
-              }
-              
-              messages.empty();
-            });
-          }
-          else if(onemove.type == "debug"){
-            gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
-            gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
-            gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
-          }
-          //except promotion type b/c promotion has pop-up that needs input first
-          if(onemove.type!="promotion"){
-            move.push(onemove);
-            CAMERA.x-=(boardScale+boardBuffer)/scale;
-            socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
-            //checks that no present timelines are unplayed in by length
-            let unlocksub = true;
-            for(let tli in gameState.spacetime){
-              if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
-                unlocksub = false;
-                break;
-              }
-            }
-            //checks that no checks are present
-            let danger = false;
-            gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
-            if(unlocksub && !danger){
-              $("#submit")[0].disabled = false;
-            }
-            break;
-          }
+          doMove(onemove);
         }
       }
       if(!validEndMove) return;
       else $("#undo")[0].disabled = false;
-      //socket.emit('move',{gameID:gameID, move:[{src:selected,end:addon,type:"debug"}]});
       
       selected = null;
     }
