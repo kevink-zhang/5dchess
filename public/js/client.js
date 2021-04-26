@@ -178,6 +178,7 @@ var Client = (function(window) {
     if(gameState!=null){
       //draws the board connectors
       for(let tli in gameState.spacetime){
+        ctx.strokeStyle = "rgba(140, 50, 215, 0.75)"
         ctx.beginPath();
         if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline parent
           
@@ -189,7 +190,7 @@ var Client = (function(window) {
           ctx.quadraticCurveTo(startpt[0]+deltapt[0]*0.5, endpt[1],endpt[0],endpt[1]);
         }
         ctx.lineWidth = boardScale*0.35;
-        if((tli>0 && !(-Number(tli)+1 in gameState.spacetime)) || (tli<0 && !-(Number(tli)-1 in gameState.spacetime))) ctx.strokeStyle = tli>0?"rgba(255,255,255,0.75)":"rgba(0,0,0,0.75)";
+        if((tli>0 && !(-Number(tli)+1 in gameState.spacetime)) || (tli<0 && !(-Number(tli)-1 in gameState.spacetime))) ctx.strokeStyle = tli>0?"rgba(255,255,255,0.75)":"rgba(0,0,0,0.75)";
         else ctx.strokeStyle = "rgba(140, 50, 215, 0.75)";
         ctx.stroke();
         ctx.closePath();
@@ -199,7 +200,6 @@ var Client = (function(window) {
             ctx.moveTo(i*(boardScale+boardBuffer)+boardScale,-ymod*(tli* (boardScale+boardBuffer) )+ (boardScale/2));
             ctx.lineTo((i+1)*(boardScale+boardBuffer),-ymod*(tli* (boardScale+boardBuffer) )+ (boardScale/2));
             ctx.lineWidth = boardScale*0.35;
-            ctx.strokeStyle = "rgba(140, 50, 215, 0.75)";
             ctx.stroke();
             ctx.closePath();
           }
@@ -573,23 +573,15 @@ var Client = (function(window) {
             move.push(onemove);
             CAMERA.x-=(boardScale+boardBuffer)/scale;
             socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
-            
+            //checks that no present timelines are unplayed in by length
             let unlocksub = true;
             for(let tli in gameState.spacetime){
-              if(gameState.spacetime[tli]){
-                let tocc = false;
-                for(let om of move){
-                  if(om.src.timeline==tli||om.end.timeline==tli) {
-                    tocc = true;
-                    break;
-                  }
-                }
-                if(!tocc){
-                  unlocksub = false;
-                  break;
-                }
+              if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
+                unlocksub = false;
+                break;
               }
             }
+            //checks that no checks are present
             if(unlocksub && gameState.checks[playerColor].length==0){
               $("#submit")[0].disabled = false;
             }
@@ -685,7 +677,7 @@ var Client = (function(window) {
       if(gameState.status=="ongoing") statusblip.css('color','green');
       else statusblip.css('color','yellow');
       
-      $("#submit")[0].disabled = false;
+      $("#submit")[0].disabled = true;
     });
     //recieveing validMove computation updates
     socket.on('recalc',function(data){
