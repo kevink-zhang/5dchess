@@ -657,6 +657,9 @@ var Client = (function(window) {
       move = [];
       if(gameState.status=="ongoing") statusblip.css('color','green');
       else statusblip.css('color','yellow');
+      
+      $("#submit")[0].disabled = true;
+      console.log($("#submit"));
     });
     //recieveing validMove computation updates
     socket.on('recalc',function(data){
