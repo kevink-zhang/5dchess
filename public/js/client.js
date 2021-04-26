@@ -1,5 +1,6 @@
 const c = document.querySelector("#c");
 const dpi = window.devicePixelRatio;
+const dpiinv = 1/dpi;
 const ctx = c.getContext("2d");
 
 //defining constants so I dont need to write it out later
@@ -159,15 +160,17 @@ var Client = (function(window) {
     if(window.innerWidth*dpi!=c.width||window.innerHeight*dpi!=c.height){
       c.width = window.innerWidth*dpi;
       c.height = window.innerHeight*dpi;
-      console.log(dpi);
+      c.style.width = window.innerWidth +"px";
+      c.style.height = window.innerHeight +"px";
+      console.log("dpi: ",dpi);
     }
     
     
     //console.log(gameState);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(1/dpi,1/dpi);
+    ctx.scale(dpi,dpi);
     ctx.clearRect(0,0,c.width,c.height);
-    ctx.translate(CAMERA.x*scale+c.width*0.5, CAMERA.y*scale+c.height*0.5);
+    ctx.translate(CAMERA.x*scale+c.width*0.5*dpiinv, CAMERA.y*scale+c.height*0.5*dpiinv);
     
     //reversals for black client vs white client
     let ymod = playerColor=="white"?1:-1;
@@ -388,7 +391,7 @@ var Client = (function(window) {
   draw();
   
   function trueMousePos(mPos){
-    return {x: mPos.x-CAMERA.x*scale-c.width*0.5,y: mPos.y-CAMERA.y*scale-c.height*0.5};
+    return {x: mPos.x-CAMERA.x*scale-c.width*0.5*dpiinv,y: mPos.y-CAMERA.y*scale-c.height*0.5*dpiinv};
   }
   c.addEventListener("mousedown",e=>{
     let xx = e.clientX - c.getBoundingClientRect().left;
