@@ -570,7 +570,7 @@ var Client = (function(window) {
               }
               //checks that no checks are present
               let danger = false;
-              gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
+              gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
               if(unlocksub && !danger){
                 $("#submit")[0].disabled = false;
               }
@@ -598,7 +598,7 @@ var Client = (function(window) {
             }
             //checks that no checks are present
             let danger = false;
-            gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
+            gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
             if(unlocksub && !danger){
               $("#submit")[0].disabled = false;
             }
@@ -779,7 +779,7 @@ var Client = (function(window) {
       }
       //checks that no potential checks are present
       let danger = false;
-      gameState.checks.forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
+      gameState.checks.forEach(x=>danger = danger||x.src.time==gameState.present);
       if(!unlocksub || danger){
         $("#submit")[0].disabled = true;
       }
