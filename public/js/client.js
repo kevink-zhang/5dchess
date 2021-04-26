@@ -1,4 +1,5 @@
 const c = document.querySelector("#c");
+const dpi = window.devicePixelRatio;
 const ctx = c.getContext("2d");
 
 //defining constants so I dont need to write it out later
@@ -155,13 +156,16 @@ var Client = (function(window) {
   function draw(){
     //canvas part
     //resizes canvas, if necessary
-    if(window.innerWidth!=c.width||window.innerHeight!=c.height){
-      c.width = window.innerWidth*window.devicePixelRatio;
-      c.height = window.innerHeight;
+    if(window.innerWidth*dpi!=c.width||window.innerHeight*dpi!=c.height){
+      c.width = window.innerWidth*dpi;
+      c.height = window.innerHeight*dpi;
+      console.log(dpi);
     }
+    
     
     //console.log(gameState);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(1/dpi,1/dpi);
     ctx.clearRect(0,0,c.width,c.height);
     ctx.translate(CAMERA.x*scale+c.width*0.5, CAMERA.y*scale+c.height*0.5);
     
