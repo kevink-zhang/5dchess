@@ -573,6 +573,26 @@ var Client = (function(window) {
             move.push(onemove);
             CAMERA.x-=(boardScale+boardBuffer)/scale;
             socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
+            
+            let unlocksub = true;
+            for(let tli in gameState.spacetime){
+              if(gameState.spacetime[tli]){
+                let tocc = false;
+                for(let om of move){
+                  if(om.src.timeline==tli||om.end.timeline==tli) {
+                    tocc = true;
+                    break;
+                  }
+                }
+                if(!tocc){
+                  unlocksub = false;
+                  break;
+                }
+              }
+            }
+            if(unlocksub && gameState.checks[playerColor].length==0){
+              $("#submit")[0].disabled = false;
+            }
             break;
           }
         }
