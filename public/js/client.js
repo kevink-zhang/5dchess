@@ -642,6 +642,9 @@ var Client = (function(window) {
       CAMERA.x = cameraDownPos.x+ (x-mouseDownPos[0])/scale;
       CAMERA.y = cameraDownPos.y + (y-mouseDownPos[1])/scale;
     }
+    else{
+      
+    }
   });
   c.addEventListener("mouseup",e=>{
     let x = e.clientX - c.getBoundingClientRect().left;
