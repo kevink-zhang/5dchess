@@ -560,6 +560,21 @@ var Client = (function(window) {
               CAMERA.x-=(boardScale+boardBuffer)/scale;
               socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
               
+              //checks that no present timelines are unplayed in by length
+              let unlocksub = true;
+              for(let tli in gameState.spacetime){
+                if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
+                  unlocksub = false;
+                  break;
+                }
+              }
+              //checks that no checks are present
+              let danger = false;
+              gameState.checks.forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
+              if(unlocksub && !danger && gameState.checks[playerColor].length==0){
+                $("#submit")[0].disabled = true;
+              }
+              
               messages.empty();
             });
           }
@@ -582,8 +597,10 @@ var Client = (function(window) {
               }
             }
             //checks that no checks are present
-            if(unlocksub && gameState.checks[playerColor].length==0){
-              $("#submit")[0].disabled = false;
+            let danger = false;
+            gameState.checks.forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
+            if(unlocksub && !danger && gameState.checks[playerColor].length==0){
+              $("#submit")[0].disabled = true;
             }
             break;
           }
@@ -745,10 +762,13 @@ var Client = (function(window) {
       }
       //recalculates moves and checks
       socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
+      
       //shifts camera back
       CAMERA.x+=(boardScale+boardBuffer)/scale;
-      //disableds button if no moves left
+      
+      //disableds button if no moves 
       if(move.length==0) $("#undo")[0].disabled = true;
+      
       //redisables submitting
       let unlocksub = true;
       for(let tli in gameState.spacetime){
@@ -757,8 +777,10 @@ var Client = (function(window) {
           break;
         }
       }
-      //checks that no checks are present
-      if(unlocksub && gameState.checks[playerColor].length==0){
+      //checks that no potential checks are present
+      let danger = false;
+      gameState.checks.forEach(x=>danger = danger||x.src.time==gameState.spacetime[x.src.timeline].boards.length-1);
+      if(!unlocksub || danger){
         $("#submit")[0].disabled = false;
       }
     });
