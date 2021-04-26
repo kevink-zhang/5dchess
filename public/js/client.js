@@ -275,7 +275,58 @@ var Client = (function(window) {
         ctx.fill();
         ctx.closePath();
       }
-      //highlights selected move squares
+      //draws highlighted current move squares
+      for(let onemove of move){
+        ctx.beginPath();
+        if(playerColor=="white"){
+          if(onemove.type== "normal"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
+          }
+          else if(onemove.type== "castle"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
+          }
+          else if(onemove.type=="en passant"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
+          }
+          else if(onemove.type=="time travel"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*onemove.end.time+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
+          }
+          else if(onemove.type== "promotion"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*onemove.src.x,-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*(7-onemove.src.y),boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*onemove.end.x,-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*(7-onemove.end.y),boardScale/8,boardScale/8);
+          }
+        }
+        else{
+          if(onemove.type == "normal"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
+          else if(onemove.type == "castle"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
+          else if(onemove.type == "en passant"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
+          else if(onemove.type == "time travel"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*onemove.end.time+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
+          else if(onemove.type == "promotion"){
+            ctx.rect((boardScale+boardBuffer)*onemove.src.time+boardScale/8*(7-onemove.src.x),-ymod*(boardScale+boardBuffer)*onemove.src.timeline+boardScale/8*onemove.src.y,boardScale/8,boardScale/8);
+            ctx.rect((boardScale+boardBuffer)*(onemove.end.time+1)+boardScale/8*(7-onemove.end.x),-ymod*(boardScale+boardBuffer)*onemove.end.timeline+boardScale/8*onemove.end.y,boardScale/8,boardScale/8);
+          }
+        }
+        ctx.fillStyle = "rgba(100, 0, 155, 0.3)";
+        ctx.fill();
+        ctx.closePath();
+      }
+      //highlights selected piece squares
       if(selected!=null && JSON.stringify(deepClone(selected)) in gameState.validMoves){
         ctx.beginPath();
         if(playerColor=="white") ctx.rect((boardScale+boardBuffer)*selected.time+(boardScale/8)*selected.x,-(boardScale+boardBuffer)*selected.timeline+(boardScale/8)*(7-selected.y),boardScale/8,boardScale/8);
