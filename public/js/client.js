@@ -156,8 +156,8 @@ var Client = (function(window) {
     //canvas part
     //resizes canvas, if necessary
     if(window.innerWidth!=c.width||window.innerHeight!=c.height){
-      c.width = c.style.width = window.innerWidth;
-      c.height = c.style.height = window.innerHeight;
+      c.width = window.innerWidth*window.devicePixelRatio;
+      c.height = window.innerHeight;
     }
     
     //console.log(gameState);
