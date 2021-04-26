@@ -206,8 +206,8 @@ var Client = (function(window) {
       }
       //draws present line
       ctx.beginPath();
-      ctx.rect(this.present*(boardScale+boardBuffer)+(0.5-0.35)*boardScale, -CAMERA.y, 2*(0.35)*boardScale, c.height);
-      ctx.fillStyle = "rgba(255,255,255,0.3)";
+      ctx.rect(gameState.present*(boardScale+boardBuffer)+(0.5-0.35)*boardScale, -CAMERA.y*scale-c.height*0.5, 2*(0.35)*boardScale, c.height);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
       ctx.fill();
       ctx.closePath();
       //draws color board borders
