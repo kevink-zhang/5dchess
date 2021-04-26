@@ -672,7 +672,8 @@ var Client = (function(window) {
         console.log("Calculation requested! Data received: ",data.data);
         gameState.validMoves = data.data.validMoves;
         gameState.checks = data.data.checks;
-        gameState.present = data.data.present;
+        //dont make present line dynamically update within a move
+        //gameState.present = data.data.present;
       }
     });
 
