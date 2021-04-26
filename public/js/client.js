@@ -528,7 +528,6 @@ var Client = (function(window) {
       if(unlocksub && !danger){
         $("#submit")[0].disabled = false;
       }
-      break;
     }
   }
   c.addEventListener("mousedown",e=>{
@@ -643,7 +642,8 @@ var Client = (function(window) {
       CAMERA.y = cameraDownPos.y + (y-mouseDownPos[1])/scale;
     }
     else{
-      
+      // CAMERA.x -= e.movementX*0.2/scale;
+      // CAMERA.y -= e.movementY*0.2/scale;
     }
   });
   c.addEventListener("mouseup",e=>{
