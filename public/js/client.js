@@ -484,7 +484,12 @@ var Client = (function(window) {
               gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
               gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
               gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = playerColor=="white"?p:p+10;
-              onemove.end.piece = playerColor=="white"?p:p+10;
+              onemove.src.piece = playerColor=="white"?p:p+10;
+              
+              move.push(onemove);
+              CAMERA.x-=(boardScale+boardBuffer)/scale;
+              socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
+              
               messages.empty();
             });
           }
@@ -493,11 +498,13 @@ var Client = (function(window) {
             gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
             gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
           }
-          move.push(onemove);
-          CAMERA.x-=(boardScale+boardBuffer)/scale;
-          socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
-          
-          break;
+          //except promotion type b/c promotion has pop-up that needs input first
+          if(onemove.type!="promotion"){
+            move.push(onemove);
+            CAMERA.x-=(boardScale+boardBuffer)/scale;
+            socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
+            break;
+          }
         }
       }
       if(!validEndMove) return;
