@@ -590,6 +590,7 @@ var Client = (function(window) {
         }
       }
       if(!validEndMove) return;
+      else $("#undo")[0].disabled = false;
       //socket.emit('move',{gameID:gameID, move:[{src:selected,end:addon,type:"debug"}]});
       
       selected = null;
@@ -678,6 +679,7 @@ var Client = (function(window) {
       else statusblip.css('color','yellow');
       
       $("#submit")[0].disabled = true;
+      $("#undo")[0].disabled = true;
     });
     //recieveing validMove computation updates
     socket.on('recalc',function(data){
@@ -745,6 +747,20 @@ var Client = (function(window) {
       socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
       //shifts camera back
       CAMERA.x+=(boardScale+boardBuffer)/scale;
+      //disableds button if no moves left
+      if(move.length==0) $("#undo")[0].disabled = true;
+      //redisables submitting
+      let unlocksub = true;
+      for(let tli in gameState.spacetime){
+        if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
+          unlocksub = false;
+          break;
+        }
+      }
+      //checks that no checks are present
+      if(unlocksub && gameState.checks[playerColor].length==0){
+        $("#submit")[0].disabled = false;
+      }
     });
   }
 
