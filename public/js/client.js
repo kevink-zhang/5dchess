@@ -628,14 +628,15 @@ var Client = (function(window) {
       socket.emit('move',{gameID:gameID, move:move});
     });
     container.on('click', '#undo', function(ev) {
+      //no moves to undo, exits
       if(move.length==0) return;
       
       let onemove = move.pop();
        
       if(onemove.type == "normal"){
-        gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
-        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
-        gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
+        gameState.spacetime[onemove.src.timeline].boards.pop();
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time][onemove.src.x][onemove.src.y] = onemove.src.piece;
+        gameState.spacetime[onemove.end.timeline].boards[onemove.end.time][onemove.end.x][onemove.end.y] = onemove.end.piece;
       }
       else if(onemove.type == "castle"){
 
@@ -654,6 +655,10 @@ var Client = (function(window) {
         gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
         gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
       }
+      //recalculates moves and checks
+      socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
+      //shifts camera back
+      CAMERA.x+=(boardScale+boardBuffer)/scale;
     });
   }
 
