@@ -189,7 +189,8 @@ var Client = (function(window) {
           ctx.quadraticCurveTo(startpt[0]+deltapt[0]*0.5, endpt[1],endpt[0],endpt[1]);
         }
         ctx.lineWidth = boardScale*0.35;
-        ctx.strokeStyle = "rgba(140, 50, 215, 0.75)";
+        if((tli>0 && !(Number(tli)-1 in gameState.spacetime)) || (tli<0 && !(Number(tli)+1 in gameState.spacetime))) ctx.strokeStyle = tli>0?"rgba(255,255,255,0.6)":"rgba(0,0,0,0.6)";
+        else ctx.strokeStyle = "rgba(140, 50, 215, 0.75)";
         ctx.stroke();
         ctx.closePath();
         for(let i =0; i < gameState.spacetime[tli].boards.length; i++){
@@ -207,7 +208,7 @@ var Client = (function(window) {
       //draws present line
       ctx.beginPath();
       ctx.rect(gameState.present*(boardScale+boardBuffer)+(0.5-0.35)*boardScale, -CAMERA.y*scale-c.height*0.5, 2*(0.35)*boardScale, c.height);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+      ctx.fillStyle = gameState.present%2==0?"rgba(255, 255, 255, 0.6)":"rgba(0, 0, 0, 0.6)";
       ctx.fill();
       ctx.closePath();
       //draws color board borders
