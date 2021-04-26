@@ -155,11 +155,19 @@ var Client = (function(window) {
   
   ctx.imageSmoothingEnabled = 'false';
   function drawArrow(src, end){
+    ctx.beginPath();
     let ymod = playerColor=="white"?1:-1;
     let srcpt = playerColor=="white"?[src.time*(boardScale+boardBuffer)+src.x*boardScale/8,-ymod*(boardScale+boardBuffer)*src.timeline+(7-src.y)*boardScale/8]:[src.time*(boardScale+boardBuffer)+(7-src.x)*boardScale/8,-ymod*(boardScale+boardBuffer)*src.timeline+(src.y)*boardScale/8];
     let endpt = playerColor=="white"?[end.time*(boardScale+boardBuffer)+end.x*boardScale/8,-ymod*(boardScale+boardBuffer)*end.timeline+(7-end.y)*boardScale/8]:[end.time*(boardScale+boardBuffer)+(7-end.x)*boardScale/8,-ymod*(boardScale+boardBuffer)*end.timeline+(end.y)*boardScale/8];
+    let deltapt = [endpt[0]-srcpt[0],endpt[1]-srcpt[1]];
+    let pslope = null;
+    if(deltapt[0]==0){
+      pslope = 161660;
+    }
     
-
+    ctx.moveTo(srcpt[0],srcpt[1])
+    ctx.quadraticCurveTo();
+    ctx.closePath();
   }
   function draw(){
     //canvas part
