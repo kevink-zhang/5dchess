@@ -182,7 +182,7 @@ var Client = (function(window) {
           ctx.quadraticCurveTo(startpt[0]+deltapt[0]*0.5, endpt[1],endpt[0],endpt[1]);
         }
         ctx.lineWidth = boardScale*0.35;
-        ctx.strokeStyle = "rgba(100, 0, 155, 0.75)";
+        ctx.strokeStyle = "rgba(140, 50, 215, 0.75)";
         ctx.stroke();
         ctx.closePath();
         for(let i =0; i < gameState.spacetime[tli].boards.length; i++){
@@ -191,7 +191,7 @@ var Client = (function(window) {
             ctx.moveTo(i*(boardScale+boardBuffer)+boardScale,-ymod*(tli* (boardScale+boardBuffer) )+ (boardScale/2));
             ctx.lineTo((i+1)*(boardScale+boardBuffer),-ymod*(tli* (boardScale+boardBuffer) )+ (boardScale/2));
             ctx.lineWidth = boardScale*0.35;
-            ctx.strokeStyle = "rgba(100, 0, 155, 0.75)";
+            ctx.strokeStyle = "rgba(140, 50, 215, 0.75)";
             ctx.stroke();
             ctx.closePath();
           }
