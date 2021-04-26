@@ -204,6 +204,12 @@ var Client = (function(window) {
           }
         }
       }
+      //draws present line
+      ctx.beginPath();
+      ctx.rect(this.present*(boardScale+boardBuffer)+(0.5-0.35)*boardScale, -CAMERA.y, 2*(0.35)*boardScale, c.height);
+      ctx.fillStyle = "rgba(255,255,255,0.3)";
+      ctx.fill();
+      ctx.closePath();
       //draws color board borders
       for(let tli in gameState.spacetime){
         for(let i=0; i < gameState.spacetime[tli].boards.length;i++){
@@ -659,7 +665,6 @@ var Client = (function(window) {
       else statusblip.css('color','yellow');
       
       $("#submit")[0].disabled = true;
-      console.log($("#submit"));
     });
     //recieveing validMove computation updates
     socket.on('recalc',function(data){
@@ -667,6 +672,7 @@ var Client = (function(window) {
         console.log("Calculation requested! Data received: ",data.data);
         gameState.validMoves = data.data.validMoves;
         gameState.checks = data.data.checks;
+        gameState.present = data.data.present;
       }
     });
 
