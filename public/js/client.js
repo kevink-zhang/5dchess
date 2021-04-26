@@ -173,8 +173,13 @@ var Client = (function(window) {
       for(let tli in gameState.spacetime){
         ctx.beginPath();
         if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline parent
-          ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+boardBuffer)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+boardBuffer) )+ (boardScale/2));
-          ctx.quadraticCo(gameState.spacetime[tli].branch.time* (boardScale+boardBuffer)+boardScale+boardBuffer, -ymod*(gameState.spacetime[tli].timeline* (boardScale+boardBuffer) )+ (boardScale/2));
+          
+          let startpt = (gameState.spacetime[tli].branch.time * (boardScale+boardBuffer)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+boardBuffer) )+ (boardScale/2));
+          let endpt = (gameState.spacetime[tli].branch.time* (boardScale+boardBuffer)+boardScale+boardBuffer, -ymod*(gameState.spacetime[tli].timeline* (boardScale+boardBuffer) )+ (boardScale/2));
+          let delta = [endpt[0]-startpt[0],endpt[1]-startpt[1]];
+          ctx.moveTo(startpt[0],startpt[1]);
+          ctx.quadraticCurveTo(startpt[0]+delta[0]*0.5, startpt[1], startpt[0]+delta[0]*0.5,startpt[1]+delta[1]*0.5);
+          //ctx.quadraticCurveTo(startpt[0]+delta[0]*0.5, endpt[1],endpt[0],endpt[1]);
         }
         ctx.lineWidth = boardScale/8;
         ctx.strokeStyle = "purple";
