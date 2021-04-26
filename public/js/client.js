@@ -174,7 +174,7 @@ var Client = (function(window) {
         ctx.beginPath();
         if(gameState.spacetime[tli].branch.time>-1) {//filters out start timeline parent
           ctx.moveTo(gameState.spacetime[tli].branch.time * (boardScale+boardBuffer)+boardScale, -ymod*(gameState.spacetime[tli].branch.timeline* (boardScale+boardBuffer) )+ (boardScale/2));
-          ctx.lineTo(gameState.spacetime[tli].branch.time* (boardScale+boardBuffer)+boardScale+boardBuffer, -ymod*(gameState.spacetime[tli].timeline* (boardScale+boardBuffer) )+ (boardScale/2));
+          ctx.quadraticCo(gameState.spacetime[tli].branch.time* (boardScale+boardBuffer)+boardScale+boardBuffer, -ymod*(gameState.spacetime[tli].timeline* (boardScale+boardBuffer) )+ (boardScale/2));
         }
         ctx.lineWidth = boardScale/8;
         ctx.strokeStyle = "purple";
