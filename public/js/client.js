@@ -813,7 +813,7 @@ var Client = (function(window) {
         gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
       }
       //recalculates moves and checks
-      socket.emit('recalc',{gameID: gameID, player:playerColor, data:{spacetime:gameState.spacetime,}});
+      socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
       
       //shifts camera back
       CAMERA.x+=(boardScale+boardBuffer)/scale;

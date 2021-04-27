@@ -128,8 +128,7 @@ var recalc = function(data){
   var game = DB.find(data.gameID);
   let temp = {spacetime:deepClone(game.spacetime),validMoves:deepClone(game.validMoves),checks:deepClone(game.checks),present:game.present};
   //temporarily borrows current game to compute new moves and checks
-  game.spacetime = data.data.spacetime;
-  game.lastMove = data.data.lastMove;
+  game.spacetime = data.data;
   game.getMoves();
   game.getChecks();
   game.findPresent();
