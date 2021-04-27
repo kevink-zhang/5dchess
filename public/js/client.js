@@ -162,14 +162,15 @@ var Client = (function(window) {
     let endpt = playerColor=="white"?[end.time*(boardScale+boardBuffer)+end.x*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*end.timeline+(7-end.y)*boardScale/8+boardScale/16]:[end.time*(boardScale+boardBuffer)+(7-end.x)*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*end.timeline+(end.y)*boardScale/8+boardScale/16];
     let deltapt = [endpt[0]-srcpt[0],endpt[1]-srcpt[1]];
     
-    let pslope = [-deltapt[1],deltapt[0]]
+    let pslope = [-deltapt[1],deltapt[0]];
+    let pmag = 
     
     if((pslope[0]<0&&pslope[1]>0) || (pslope[0]>0&&pslope[1]<0)) pslope[1]=-pslope[1];
     
     ctx.moveTo(srcpt[0],srcpt[1]);
     ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.2,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.2,endpt[0],endpt[1]);
     ctx.strokeStyle = color;
-    ctx.lineWidth = boardScale*0.1;
+    ctx.lineWidth = boardScale*0.75;
     ctx.stroke();
     ctx.closePath();
   }
@@ -809,7 +810,7 @@ var Client = (function(window) {
       }
       //checks that no potential checks are present
       let danger = false;
-      gameState.checks.forEach(x=>danger = danger||x.src.time==gameState.present);
+      gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
       if(!unlocksub || danger){
         $("#submit")[0].disabled = true;
       }
