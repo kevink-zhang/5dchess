@@ -156,22 +156,33 @@ var Client = (function(window) {
   ctx.imageSmoothingEnabled = 'false';
   //draws a small curved arrow
   function drawArrow(src, end, color){
-    ctx.beginPath();
     let ymod = playerColor=="white"?1:-1;
     let srcpt = playerColor=="white"?[src.time*(boardScale+boardBuffer)+src.x*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*src.timeline+(7-src.y)*boardScale/8+boardScale/16]:[src.time*(boardScale+boardBuffer)+(7-src.x)*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*src.timeline+(src.y)*boardScale/8+boardScale/16];
     let endpt = playerColor=="white"?[end.time*(boardScale+boardBuffer)+end.x*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*end.timeline+(7-end.y)*boardScale/8+boardScale/16]:[end.time*(boardScale+boardBuffer)+(7-end.x)*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*end.timeline+(end.y)*boardScale/8+boardScale/16];
     let deltapt = [endpt[0]-srcpt[0],endpt[1]-srcpt[1]];
     
     let pslope = [-deltapt[1],deltapt[0]];
-    let pmag = 
+    let pmag = 1/Math.sqrt(deltapt[0]*deltapt[0]+deltapt[1]*deltapt[1]);
     
     if((pslope[0]<0&&pslope[1]>0) || (pslope[0]>0&&pslope[1]<0)) pslope[1]=-pslope[1];
     
-    ctx.moveTo(srcpt[0],srcpt[1]);
-    ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.2,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.2,endpt[0],endpt[1]);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = boardScale*0.75;
-    ctx.stroke();
+    // ctx.beginPath();
+    // ctx.moveTo(srcpt[0],srcpt[1]);
+    // ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.2,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.2,endpt[0],endpt[1]);
+    // ctx.strokeStyle = color;
+    // ctx.lineWidth = boardScale*0.125*0.75;
+    // ctx.stroke();
+    // ctx.closePath();
+    
+    ctx.beginPath();
+    ctx.moveTo(endpt[0],endpt[1]);
+    ctx.lineTo(endpt[0]+(pslope[0]-deltapt[0])*pmag*boardScale,endpt[1]+(pslope[1]-deltapt[1])*pmag*boardScale);
+    ctx.lineTo(endpt[0]+(-pslope[0]-deltapt[0])*pmag*boardScale,endpt[1]+(-pslope[1]-deltapt[1])*pmag*boardScale);
+    console.log(endpt[0],endpt[1]);
+    console.log(endpt[0]+(pslope[0]-deltapt[0])*pmag*boardScale,endpt[1]+(pslope[1]-deltapt[1])*pmag*boardScale);
+    console.log(endpt[0]+(-pslope[0]-deltapt[0])*pmag*boardScale,endpt[1]+(-pslope[1]-deltapt[1])*pmag*boardScale);
+    ctx.fillStyle = color;
+    ctx.fill();
     ctx.closePath();
   }
   
