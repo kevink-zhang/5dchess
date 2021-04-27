@@ -454,8 +454,8 @@ var Client = (function(window) {
   
   //centers camera on a board
   function centerCAM(pos){
-    CAMERA.x = -(pos.time*(boardScale+boardBuffer)+boardScale*0.5);
-    CAMERA.y = -(pos.timeline*(boardScale+boardBuffer)+boardScale*0.5);
+    CAMERA.x = -(pos.time*(boardScale+boardBuffer)+boardScale*0.5)/scale;
+    CAMERA.y = -(pos.timeline*(boardScale+boardBuffer)+boardScale*0.5)/scale;
   }
   
   //disables/enables submission button
@@ -483,6 +483,7 @@ var Client = (function(window) {
   
   
   function doMove(onemove) {
+    
     if(onemove.type == "normal"){
       gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
       gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
