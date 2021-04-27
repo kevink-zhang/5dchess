@@ -163,26 +163,25 @@ var Client = (function(window) {
     
     let pslope = [-deltapt[1],deltapt[0]];
     let pmag = 1/Math.sqrt(deltapt[0]*deltapt[0]+deltapt[1]*deltapt[1]);
-    
-    if((pslope[0]<0&&pslope[1]>0) || (pslope[0]>0&&pslope[1]<0)) pslope[1]=-pslope[1];
-    
-    // ctx.beginPath();
-    // ctx.moveTo(srcpt[0],srcpt[1]);
-    // ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.2,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.2,endpt[0],endpt[1]);
-    // ctx.strokeStyle = color;
-    // ctx.lineWidth = boardScale*0.125*0.75;
-    // ctx.stroke();
-    // ctx.closePath();
+    let hscale = 0.125;
     
     ctx.beginPath();
     ctx.moveTo(endpt[0],endpt[1]);
-    ctx.lineTo(endpt[0]+(pslope[0]-deltapt[0])*pmag*boardScale,endpt[1]+(pslope[1]-deltapt[1])*pmag*boardScale);
-    ctx.lineTo(endpt[0]+(-pslope[0]-deltapt[0])*pmag*boardScale,endpt[1]+(-pslope[1]-deltapt[1])*pmag*boardScale);
-    console.log(endpt[0],endpt[1]);
-    console.log(endpt[0]+(pslope[0]-deltapt[0])*pmag*boardScale,endpt[1]+(pslope[1]-deltapt[1])*pmag*boardScale);
-    console.log(endpt[0]+(-pslope[0]-deltapt[0])*pmag*boardScale,endpt[1]+(-pslope[1]-deltapt[1])*pmag*boardScale);
+    ctx.lineTo(endpt[0]+(pslope[0]-deltapt[0])*pmag*boardScale*hscale,endpt[1]+(pslope[1]-deltapt[1])*pmag*boardScale*hscale);
+    ctx.lineTo(endpt[0]+(-pslope[0]-deltapt[0])*pmag*boardScale*hscale,endpt[1]+(-pslope[1]-deltapt[1])*pmag*boardScale*hscale);
     ctx.fillStyle = color;
     ctx.fill();
+    ctx.closePath();
+    
+    //negates perpendicular slope if negative to curve upwarxs
+    if((pslope[0]<0&&pslope[1]>0) || (pslope[0]>0&&pslope[1]<0)) pslope[1]=-pslope[1];
+    
+    ctx.beginPath();
+    ctx.moveTo(srcpt[0],srcpt[1]);
+    ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.2,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.2,endpt[0]-deltapt[0]*hscale*boardScale*pmag,endpt[1]-deltapt[1]*hscale*boardScale*pmag);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = boardScale*0.125*0.6;
+    ctx.stroke();
     ctx.closePath();
   }
   
