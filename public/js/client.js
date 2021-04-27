@@ -158,8 +158,8 @@ var Client = (function(window) {
   function drawArrow(src, end, color){
     ctx.beginPath();
     let ymod = playerColor=="white"?1:-1;
-    let srcpt = playerColor=="white"?[src.time*(boardScale+boardBuffer)+src.x*boardScale/8,-ymod*(boardScale+boardBuffer)*src.timeline+(7-src.y)*boardScale/8]:[src.time*(boardScale+boardBuffer)+(7-src.x)*boardScale/8,-ymod*(boardScale+boardBuffer)*src.timeline+(src.y)*boardScale/8];
-    let endpt = playerColor=="white"?[end.time*(boardScale+boardBuffer)+end.x*boardScale/8,-ymod*(boardScale+boardBuffer)*end.timeline+(7-end.y)*boardScale/8]:[end.time*(boardScale+boardBuffer)+(7-end.x)*boardScale/8,-ymod*(boardScale+boardBuffer)*end.timeline+(end.y)*boardScale/8];
+    let srcpt = playerColor=="white"?[src.time*(boardScale+boardBuffer)+src.x*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*src.timeline+(7-src.y)*boardScale/8+boardScale/16]:[src.time*(boardScale+boardBuffer)+(7-src.x)*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*src.timeline+(src.y)*boardScale/8+boardScale/16];
+    let endpt = playerColor=="white"?[end.time*(boardScale+boardBuffer)+end.x*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*end.timeline+(7-end.y)*boardScale/8+boardScale/16]:[end.time*(boardScale+boardBuffer)+(7-end.x)*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*end.timeline+(end.y)*boardScale/8+boardScale/16];
     let deltapt = [endpt[0]-srcpt[0],endpt[1]-srcpt[1]];
     
     let pslope = [-deltapt[1],deltapt[0]]
@@ -170,6 +170,7 @@ var Client = (function(window) {
     ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.1,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.1,endpt[0],endpt[1]);
     ctx.strokeStyle = color;
     ctx.lineWidth = boardScale*0.1;
+    ctx.stroke();
     ctx.closePath();
   }
   
@@ -386,8 +387,8 @@ var Client = (function(window) {
       //draws timeline arrows
       
       //draws check arrows
-      for(let onemove of gameState.checks){
-        
+      for(let onemove of gameState.checks[playerColor]){
+        drawArrow(onemove.src,onemove.end,"crimson");
       }
       //draws pieces
       for(let tli in gameState.spacetime){
