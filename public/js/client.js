@@ -435,9 +435,37 @@ var Client = (function(window) {
   
   draw();
   
+  //returns canvas coordinate system for mouse coords
   function trueMousePos(mPos){
     return {x: mPos.x-CAMERA.x*scale-c.width*0.5*dpiinv,y: mPos.y-CAMERA.y*scale-c.height*0.5*dpiinv};
   }
+  
+  //disables/enables submission button
+  function disableSubmit(){
+    //no moves, no submitting
+    if(move.length==0){
+      $("#submit")[0].disabled = true;
+      return;
+    }
+    
+    //moves in present
+    let unlocksub = true;
+    for(let tli in gameState.spacetime){
+      if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
+        unlocksub = false;
+        break;
+      }
+    }
+    //checks that no potential checks are present
+    let danger = false;
+    gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==nextPresent);
+    console.log("disabling submit?");
+    gameState.checks[playerColor].forEach(x=>console.log(x.src.time, nextPresent));
+    if(!unlocksub || danger) $("#submit")[0].disabled = true;
+    else $("#submit")[0].disabled = false;
+  }
+  
+  
   function doMove(onemove) {
     if(onemove.type == "normal"){
       gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
@@ -520,22 +548,11 @@ var Client = (function(window) {
       move.push(onemove);
       CAMERA.x-=(boardScale+boardBuffer)/scale;
       socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
-      //checks that no present timelines are unplayed in by length
-      let unlocksub = true;
-      for(let tli in gameState.spacetime){
-        if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
-          unlocksub = false;
-          break;
-        }
-      }
-      //checks that no checks are present
-      let danger = false;
-      gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==nextPresent);
-      if(unlocksub && !danger){
-        $("#submit")[0].disabled = false;
-      }
+      
+      disableSubmit();
     }
   }
+  
   c.addEventListener("mousedown",e=>{
     let xx = e.clientX - c.getBoundingClientRect().left;
     let yy = e.clientY - c.getBoundingClientRect().top;
@@ -714,21 +731,6 @@ var Client = (function(window) {
     socket.emit('join', gameID);
   };
   
-  function disableSubmit(){
-    let unlocksub = true;
-    for(let tli in gameState.spacetime){
-      if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
-        unlocksub = false;
-        break;
-      }
-    }
-    //checks that no potential checks are present
-    let danger = false;
-    gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==nextPresent);
-    if(!unlocksub || danger) $("#submit")[0].disabled = true;
-    else $("#submit")[0].disabled = false;
-  }
-  
   var attachSocketEventHandlers = function() {
 
     // Update UI with new game state
@@ -750,6 +752,8 @@ var Client = (function(window) {
         gameState.checks = data.data.checks;
         //stores next present for submission check calculations
         nextPresent = data.data.present;
+        //disables submitting
+        disableSubmit();
       }
     });
 
@@ -812,9 +816,6 @@ var Client = (function(window) {
       
       //disableds button if no moves 
       if(move.length==0) $("#undo")[0].disabled = true;
-      
-      //disable submitting
-      disableSubmit();
       
     });
   }
