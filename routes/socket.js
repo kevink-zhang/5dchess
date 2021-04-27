@@ -79,12 +79,14 @@ var join = function(gameID) {
  */
 var move = function(data) {
   var sess      = this.handshake.session;
+  var game = DB.find(data.gameID);
   var debugInfo = {
     socketID : this.id,
     event    : 'move',
     gameID   : data.gameID,
     move     : data.move,
-    session  : sess
+    session  : sess,
+    player   : data.player
   };
 
   // Check if user has permission to access this game
@@ -93,9 +95,13 @@ var move = function(data) {
     this.emit('error', {message: "You have not joined this game"});
     return;
   }
+  
+  //Check if player is current active
+  //This is to prevent lag when submitting to cause a double-submission
+  if(data.player=!game.activePlayer.color) return;
 
   // Lookup game in database
-  var game = DB.find(data.gameID);
+  
   if (!game) {
     console.log('ERROR: Game Not Found', debugInfo);
     this.emit('error', {message: "Game not found"});

@@ -493,7 +493,8 @@ var Client = (function(window) {
       if(onemove.src.timeline==onemove.end.timeline){
         gameState.spacetime[onemove.src.timeline].boards.push(gameState.spacetime[onemove.src.timeline].boards.last());
         let ymod = playerColor=="white"?1:-1;
-        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y-ymod] = __;
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.end.x][onemove.end.y-ymod] = __;
+        gameState.spacetime[onemove.src.timeline].boards[onemove.src.time+1][onemove.src.x][onemove.src.y] = __;
         gameState.spacetime[onemove.end.timeline].boards[onemove.end.time+1][onemove.end.x][onemove.end.y] = onemove.src.piece;
       }
       else{ //time travel en passant, be sad
@@ -782,7 +783,8 @@ var Client = (function(window) {
     container.on('click', '#submit', function(ev) {
       if(gameState.status!="ongoing" || move.length==0) return;
       console.log("submitting");
-      socket.emit('move',{gameID:gameID, move:move});
+      $("#submit")[0].disabled = true;
+      socket.emit('move',{player:playerColor,gameID:gameID, move:move});
     });
     container.on('click', '#undo', function(ev) {
       //no moves to undo, exits
