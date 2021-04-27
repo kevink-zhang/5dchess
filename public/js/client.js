@@ -6,7 +6,8 @@ const ctx = c.getContext("2d");
 //sounds
 const sfx = {
   move: new Audio('https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fpublic_sound_standard_Move.mp3?v=1619558550313'),
-  capture: new Audio('https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fpublic_sound_standard_Capture.mp3?v=1619561706712')
+  capture: new Audio('https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fpublic_sound_standard_Capture.mp3?v=1619561706712'),
+  notification: new Audio('https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fpublic_sound_standard_GenericNotify.mp3?v=1619562589599')
 };
 
 //defining constants so I dont need to write it out later
@@ -486,7 +487,7 @@ var Client = (function(window) {
   //does move
   function doMove(onemove) {
     let sfxtype = "move";
-    console.log
+    console.log(onemove.src.piece,onemove.end.piece);
     if(onemove.src.piece>=0 && onemove.src.piece<10&&onemove.end.piece>=10&&onemove.end.piece<20) sfxtype = 'capture';
     else if(onemove.end.piece>=0 && onemove.end.piece<10&&onemove.src.piece>=10&&onemove.src.piece<20) sfxtype = 'capture';
     else if(onemove.type=="en passant") sfxtype = 'capture';
@@ -766,7 +767,10 @@ var Client = (function(window) {
       console.log(data);
       gameState = data;
       move = [];
-      if(gameState.status=="ongoing") statusblip.css('color','green');
+      if(gameState.status=="ongoing") {
+        statusblip.css('color','green');
+        sfx['notification'].play();
+      }
       else statusblip.css('color','yellow');
       
       $("#submit")[0].disabled = true;
