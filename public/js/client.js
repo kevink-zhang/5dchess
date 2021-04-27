@@ -160,10 +160,16 @@ var Client = (function(window) {
     let ymod = playerColor=="white"?1:-1;
     let srcpt = playerColor=="white"?[src.time*(boardScale+boardBuffer)+src.x*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*src.timeline+(7-src.y)*boardScale/8+boardScale/16]:[src.time*(boardScale+boardBuffer)+(7-src.x)*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*src.timeline+(src.y)*boardScale/8+boardScale/16];
     let endpt = playerColor=="white"?[end.time*(boardScale+boardBuffer)+end.x*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*end.timeline+(7-end.y)*boardScale/8+boardScale/16]:[end.time*(boardScale+boardBuffer)+(7-end.x)*boardScale/8+boardScale/16,-ymod*(boardScale+boardBuffer)*end.timeline+(end.y)*boardScale/8+boardScale/16];
-    let deltapt = [endpt[0]-srcpt[0],endpt[1]-srcpt[1]];
     
-    let pslope = [-deltapt[1],deltapt[0]];
+    let deltapt = [endpt[0]-srcpt[0],endpt[1]-srcpt[1]];
     let pmag = 1/Math.sqrt(deltapt[0]*deltapt[0]+deltapt[1]*deltapt[1]);
+    
+    srcpt = [srcpt[0]+deltapt[0]*pmag*boardScale/16,srcpt[1]+deltapt[1]*pmag*boardScale/16];
+    endpt = [endpt[0]-deltapt[0]*pmag*boardScale/16,endpt[1]-deltapt[1]*pmag*boardScale/16];
+    
+    deltapt = [endpt[0]-srcpt[0],endpt[1]-srcpt[1]];
+    pmag = 1/Math.sqrt(deltapt[0]*deltapt[0]+deltapt[1]*deltapt[1]);
+    let pslope = [-deltapt[1],deltapt[0]];
     let hscale = 0.06;
     
     ctx.beginPath();
@@ -179,7 +185,8 @@ var Client = (function(window) {
     
     ctx.beginPath();
     ctx.moveTo(srcpt[0],srcpt[1]);
-    ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.2,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.2,endpt[0]-deltapt[0]*hscale*boardScale*pmag,endpt[1]-deltapt[1]*hscale*boardScale*pmag);
+    //ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.2,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.2,endpt[0]-deltapt[0]*hscale*boardScale*pmag,endpt[1]-deltapt[1]*hscale*boardScale*pmag);
+    ctx.lineTo(endpt[0]-deltapt[0]*hscale*boardScale*pmag,endpt[1]-deltapt[1]*hscale*boardScale*pmag);
     ctx.strokeStyle = color;
     ctx.lineWidth = boardScale*0.125*0.5;
     ctx.stroke();
@@ -260,7 +267,7 @@ var Client = (function(window) {
       //draws check board borders
       for(let onemove of gameState.checks[playerColor]){
         ctx.beginPath();
-        ctx.rect(0+(boardScale+boardBuffer)*onemove.end.time, -ymod*(boardScale+boardBuffer)*onemove.end.timeline,boardScale,boardScale);
+        ctx.rect(0+(boardScale+boardBuffer)*onemove.src.time, -ymod*(boardScale+boardBuffer)*onemove.src.timeline,boardScale,boardScale);
         ctx.strokeStyle = "rgb(204,0,0)";
         ctx.lineWidth = boardScale/16;
         ctx.stroke();
@@ -396,12 +403,6 @@ var Client = (function(window) {
           ctx.closePath();
         }
       }
-      //draws timeline arrows
-      
-      //draws check arrows
-      for(let onemove of gameState.checks[playerColor]){
-        drawArrow(onemove.src,onemove.end,"rgb(204,0,0,0.75)");
-      }
       //draws pieces
       for(let tli in gameState.spacetime){
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
@@ -426,7 +427,12 @@ var Client = (function(window) {
           }
         }
       }
-       
+      //draws timeline arrows
+      
+      //draws check arrows
+      for(let onemove of gameState.checks[playerColor]){
+        drawArrow(onemove.src,onemove.end,"rgb(204,0,0,0.75)");
+      }
     }
     
     if(!socket==null && !socket.connected) statusblip.css('color','red');
@@ -459,8 +465,6 @@ var Client = (function(window) {
     //checks that no potential checks are present
     let danger = false;
     gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==nextPresent);
-    console.log("disabling submit?");
-    gameState.checks[playerColor].forEach(x=>console.log(x.src.time, nextPresent));
     if(!unlocksub || danger) $("#submit")[0].disabled = true;
     else $("#submit")[0].disabled = false;
   }
