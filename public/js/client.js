@@ -118,7 +118,8 @@ var Client = (function(window) {
   var nextPresent;
 
   var selection   = null;
-  var CAMERA      = {x:-200,y:-200};
+  var CAMERA      = {x:0,y:0};
+  centerCAM({time:0,timeline:0});
   
   var gameOverMessage     = null;
   var pawnPromotionPrompt = null;
@@ -446,6 +447,12 @@ var Client = (function(window) {
     return {x: mPos.x-CAMERA.x*scale-c.width*0.5*dpiinv,y: mPos.y-CAMERA.y*scale-c.height*0.5*dpiinv};
   }
   
+  //centers camera on a board
+  function centerCAM(pos){
+    CAMERA.x = -(pos.time*(boardScale+boardBuffer)+boardScale*0.5);
+    CAMERA.y = -(pos.timeline*(boardScale+boardBuffer)+boardScale*0.5);
+  }
+  
   //disables/enables submission button
   function disableSubmit(){
     //no moves, no submitting
@@ -535,7 +542,7 @@ var Client = (function(window) {
         onemove.src.piece = playerColor=="white"?p:p+10;
 
         move.push(onemove);
-        CAMERA.x-=(boardScale+boardBuffer)/scale;
+        centerCAM({time:onemove.src.time+1,timeline:onemove.src.timeline});
         socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
 
         disableSubmit();
@@ -551,7 +558,7 @@ var Client = (function(window) {
     //except promotion type b/c promotion has pop-up that needs input first
     if(onemove.type!="promotion"){
       move.push(onemove);
-      CAMERA.x-=(boardScale+boardBuffer)/scale;
+      centerCAM({time:onemove.src.time+1,timeline:onemove.src.timeline});
       socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
       
       disableSubmit();
@@ -818,7 +825,7 @@ var Client = (function(window) {
       socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
       
       //shifts camera back
-      CAMERA.x+=(boardScale+boardBuffer)/scale;
+      centerCAM({time:onemove.src.time,timeline:onemove.src.timeline});
       
       //disableds button if no moves 
       if(move.length==0) $("#undo")[0].disabled = true;
