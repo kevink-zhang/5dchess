@@ -167,7 +167,7 @@ var Client = (function(window) {
     if((pslope[0]<0&&pslope[1]>0) || (pslope[0]>0&&pslope[1]<0)) pslope[1]=-pslope[1];
     
     ctx.moveTo(srcpt[0],srcpt[1]);
-    ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.1,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.1,endpt[0],endpt[1]);
+    ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.2,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.2,endpt[0],endpt[1]);
     ctx.strokeStyle = color;
     ctx.lineWidth = boardScale*0.1;
     ctx.stroke();
