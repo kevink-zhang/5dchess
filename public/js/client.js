@@ -249,7 +249,7 @@ var Client = (function(window) {
       for(let onemove of gameState.checks[playerColor]){
         ctx.beginPath();
         ctx.rect(0+(boardScale+boardBuffer)*onemove.end.time, -ymod*(boardScale+boardBuffer)*onemove.end.timeline,boardScale,boardScale);
-        ctx.strokeStyle = "crimson";
+        ctx.strokeStyle = "rgb(204,0,0)";
         ctx.lineWidth = boardScale/16;
         ctx.stroke();
         ctx.closePath();
@@ -388,7 +388,7 @@ var Client = (function(window) {
       
       //draws check arrows
       for(let onemove of gameState.checks[playerColor]){
-        drawArrow(onemove.src,onemove.end,"crimson");
+        drawArrow(onemove.src,onemove.end,"rgb(204,0,0,0.75)");
       }
       //draws pieces
       for(let tli in gameState.spacetime){
