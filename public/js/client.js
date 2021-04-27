@@ -383,6 +383,12 @@ var Client = (function(window) {
           ctx.closePath();
         }
       }
+      //draws timeline arrows
+      
+      //draws check arrows
+      for(let onemove of gameState.checks){
+        
+      }
       //draws pieces
       for(let tli in gameState.spacetime){
         for(let i = 0; i < gameState.spacetime[tli].boards.length;i++){
