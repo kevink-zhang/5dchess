@@ -3,6 +3,11 @@ const dpi = window.devicePixelRatio;
 const dpiinv = 1/dpi;
 const ctx = c.getContext("2d");
 
+//sounds
+const sfx = {
+  move: new Audio('https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fpublic_sound_standard_Move.mp3?v=1619558550313')
+};
+
 //defining constants so I dont need to write it out later
 var boardScale = 30*8; const oboardScale = 30*8;
 var boardBuffer = 60; const oboardBuffer = 60;
@@ -563,6 +568,9 @@ var Client = (function(window) {
       
       disableSubmit();
     }
+    
+    //play the sound
+    sfx['move'].play();
   }
   
   c.addEventListener("mousedown",e=>{
