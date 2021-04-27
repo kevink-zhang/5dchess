@@ -115,6 +115,7 @@ var Client = (function(window) {
   
 
   var move = {}; 
+  var nextPresent;
 
   var selection   = null;
   var CAMERA      = {x:-200,y:-200};
@@ -163,7 +164,7 @@ var Client = (function(window) {
     
     let pslope = [-deltapt[1],deltapt[0]];
     let pmag = 1/Math.sqrt(deltapt[0]*deltapt[0]+deltapt[1]*deltapt[1]);
-    let hscale = 0.125;
+    let hscale = 0.06;
     
     ctx.beginPath();
     ctx.moveTo(endpt[0],endpt[1]);
@@ -180,7 +181,7 @@ var Client = (function(window) {
     ctx.moveTo(srcpt[0],srcpt[1]);
     ctx.quadraticCurveTo(srcpt[0]+deltapt[0]*0.5+pslope[0]*0.2,srcpt[1]+deltapt[1]*0.5+pslope[1]*0.2,endpt[0]-deltapt[0]*hscale*boardScale*pmag,endpt[1]-deltapt[1]*hscale*boardScale*pmag);
     ctx.strokeStyle = color;
-    ctx.lineWidth = boardScale*0.125*0.6;
+    ctx.lineWidth = boardScale*0.125*0.5;
     ctx.stroke();
     ctx.closePath();
   }
@@ -504,20 +505,7 @@ var Client = (function(window) {
         CAMERA.x-=(boardScale+boardBuffer)/scale;
         socket.emit('recalc',{gameID: gameID, player:playerColor, data:gameState.spacetime});
 
-        //checks that no present timelines are unplayed in by length
-        let unlocksub = true;
-        for(let tli in gameState.spacetime){
-          if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
-            unlocksub = false;
-            break;
-          }
-        }
-        //checks that no checks are present
-        let danger = false;
-        gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
-        if(unlocksub && !danger){
-          $("#submit")[0].disabled = false;
-        }
+        disableSubmit();
 
         messages.empty();
       });
@@ -542,7 +530,7 @@ var Client = (function(window) {
       }
       //checks that no checks are present
       let danger = false;
-      gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
+      gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==nextPresent);
       if(unlocksub && !danger){
         $("#submit")[0].disabled = false;
       }
@@ -726,6 +714,21 @@ var Client = (function(window) {
     socket.emit('join', gameID);
   };
   
+  function disableSubmit(){
+    let unlocksub = true;
+    for(let tli in gameState.spacetime){
+      if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
+        unlocksub = false;
+        break;
+      }
+    }
+    //checks that no potential checks are present
+    let danger = false;
+    gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==nextPresent);
+    if(!unlocksub || danger) $("#submit")[0].disabled = true;
+    else $("#submit")[0].disabled = false;
+  }
+  
   var attachSocketEventHandlers = function() {
 
     // Update UI with new game state
@@ -745,8 +748,8 @@ var Client = (function(window) {
         console.log("Calculation requested! Data received: ",data.data);
         gameState.validMoves = data.data.validMoves;
         gameState.checks = data.data.checks;
-        //dont make present line dynamically update within a move
-        //gameState.present = data.data.present;
+        //stores next present for submission check calculations
+        nextPresent = data.data.present;
       }
     });
 
@@ -810,20 +813,9 @@ var Client = (function(window) {
       //disableds button if no moves 
       if(move.length==0) $("#undo")[0].disabled = true;
       
-      //redisables submitting
-      let unlocksub = true;
-      for(let tli in gameState.spacetime){
-        if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
-          unlocksub = false;
-          break;
-        }
-      }
-      //checks that no potential checks are present
-      let danger = false;
-      gameState.checks[playerColor].forEach(x=>danger = danger||x.src.time==gameState.present);
-      if(!unlocksub || danger){
-        $("#submit")[0].disabled = true;
-      }
+      //disable submitting
+      disableSubmit();
+      
     });
   }
 
