@@ -468,10 +468,10 @@ var Client = (function(window) {
       return;
     }
     
-    //moves in present
+    //moves in present, same color
     let unlocksub = true;
     for(let tli in gameState.spacetime){
-      if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present){
+      if(((tli>0&&-tli+1 in gameState.spacetime)||(tli<0&&-tli-1 in gameState.spacetime)) && gameState.spacetime[tli].boards.length-1==gameState.present && ((gameState.spacetime[tli].boards.length%2==1&&playerColor=="white")||(gameState.spacetime[tli].boards.length%2==0&&playerColor=="black"))){
         unlocksub = false;
         break;
       }
