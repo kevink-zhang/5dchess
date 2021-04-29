@@ -457,7 +457,7 @@ var Client = (function(window) {
   //centers camera on a board
   function centerCAM(pos){
     CAMERA.x = -(pos.time*(boardScale+boardBuffer)+boardScale*0.5)/scale;
-    CAMERA.y = playerColor=="white"?(pos.timeline*(boardScale+boardBuffer)+boardScale*0.5)/scale:-(pos.timeline*(boardScale+boardBuffer)+boardScale*0.5)/scale;
+    CAMERA.y = playerColor=="white"?(pos.timeline*(boardScale+boardBuffer)-boardScale*0.5)/scale:-(pos.timeline*(boardScale+boardBuffer)+boardScale*0.5)/scale;
   }
   
   //disables/enables submission button
@@ -581,7 +581,12 @@ var Client = (function(window) {
     //play the sound
     sfx[sfxtype].play();
   }
+  /*
+  * Canvas event listeners
+  * essentially the game control inputs
+  */
   
+  //triggers piece selection, camera dragging
   c.addEventListener("mousedown",e=>{
     let xx = e.clientX - c.getBoundingClientRect().left;
     let yy = e.clientY - c.getBoundingClientRect().top;
@@ -669,7 +674,8 @@ var Client = (function(window) {
       if(!(JSON.stringify(deepClone(selected)) in gameState.validMoves)) selected = null;
     }
     else if(selected.x==addon.x&&selected.y==addon.y&&selected.time==addon.time&&selected.timeline==addon.timeline) selected = null;
-    else{
+    else{ //selects a piece
+      if(gameState.activePlayer.color!=playerColor) return; //not your turn, no selection
       let validEndMove = false;
       for(let onemove of gameState.validMoves[JSON.stringify(deepClone(selected))]){
         let ed = onemove.end;
@@ -685,6 +691,8 @@ var Client = (function(window) {
     }
     
   });
+  
+  //updates camera dragging
   c.addEventListener("mousemove", e => {
     //drags camera
     if(mouseDownPos!=null){
