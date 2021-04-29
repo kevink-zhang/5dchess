@@ -7,39 +7,49 @@ block content
       h1 5D Chess
       p.
         A real-time multi-player 5d chess app 
-
+      p.
+        <a class="btn btn-primary" href="https://www.youtube.com/watch?v=eqMEiBu4M1c">
+        Tutorial video
+        </a>
 
 
   .container
-    .row
-      .col-sm-6
-        h2 Start a New Game
-        form#startForm(action="/start", method="POST", role="form")
-          .form-group
-            label Play as
-            div
-              .btn-group(data-toggle="buttons")
-                label.btn.btn-default.active
-                  input(type="radio", name="player-color", value="white", checked="checked")
-                  | White
-                label.btn.btn-default
-                  input(type="radio", name="player-color", value="black")
-                  | Black
-          .form-group
-            label(for="playerName") Name
-            input#playerName.form-control(type="text", name="player-name", placeholder="Player 1")
-          button.btn.btn-primary(type="submit") Start Game
-      .col-sm-6
-        h2 Join an Existing Game
-        form#joinForm(action="/join", method="POST", role="form")
-          .form-group
-            label(for="gameID") Game ID
-            input#gameID.form-control(type="text", name="game-id")
-          .form-group
-            label(for="playerName") Name
-            input#playerName.form-control(type="text", name="player-name", placeholder="Player 2")
-          button.btn.btn-primary(type="submit") Join Game
+    // Tab links
+    .tab
+      button.tablinks(onclick="openTab(event, 'create')") Create game
+      button.tablinks(onclick="openTab(event, 'lobby')") Lobby
+      
+    // Tab content
+    #create.tabcontent
+      h3 London
+      p London is the capital city of England.
+    #lobby.tabcontent
+      h3 Paris
+      p Paris is the capital of France.
+  
+  //script for tabs
+  script.
+    function openTab(evt, tabname) {
+      // Declare all variables
+      var i, tabcontent, tablinks;
 
+      // Get all elements with class="tabcontent" and hide them
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      // Get all elements with class="tablinks" and remove the class "active"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      // Show the current tab, and add an "active" class to the button that opened the tab
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+    
   audio#music(src="https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fytmp3free.cc_mittsies-vitality-youtubemp3free.org.mp3?v=1619244746188" loop="true" autoplay)
   script.
     const audio = document.getElementById('music');
