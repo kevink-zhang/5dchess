@@ -8,6 +8,8 @@ block content
       p.
         A real-time multi-player 5d chess app 
       p.
+        WIP on html right now, sorry for the downtime
+      p.
         <a class="btn btn-primary" href="https://www.youtube.com/watch?v=eqMEiBu4M1c">
         Tutorial video
         </a>
@@ -19,6 +21,12 @@ block content
       input#playerName.form-control(type="text", name="player-name", placeholder="Player 1",style="margin:5px")
       button#nameSubmit.btn.btn-primary(type="submit",style="margin:5px") Begin
   
+  #gameoptions.container(hidden='')
+    button#single.btn.btn-primary() Singleplayer
+    button#multi.btn.btn-primary() Multiplayer
+    
+  #multiplayer.container(hidden='')
+    
     
   audio#music(src="https://cdn.glitch.com/5e0f9006-3453-41ad-b0eb-222438390afa%2Fytmp3free.cc_mittsies-vitality-youtubemp3free.org.mp3?v=1619244746188" loop="true" autoplay)
   script.
@@ -29,6 +37,7 @@ block content
   script(src="/js/bootstrap.min.js")
   
   script.
-    document.getElementById('nameSubmit').onclick = function() {
-       document.getElementById('welcome').fadeOut();
+    $('#nameSubmit')[0].onclick = function() {
+       $('#welcome').fadeOut();
+       $('#gameoptions').fadeIn();
     };
