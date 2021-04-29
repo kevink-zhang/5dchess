@@ -457,7 +457,7 @@ var Client = (function(window) {
   //centers camera on a board
   function centerCAM(pos){
     CAMERA.x = -(pos.time*(boardScale+boardBuffer)+boardScale*0.5)/scale;
-    CAMERA.y = -(pos.timeline*(boardScale+boardBuffer)+boardScale*0.5)/scale;
+    CAMERA.y = playerColor=="white"?(pos.timeline*(boardScale+boardBuffer)+boardScale*0.5)/scale:-(pos.timeline*(boardScale+boardBuffer)+boardScale*0.5)/scale;
   }
   
   //disables/enables submission button
