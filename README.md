@@ -1,25 +1,27 @@
-# Description
+# Summary
 
-A real-time multi-player 5d-chess app using [node](https://github.com/joyent/node), [express](https://github.com/visionmedia/express), and of course [socket.io](https://github.com/LearnBoost/socket.io).
+A real-time multi-player 5d-chess app using node, express, and of course socket.io.
 
-Based off the psychological horror game on steam, 5D Chess With Multiverse Time Travel. (https://store.steampowered.com/app/1349230/5D_Chess_With_Multiverse_Time_Travel/)
+Rules are based off the psychological horror game on steam, 5D Chess With Multiverse Time Travel. (https://store.steampowered.com/app/1349230/5D_Chess_With_Multiverse_Time_Travel/) The actual code is original.
 
-UI is based off thebinarypenguin's node.js chess application, which can currently be found at [chess.thebinarypenguin.com](http://chess.thebinarypenguin.com).
+The UI and socket server is based off thebinarypenguin's node.js chess application, which can currently be found at chess.thebinarypenguin.com.
 
-# Other Projects
+# Features
 
-This project is just a little something I threw together for personal exploration and is literally spaghetti code. However the following projects are and should be checked out
+This project includes the following features:
+* Multiplayer functionality
+* Nickname customization and team selection
+* Creating games with join codes
+* Queueing moves, undoing moves, and surrendering
+* Zoomable and panable camera in game
+* Sound effects
+* Highlighting past, present, and possible moves
+* All normal chess rules and modified 5d chess rules which include...
+* Multiple timelines and forced present timeline
+* Checkmate, normal and timeline
 
-* [Chess.js](https://github.com/jhlywa/chess.js) A javascript chess engine
-* [Chess Hub](http://chesshub-benas.rhcloud.com/) A chess webapp based on [benas](https://github.com/benas)'s [gamehub.io](https://github.com/benas/gamehub.io) project
-* [Node.js Chess](https://github.com/thebinarypenguin/socket.io-chess) A chess webapp built on socket.io by thebinarypenguin.
+# Time
+This solo project took around 3-4 weeks to develop. 
 
-
-# License
-
-Licensed under the [MIT License](http://www.opensource.org/licenses/MIT)
-
-
-
-
-
+# Usage
+Go to 5dchess.glitch.me to play the application. The site may take some time to initially load. You can create a game on the left, or join an existing game with a code on the right. Once in the game, players take turn making moves by clicking and dragging, with controls for moving pieces and options for undoing, surrendering, and ending turns.
